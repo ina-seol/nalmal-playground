@@ -58,23 +58,32 @@ h1,h2,h3{font-weight:700;text-wrap:balance;margin:0;line-height:1.15;letter-spac
 .top-actions{display:flex;gap:10px;flex-wrap:wrap}
 
 /* home: LCD */
-.lcd{position:relative;display:grid;gap:10px;padding:18px 26px 20px;margin-bottom:24px;background-color:var(--lcd);color:var(--lcd-ink);
+.lcd{position:relative;display:grid;gap:10px;padding:14px 22px 18px;margin-bottom:18px;background-color:var(--lcd);color:var(--lcd-ink);
   background-image:radial-gradient(var(--lcd-dot) 1.2px,transparent 1.5px);background-size:5px 5px;
   border:3px solid var(--royal-dk);border-radius:26px;box-shadow:inset 0 4px 0 rgba(34,56,30,.12),0 6px 0 var(--royal-dk),var(--drop);animation:boot .7s steps(4) both}
-.lcd h1{font-size:clamp(28px,4vw,44px)}
+.lcd h1{font-size:clamp(26px,3.4vw,38px)}
 .lcd-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-family:var(--font-pixel);font-size:17px}
 .tag{font-family:var(--font);font-weight:500;font-size:13px;padding:2px 10px;border-radius:999px;background:var(--lcd-ink);color:var(--lcd)}
 .strip{display:flex;flex-wrap:wrap;gap:6px}
 .strip span{display:inline-flex;gap:6px;align-items:baseline;border:2px solid rgba(34,56,30,.35);border-radius:10px;padding:2px 10px;font-weight:300;font-size:15px;background:rgba(255,255,255,.28)}
 .strip b{font-family:var(--font-pixel);font-weight:400;font-size:16px}
 .lcd-top{display:flex;gap:10px 18px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.units{display:flex;flex-wrap:wrap;gap:6px}
-.unit{min-width:40px;min-height:40px;padding:0 7px;font-family:var(--font-pixel);font-size:16px;color:var(--lcd-ink);background:rgba(255,255,255,.35);
-  border:2px solid var(--lcd-ink);border-radius:10px;box-shadow:0 3px 0 var(--lcd-ink);transition:transform .1s}
+.lcd-head{display:flex;align-items:baseline;gap:6px 18px;flex-wrap:wrap;min-width:0}
+.unit-all{display:flex;gap:8px;flex-wrap:wrap}
+.units{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px 8px}
+.unit{display:flex;align-items:center;gap:6px;min-height:40px;padding:3px 10px;text-align:left;font-weight:500;font-size:15px;line-height:1.2;
+  color:var(--lcd-ink);background:rgba(255,255,255,.4);border:2px solid var(--lcd-ink);border-radius:10px;box-shadow:0 3px 0 var(--lcd-ink);transition:transform .1s}
 .unit:hover{transform:translateY(-1px)}
 .unit:active{transform:translateY(2px);box-shadow:0 1px 0 var(--lcd-ink)}
+.unit .chk{flex:none;display:grid;place-items:center;width:20px;height:20px;border:2px solid var(--lcd-ink);border-radius:5px;background:var(--shell)}
+.unit .chk .ico{width:15px;height:15px;stroke-width:3.4}
+.unit .num{flex:none;min-width:1.2em;font-family:var(--font-pixel);font-size:17px}
+.unit .ut{min-width:0;overflow-wrap:normal}
 .unit.on{background:var(--lcd-ink);color:var(--lcd)}
-.unit-name{font-family:var(--font);font-weight:700;font-size:19px;margin-right:6px}
+.unit.on .chk{background:var(--canary);border-color:var(--canary);color:var(--lcd-ink)}
+.unit-name{font-family:var(--font);font-weight:700;font-size:18px;margin-right:6px}
+@media (max-width:1000px){.units{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:700px){.units{grid-template-columns:repeat(2,minmax(0,1fr))}.unit{font-size:13px;padding:3px 7px;gap:5px}.unit .num{font-size:15px}}
 .utag{display:inline-block;vertical-align:middle;margin-left:10px;font-family:var(--font-pixel);font-size:15px;font-weight:400;padding:2px 9px;border-radius:8px;background:var(--lcd);color:var(--lcd-ink);border:2px solid var(--royal-dk)}
 @keyframes boot{0%{filter:brightness(1.35) contrast(.6)}100%{filter:none}}
 .notice{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin:-8px 0 22px;padding:10px 16px;
@@ -90,8 +99,8 @@ h1,h2,h3{font-weight:700;text-wrap:balance;margin:0;line-height:1.15;letter-spac
 .cart:hover:not(:disabled){transform:translateY(-4px) rotate(-.6deg);box-shadow:0 11px 0 var(--royal-dk),var(--drop)}
 .cart:active:not(:disabled){transform:translateY(5px);box-shadow:0 2px 0 var(--royal-dk)}
 .cart:disabled{filter:grayscale(.7);opacity:.75}
-.cart .ill{height:88px;display:grid;place-items:center}
-.cart .ill svg{height:74px;width:auto;max-width:100%}
+.cart .ill{height:72px;display:grid;place-items:center}
+.cart .ill svg{height:62px;width:auto;max-width:100%}
 .ill .f{fill:var(--shell);stroke:var(--royal-dk);stroke-width:2.6}
 .ill .h{fill:var(--canary-lt);stroke:var(--royal-dk);stroke-width:2.6}
 .ill .s{fill:none;stroke:var(--royal-dk);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
@@ -321,19 +330,32 @@ function clean(d){
   if(!units.length)units=[{name:'',words:[],sentences:[]}];
   return{title:String(d.title||'').trim().slice(0,40)||'우리 반 낱말',sample:!!d.sample,units:units};
 }
-function unitShort(u,i){var m=/^(?:lesson|unit|단원)\s*(\d+)/i.exec(u.name);return m?'L'+m[1]:String(i+1)}
-var book,deck,unitIdx=-1;
+/* "Lesson 3 Don't Sit Here" -> number "3", title "Don't Sit Here" */
+function unitParts(u,i){
+  var m=/^(?:lesson|unit|단원)\s*(\d+)\s*[.:)\-]?\s*(.*)$/i.exec(u.name);
+  return{num:m?m[1]:String(i+1),title:(m&&m[2])||u.name||(i+1)+'단원'};
+}
+var book,deck,sel=[];
 try{book=clean(JSON.parse(document.getElementById('deck-data').textContent))}catch(e){book=clean({})}
 if(LOCAL){var ld=store.get('nm-local-deck',null);if(ld)book=clean(ld)}
-/* deck = what the games play with: one unit, or all units together (-1) */
-function pickUnit(i){
-  i=+i;if(book.units.length===1)i=0;else if(!(i>=0&&i<book.units.length))i=-1;
-  unitIdx=i;store.set('nm-unit',i);
-  var us=i<0?book.units:[book.units[i]];
-  deck={title:book.title,sample:book.sample,unit:i<0?null:book.units[i],unitShort:i<0?'':unitShort(book.units[i],i),
+function allUnits(){return book.units.map(function(_,i){return i})}
+/* deck = what the games play with: every selected unit merged together */
+function applySel(arr){
+  var n=book.units.length,seen={};
+  arr=(Array.isArray(arr)?arr:[]).map(Number).filter(function(i){if(i>=0&&i<n&&!seen[i]){seen[i]=1;return true}return false}).sort(function(a,b){return a-b});
+  if(n===1)arr=[0];
+  sel=arr;store.set('nm-units',arr);
+  var us=arr.map(function(i){return book.units[i]});
+  deck={title:book.title,sample:book.sample,units:us,
     words:[].concat.apply([],us.map(function(u){return u.words})),sentences:[].concat.apply([],us.map(function(u){return u.sentences}))};
 }
-pickUnit(store.get('nm-unit',-1));
+function selTag(){
+  if(sel.length===book.units.length)return'전체';
+  if(sel.length===1)return unitParts(book.units[sel[0]],sel[0]).num+'단원';
+  return sel.length+'개 단원';
+}
+var savedSel=store.get('nm-units',null);
+applySel(savedSel===null?allUnits():savedSel);
 
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
@@ -359,6 +381,7 @@ var P={
  x:'<path d="M7 7l10 10M17 7L7 17"/>',
  copy:'<rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/>',
  play:'<path d="M8 5.5v13l10.5-6.5z"/>',
+ check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
  grid:'<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/>'
 };
 function icon(n,cls){return'<svg class="ico'+(cls?' '+cls:'')+'" viewBox="0 0 24 24" aria-hidden="true">'+P[n]+'</svg>'}
@@ -499,7 +522,10 @@ document.getElementById('sfxBtn').onclick=function(){sfxOn=!sfxOn;store.set('nm-
 
 app.addEventListener('click',function(e){
   var u=e.target.closest('[data-unit]');
-  if(u){pickUnit(u.dataset.unit);sfx('select');renderHome('unit');return}
+  if(u){var ui=+u.dataset.unit,at=sel.indexOf(ui),next=sel.slice();if(at>=0)next.splice(at,1);else next.push(ui);
+    applySel(next);sfx(at>=0?'tap':'select');renderHome('unit:'+ui);return}
+  var ua=e.target.closest('[data-units]');
+  if(ua){applySel(ua.dataset.units==='all'?allUnits():[]);sfx('select');renderHome('units');return}
   var a=e.target.closest('[data-act]');if(!a)return;
   var act=a.dataset.act;
   if(act==='home')go('home');
@@ -531,30 +557,31 @@ function go(screen){
 
 function renderHome(prev){
   var best=store.get('nm-best',{});
-  var strip=deck.words.slice(0,8).map(function(w){return'<span><b>'+esc(w.w)+'</b>'+esc(w.m)+'</span>'}).join('')+(deck.words.length>8?'<span>그 밖에 '+(deck.words.length-8)+'개</span>':'');
-  var notice='';
+  var multi=book.units.length>1,allOn=sel.length===book.units.length,notice='';
   if(canTeach&&deck.sample)notice='<div class="notice"><p>지금은 <b>예시 낱말</b>이 들어 있어요. 우리 반 낱말로 바꿔 저장하면 이 링크로 들어오는 학생 모두에게 보여요.</p><button class="btn small primary" data-act="teacher">'+icon('pencil')+'낱말 바꾸기</button></div>';
-  var units=book.units.length>1?'<div class="units" role="group" aria-label="복습할 단원 고르기">'+
-    '<button class="unit'+(unitIdx<0?' on':'')+'" data-unit="-1" aria-pressed="'+(unitIdx<0)+'">전체</button>'+
-    book.units.map(function(u,i){return'<button class="unit'+(unitIdx===i?' on':'')+'" data-unit="'+i+'" aria-pressed="'+(unitIdx===i)+'" title="'+esc(u.name)+'" aria-label="'+esc(u.name||unitShort(u,i)+'단원')+'">'+unitShort(u,i)+'</button>'}).join('')+'</div>':'';
-  var uname=book.units.length>1?(deck.unit?deck.unit.name||unitShort(deck.unit,unitIdx)+'단원':'모든 단원 함께 복습'):'';
-  view.innerHTML='<section class="lcd" aria-label="오늘 복습할 낱말"><div class="lcd-top"><h1>'+esc(deck.title)+'</h1>'+units+'</div>'+
-    '<p class="lcd-meta" style="margin:0">'+(uname?'<b class="unit-name">'+esc(uname)+'</b>':'')+'<span>낱말 '+deck.words.length+'개 · 문장 '+deck.sentences.length+'개</span>'+(deck.sample?'<span class="tag">예시 낱말</span>':'')+'</p>'+
-    (strip?'<div class="strip">'+strip+'</div>':'')+'</section>'+notice+
+  var units=multi?'<div class="units" role="group" aria-label="복습할 단원 고르기, 여러 개 고를 수 있어요">'+
+    book.units.map(function(u,i){var p=unitParts(u,i),on=sel.indexOf(i)>=0;
+      return'<button class="unit'+(on?' on':'')+'" data-unit="'+i+'" aria-pressed="'+on+'" title="'+esc(u.name)+'"><span class="chk" aria-hidden="true">'+(on?icon('check'):'')+'</span><span class="num">'+esc(p.num)+'</span><span class="ut">'+esc(p.title)+'</span></button>'}).join('')+'</div>':'';
+  var bulk=multi?'<div class="unit-all"><button class="btn small" data-units="all"'+(allOn?' disabled':'')+'>'+icon('check')+'모두 고르기</button><button class="btn small" data-units="none"'+(sel.length?'':' disabled')+'>'+icon('x')+'모두 풀기</button></div>':'';
+  var one=sel.length===1?unitParts(book.units[sel[0]],sel[0]):null;
+  var label=multi?(allOn?'모든 단원':one?one.num+'단원 '+esc(one.title):sel.length?sel.length+'개 단원':'단원을 골라 주세요'):'';
+  view.innerHTML='<section class="lcd" aria-label="오늘 복습할 단원"><div class="lcd-top"><div class="lcd-head"><h1>'+esc(deck.title)+'</h1>'+
+    '<p class="lcd-meta" style="margin:0">'+(label?'<b class="unit-name">'+label+'</b>':'')+'<span>낱말 '+deck.words.length+'개 · 문장 '+deck.sentences.length+'개</span>'+(deck.sample?'<span class="tag">예시 낱말</span>':'')+'</p></div>'+bulk+'</div>'+
+    units+'</section>'+notice+
     '<div class="games">'+ORDER.map(function(k,i){
       var g=GAMES[k],ok=g.need(),b=best[k]||0;
       return'<button class="cart" data-act="play" data-game="'+k+'" style="--c:var('+g.color+')"'+(ok?'':' disabled')+' aria-label="'+g.name+' 시작 (숫자 '+(i+1)+')">'+
         '<span class="ill" aria-hidden="true">'+ILL[k]+'</span><span class="label"><h2>'+g.name+'</h2><p>'+g.desc+'</p>'+
-        '<span class="row">'+(ok?(b?starsHTML(b):'<span>아직 안 해 봤어요</span>'):'<span>'+g.needMsg+'</span>')+'<span class="kbd" aria-hidden="true">'+(i+1)+'</span></span></span></button>';
+        '<span class="row">'+(ok?(b?starsHTML(b):'<span>아직 안 해 봤어요</span>'):'<span>'+(multi&&!sel.length?'단원을 먼저 골라 주세요':g.needMsg)+'</span>')+'<span class="kbd" aria-hidden="true">'+(i+1)+'</span></span></span></button>';
     }).join('')+'</div>';
   if(prev&&GAMES[prev]){var c=view.querySelector('[data-game="'+prev+'"]');if(c)c.focus({preventScroll:true})}
-  else if(prev==='unit'){var u=view.querySelector('.unit.on');if(u)u.focus({preventScroll:true})}
+  else if(prev&&prev.indexOf('unit')===0){var u=view.querySelector(prev==='units'?'.unit':'[data-unit="'+prev.slice(5)+'"]');if(u)u.focus({preventScroll:true})}
 }
 
 function renderGame(key){
   var g=GAMES[key];
   if(!g.need()){go('home');return}
-  view.innerHTML='<div class="ghead"><button class="btn small" data-act="home">'+icon('back')+'<span class="hide-sm">놀이 목록</span><span class="kbd">Esc</span></button><h2>'+g.name+(book.units.length>1?'<span class="utag" title="'+esc(deck.unit?deck.unit.name:'전체 단원')+'">'+(deck.unitShort||'전체')+'</span>':'')+'</h2><div class="stats" id="stats" aria-live="polite"></div></div>'+
+  view.innerHTML='<div class="ghead"><button class="btn small" data-act="home">'+icon('back')+'<span class="hide-sm">놀이 목록</span><span class="kbd">Esc</span></button><h2>'+g.name+(book.units.length>1?'<span class="utag" title="'+esc(deck.units.map(function(u){return u.name}).join(', '))+'">'+selTag()+'</span>':'')+'</h2><div class="stats" id="stats" aria-live="polite"></div></div>'+
     '<p class="howto">'+g.how+'<span class="hide-sm">'+KEYHOW[key]+'</span></p><div id="stage"></div>';
   var stage=document.getElementById('stage'),stats=document.getElementById('stats');
   var setStats=function(h){stats.innerHTML=h};
@@ -933,7 +960,7 @@ function parseFile(text){
 function renderTeacher(){
   if(!canTeach){go('home');return}
   var draft={title:book.title,units:book.units.map(function(u){return{name:u.name,words:u.words.map(function(x){return{w:x.w,m:x.m}}),sentences:u.sentences.slice()}})};
-  var ui=unitIdx>=0?unitIdx:0;
+  var ui=sel.length?sel[0]:0;
   view.innerHTML='<div class="ghead"><button class="btn small" data-act="home">'+icon('back')+'<span class="hide-sm">놀이 목록</span><span class="kbd">Esc</span></button><h2>낱말 바꾸기</h2></div>'+
     '<p class="howto">저장하면 이 링크로 들어오는 학생 모두에게 새 낱말과 문장이 쓰여요. 학생은 홈 화면에서 단원을 골라 복습해요. 학생 화면에는 이 버튼이 보이지 않아요.</p>'+
     '<div class="teach"><section class="panel"><h3>단원과 낱말</h3>'+
@@ -1056,7 +1083,7 @@ function renderTeacher(){
     var total=0;next.units.forEach(function(u){total+=u.words.length});
     if(total<3){msg.className='msg-bad';msg.textContent='낱말과 뜻이 모두 채워진 줄이 3개 이상 있어야 저장할 수 있어요.';return}
     if(LOCAL||!artifactNS){
-      if(LOCAL){store.set('nm-local-deck',next);book=next;pickUnit(unitIdx);toast('이 컴퓨터에 저장했어요');go('home');return}
+      if(LOCAL){store.set('nm-local-deck',next);book=next;applySel(sel.length?sel:allUnits());toast('이 컴퓨터에 저장했어요');go('home');return}
       msg.className='msg-bad';msg.textContent='이 화면에서는 저장할 수 없어요. Claude에서 이 페이지를 열어 저장해 주세요.';return;
     }
     btn.disabled=true;msg.className='';msg.textContent='저장하는 중…';
