@@ -1,0 +1,221 @@
+# 4학년 영어 (천재교육, 함순애) 단원별 낱말과 표현
+# 낱말 바꾸기 화면에서 이 파일을 올리면 단원 12개가 한 번에 들어갑니다.
+# Special 1~5 단원은 낱말이 없어서 넣지 않았습니다.
+
+Lesson 1 My Name Is Amy
+[낱말]
+afternoon, 오후
+bag, 가방
+evening, 저녁
+everyone, 모두
+friend, 친구
+meet, 만나다
+morning, 아침
+name, 이름
+new, 새로운
+night, 밤
+to, ~에게
+we, 우리
+[문장]
+What's your name?
+My name is Amy.
+Nice to meet you.
+Nice to meet you, too.
+Good morning.
+
+Lesson 2 I'm Happy
+[낱말]
+again, 다시
+angry, 화난
+happy, 행복한
+sad, 슬픈
+sleepy, 졸린
+some, 약간의
+thirsty, 목마른
+tired, 피곤한
+try, 해 보다
+water, 물
+[문장]
+Are you happy?
+Yes, I am.
+No, I'm not.
+I'm thirsty.
+
+Lesson 3 Don't Sit Here
+[낱말]
+careful, 조심하는
+drink, 마시다
+eat, 먹다
+enter, 들어가다
+house, 집
+kick, 차다
+line, 줄
+love, 사랑하다
+over, 넘어서
+push, 밀다
+talk, 말하다
+welcome, 환영하다
+[문장]
+Don't sit here.
+Be careful.
+
+Lesson 4 Let's Play Basketball
+[낱말]
+bad, 나쁜
+badminton, 배드민턴
+baseball, 야구
+basketball, 농구
+busy, 바쁜
+let, ~하게 하다
+pass, 건네주다
+play, 놀다
+sick, 아픈
+soccer, 축구
+sound, ~하게 들리다
+tennis, 테니스
+[문장]
+Let's play baseball.
+Sounds good.
+Sorry, I can't.
+That's too bad.
+
+Lesson 5 I Want Chicken
+[낱말]
+bread, 빵
+cream, 크림
+help, 돕다
+hot, 뜨거운
+ice, 얼음
+milk, 우유
+much, 많은
+noodles, 국수
+salad, 샐러드
+soup, 수프
+want, 원하다
+[문장]
+What do you want?
+I want chicken.
+Help yourself.
+
+Lesson 6 Where's My Cap?
+[낱말]
+bed, 침대
+box, 상자
+bus, 버스
+chair, 의자
+desk, 책상
+fan, 선풍기
+know, 알다
+table, 탁자
+under, ~ 아래에
+where, 어디에
+[문장]
+Where's my cap?
+It's on the table.
+I don't know.
+
+Lesson 7 It's Wednesday
+[낱말]
+art, 미술
+birthday, 생일
+class, 수업
+computer, 컴퓨터
+cook, 요리하다
+day, 요일
+hike, 하이킹하다
+lunch, 점심
+party, 파티
+today, 오늘
+wait, 기다리다
+[문장]
+What day is it today?
+It's Wednesday.
+I have a computer class.
+
+Lesson 8 How Much Is It?
+[낱말]
+car, 자동차
+case, 상자
+comic, 만화
+hundred, 백(100)
+idea, 생각
+skirt, 치마
+take, 사다
+thousand, 천(1000)
+toy, 장난감
+will, ~할 것이다
+[문장]
+How much is it?
+It's seven hundred won.
+I'll take it.
+
+Lesson 9 Is This Your Bag?
+[낱말]
+bottle, 병
+brown, 갈색
+clean, 깨끗한
+find, 찾다
+gray, 회색
+notebook, 공책
+park, 공원
+shoe, 신발
+so, 정말
+umbrella, 우산
+watch, 손목시계
+[문장]
+Is this your bag?
+Yes, it is.
+No, it isn't.
+My cap is gray.
+
+Lesson 10 What Time Is It?
+[낱말]
+breakfast, 아침 식사
+dinner, 저녁 식사
+eleven, 11(열하나)
+fun, 재미있는
+movie, 영화
+music, 음악
+school, 학교
+thirty, 30(서른)
+time, 시간
+twelve, 12(열둘)
+twenty, 20(스물)
+[문장]
+What time is it?
+It's ten thirty.
+It's time for breakfast.
+
+Lesson 11 I'm Drawing a Picture
+[낱말]
+cookie, 쿠키
+draw, 그리다
+homework, 숙제
+make, 만들다
+picture, 그림
+read, 읽다
+smell, 냄새가 나다
+sure, 물론
+[문장]
+What are you doing?
+I'm doing homework.
+Can I help you?
+
+Lesson 12 What Do You Do?
+[낱말]
+cool, 멋진
+doctor, 의사
+model, 모델
+nurse, 간호사
+painter, 화가
+pilot, 비행기 조종사
+teacher, 선생님
+uncle, 삼촌
+writer, 작가
+[문장]
+What do you do?
+I'm a doctor.
+What does he do?
+He's a model.
+What does she do?
+She's a model.

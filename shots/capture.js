@@ -22,7 +22,8 @@ const SCREENS = [
   ['result', async p => { await p.keyboard.press('1'); await p.waitForTimeout(200);
     // 덱의 낱말-뜻 짝을 읽어 카드 순서대로 짝을 맞춰 결과 창 띄우기
     const pairs = await p.evaluate(() => {
-      const deck = JSON.parse(document.getElementById('deck-data').textContent).words;
+      const data = JSON.parse(document.getElementById('deck-data').textContent);
+      const deck = data.units ? data.units.flatMap(u => u.words) : data.words;
       const texts = [...document.querySelectorAll('.mcard .front b')].map(e => e.textContent);
       const out = [], used = new Set();
       texts.forEach((t, i) => { if (used.has(i)) return; const w = deck.find(d => d.w === t); if (!w) return;
