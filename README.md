@@ -10,6 +10,8 @@
 | 문장 퍼즐 | 흩어진 낱말 조각을 순서대로 놓아 문장을 완성해요 |
 | 풍선 팡팡 | 뜻에 맞는 낱말 풍선이 날아가기 전에 터뜨려요 |
 
+**바로 하기:** https://ina-seol.github.io/nalmal-playground/
+
 키보드: 홈에서 `1`~`5` 게임 시작, 방향키 이동, `Enter` 고르기, `Esc` 놀이 목록, `M` 배경음악 켜고 끄기.
 
 ## 파일
@@ -18,7 +20,8 @@
 |---|---|
 | `nalmal-playground.src.html` | 고칠 때 여는 원본 |
 | `build.ps1` | 원본에 글꼴을 넣어 `nalmal-playground.html` 을 만듭니다 |
-| `nalmal-playground.html` | 완성된 페이지 (글꼴 포함) |
+| `nalmal-playground.html` | 완성된 페이지 (글꼴 포함, Claude 게시용) |
+| `index.html` | GitHub Pages 용 페이지 (`build.ps1` 이 함께 만듭니다) |
 | `bgm.mp3` | 배경음악 (페이지와 같은 폴더에 두어야 재생됩니다) |
 | `fonts/` | SB 어그로 글꼴 |
 | `shots/capture.js`, `shots/audio-test.js` | Playwright 화면 캡처와 소리 동작 확인 스크립트 |
