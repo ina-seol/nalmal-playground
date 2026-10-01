@@ -1,0 +1,15 @@
+# Claude Code 개인 설정과 설치한 스킬 (skills-lock.json 으로 다시 설치 가능)
+.claude/
+.agents/
+
+# 예전 버전 백업 (Git 기록에 남으므로 필요 없음)
+nalmal-playground.v1.html
+
+# 캡처 결과물 (shots/capture.js 로 언제든 다시 만들 수 있음)
+shots/*.png
+shots/preview.html
+shots/bgm.mp3
+
+# Windows
+Thumbs.db
+desktop.ini
