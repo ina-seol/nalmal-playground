@@ -1,0 +1,238 @@
+# 3학년 영어 (천재교육, 함순애) 단원별 낱말과 표현
+# Special 단원은 낱말이 없어서 넣지 않았습니다.
+
+Lesson 1 Hello, ABC!
+[낱말]
+apple, 사과
+ball, 공
+cat, 고양이
+dog, 개
+egg, 달걀
+five, 5(다섯)
+game, 게임
+hat, 모자
+hello, 안녕
+in, ~ 안에
+jump, 뛰다
+king, 왕
+lion, 사자
+monkey, 원숭이
+nine, 9(아홉)
+orange, 오렌지
+pizza, 피자
+queen, 여왕
+ring, 반지
+sit, 앉다
+six, 6(여섯)
+ten, 10(열)
+up, 위로
+violin, 바이올린
+wind, 바람
+yellow, 노란색
+zebra, 얼룩말
+[문장]
+Hello, ABC!
+
+Lesson 2 Hi, I'm Momo
+[낱말]
+be, ~이다
+bye, 잘 가
+fine, 괜찮은
+how, 어떻게
+I, 나
+you, 너
+[문장]
+I'm Momo.
+How are you?
+I'm fine.
+
+Lesson 3 What's This?
+[낱말]
+a, 하나의
+bike, 자전거
+cup, 컵
+doll, 인형
+it, 그것
+look, 보다
+nice, 멋진
+robot, 로봇
+that, 저것
+this, 이것
+what, 무엇
+yes, 네
+[문장]
+What's this?
+What's that?
+It's a bike.
+
+Lesson 4 Stand Up, Please
+[낱말]
+close, 닫다
+come, 오다
+door, 문
+down, 아래로
+here, 여기
+okay, 알았어
+open, 열다
+please, 부탁합니다
+stand, 서다
+thank, 고마워하다
+the, 그
+touch, 만지다
+[문장]
+Stand up, please.
+Sit down, please.
+Thank you.
+
+Lesson 5 How Many Cows?
+[낱말]
+cow, 소
+eight, 8(여덟)
+four, 4(넷)
+many, 많은
+no, 아니요
+one, 1(하나)
+pig, 돼지
+right, 맞는
+seven, 7(일곱)
+three, 3(셋)
+two, 2(둘)
+[문장]
+How many cows?
+Three cows.
+That's right.
+
+Lesson 6 Do You Have a Pencil?
+[낱말]
+at, ~에
+book, 책
+brush, 붓
+do, 하다
+eraser, 지우개
+great, 훌륭한
+have, 가지고 있다
+not, 아니다
+pen, 펜
+pencil, 연필
+tape, 테이프
+[문장]
+Do you have a pencil?
+Yes, I do.
+No, I don't.
+I have a brush.
+I don't have a brush.
+
+Lesson 7 What Color Is It?
+[낱말]
+black, 검은색
+blue, 파란색
+color, 색깔
+flower, 꽃
+green, 초록색
+hand, 손
+now, 지금
+pink, 분홍색
+red, 빨간색
+sorry, 미안한
+use, 사용하다
+wash, 씻다
+white, 흰색
+[문장]
+What color is it?
+It's pink.
+I'm sorry.
+That's okay.
+
+Lesson 8 I Like Apples
+[낱말]
+and, 그리고
+banana, 바나나
+carrot, 당근
+chicken, 닭고기
+dad, 아빠
+good, 좋은
+juice, 주스
+like, 좋아하다
+potato, 감자
+tomato, 토마토
+[문장]
+Do you like apples?
+Yes, I do.
+No, I don't.
+I like carrots.
+I don't like carrots.
+
+Lesson 9 Wow, It's Big!
+[낱말]
+big, 큰
+bird, 새
+cheese, 치즈
+elephant, 코끼리
+say, 말하다
+small, 작은
+tall, 키가 큰
+too, 너무
+tree, 나무
+very, 매우
+[문장]
+It's big.
+Is it a bird?
+Yes, it is.
+No, it isn't.
+
+Lesson 10 Can You Jump?
+[낱말]
+can, ~할 수 있다
+dance, 춤추다
+go, 가다
+helmet, 헬멧
+high, 높이
+ready, 준비된
+run, 달리다
+sing, 노래하다
+skate, 스케이트를 타다
+swim, 수영하다
+[문장]
+Can you skate?
+Yes, I can.
+No, I can't.
+I can dance.
+I can't dance.
+
+Lesson 11 He's My Dad
+[낱말]
+brother, 남자 형제
+for, ~을 위해
+grandfather, 할아버지
+grandmother, 할머니
+he, 그(남자)
+mom, 엄마
+pretty, 예쁜
+she, 그녀
+sister, 여자 형제
+who, 누구
+[문장]
+Who's he?
+Who's she?
+He's my dad.
+She's my sister.
+He's tall.
+
+Lesson 12 How's the Weather?
+[낱말]
+cap, (챙 달린) 모자
+cloudy, 흐린
+coat, 외투
+jacket, 재킷
+on, ~ 위에
+put, 놓다
+raining, 비가 오는
+sunny, 맑은
+snowing, 눈이 오는
+there, 거기
+wake, 깨다
+weather, 날씨
+[문장]
+How's the weather?
+It's snowing.
+Put on your coat.

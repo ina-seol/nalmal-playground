@@ -86,6 +86,22 @@ h1,h2,h3{font-weight:700;text-wrap:balance;margin:0;line-height:1.15;letter-spac
 @media (max-width:700px){.units{grid-template-columns:repeat(2,minmax(0,1fr))}.unit{font-size:13px;padding:3px 7px;gap:5px}.unit .num{font-size:15px}}
 .utag{display:inline-block;vertical-align:middle;margin-left:10px;font-family:var(--font-pixel);font-size:15px;font-weight:400;padding:2px 9px;border-radius:8px;background:var(--lcd);color:var(--lcd-ink);border:2px solid var(--royal-dk)}
 @keyframes boot{0%{filter:brightness(1.35) contrast(.6)}100%{filter:none}}
+/* grade picker */
+.pick-lcd{margin-bottom:24px}
+.pick-hint{margin:0;font-weight:500;font-size:17px}
+.sets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.set-card{display:flex;align-items:center;gap:20px;padding:16px 20px 16px 16px;text-align:left;background:var(--shell);border:3px solid var(--royal-dk);border-radius:var(--r-panel);
+  box-shadow:0 7px 0 var(--royal-dk),var(--drop);transition:transform .16s cubic-bezier(.2,.9,.3,1.3),box-shadow .16s}
+.set-card:hover:not(:disabled){transform:translateY(-4px) rotate(-.4deg);box-shadow:0 11px 0 var(--royal-dk),var(--drop)}
+.set-card:active:not(:disabled){transform:translateY(5px);box-shadow:0 2px 0 var(--royal-dk)}
+.set-card:disabled{opacity:.6;filter:grayscale(.6)}
+.set-num{display:grid;place-items:center;align-content:center;gap:2px;width:118px;aspect-ratio:1;flex:none;background:var(--c);color:var(--ink);border:3px solid var(--royal-dk);border-radius:18px;box-shadow:inset 0 -6px 0 rgba(28,47,95,.18)}
+.set-num b{font-family:var(--font-pixel);font-weight:400;font-size:64px;line-height:.9}
+.set-num small{font-weight:700;font-size:16px}
+.set-body{display:grid;gap:6px;flex:1;min-width:0}
+.set-body b{font-size:clamp(22px,2.4vw,28px);font-weight:700;color:var(--royal-dk)}
+.set-body small{font-weight:300;font-size:16px;color:var(--ink-soft)}
+@media (max-width:700px){.sets{grid-template-columns:minmax(0,1fr);gap:16px}.set-num{width:84px}.set-num b{font-size:44px}}
 .notice{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin:-8px 0 22px;padding:10px 16px;
   background:var(--canary-lt);border:3px dashed var(--royal);border-radius:var(--r-panel)}
 .notice p{margin:0;flex:1 1 260px;min-width:0;font-weight:300}
@@ -146,7 +162,7 @@ h1,h2,h3{font-weight:700;text-wrap:balance;margin:0;line-height:1.15;letter-spac
 @media (max-width:900px){.ss-layout{flex-direction:column;align-items:center}.ss-tools{flex-direction:row;margin-top:16px}}
 .ss-board{display:grid;grid-template-columns:16px repeat(var(--cols),minmax(0,1fr)) 16px;grid-template-rows:16px repeat(var(--rows),auto) 16px;
   background:var(--shell);border:3px solid var(--royal-dk);border-radius:var(--r-panel);box-shadow:0 6px 0 var(--royal-dk),var(--drop)}
-.ss-cell.in{aspect-ratio:var(--asp,1);margin:4px}
+.ss-cell.in{aspect-ratio:var(--asp,1);margin:4px;min-height:0;min-width:0;overflow:hidden}
 .ss-rock{border-radius:10px;border:2.5px solid var(--royal-dk);background-color:var(--royal);background-image:radial-gradient(rgba(255,255,255,.22) 2px,transparent 2.6px),radial-gradient(rgba(0,0,0,.18) 2px,transparent 2.6px);background-size:12px 12px,12px 12px;background-position:0 0,6px 6px;box-shadow:inset 0 -4px 0 rgba(0,0,0,.25)}
 .ss-tile{border:2.5px solid var(--royal-dk);border-radius:12px;background:var(--shell);box-shadow:0 4px 0 var(--royal-dk);
   font-weight:700;font-size:clamp(13px,2.1vw,19px);line-height:1.1;padding:3px;color:var(--ink);transition:transform .12s,opacity .25s,background-color .12s}
@@ -170,6 +186,7 @@ h1,h2,h3{font-weight:700;text-wrap:balance;margin:0;line-height:1.15;letter-spac
 .mg-cell.sel{transform:translateY(-4px);box-shadow:0 8px 0 var(--royal-dk);outline:4px solid var(--melon);outline-offset:2px}
 .mg-word{display:flex;flex-direction:column;justify-content:center;text-align:center;padding:3px;gap:0;min-width:0}
 .mg-word small{font-size:11px;font-weight:300;color:var(--ink-soft)}
+.mg-cell.tight .mg-word small{display:none}
 .mg-cell{container-type:inline-size}
 .mg-word b{font-weight:700;font-size:clamp(11px,26cqi,18px);line-height:1.1}
 .mg-word b.long{font-size:clamp(10px,19cqi,15px)}
@@ -323,7 +340,7 @@ label.btn{cursor:pointer}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 <div id="app"></div>
-<script type="application/json" id="deck-data">{"title":"4학년 영어 낱말 복습","sample":false,"units":[{"name":"Lesson 1 My Name Is Amy","words":[{"w":"afternoon","m":"오후"},{"w":"bag","m":"가방"},{"w":"evening","m":"저녁"},{"w":"everyone","m":"모두"},{"w":"friend","m":"친구"},{"w":"meet","m":"만나다"},{"w":"morning","m":"아침"},{"w":"name","m":"이름"},{"w":"new","m":"새로운"},{"w":"night","m":"밤"},{"w":"to","m":"~에게"},{"w":"we","m":"우리"}],"sentences":["What's your name?","My name is Amy.","Nice to meet you.","Nice to meet you, too.","Good morning."]},{"name":"Lesson 2 I'm Happy","words":[{"w":"again","m":"다시"},{"w":"angry","m":"화난"},{"w":"happy","m":"행복한"},{"w":"sad","m":"슬픈"},{"w":"sleepy","m":"졸린"},{"w":"some","m":"약간의"},{"w":"thirsty","m":"목마른"},{"w":"tired","m":"피곤한"},{"w":"try","m":"해 보다"},{"w":"water","m":"물"}],"sentences":["Are you happy?","Yes, I am.","No, I'm not.","I'm thirsty."]},{"name":"Lesson 3 Don't Sit Here","words":[{"w":"careful","m":"조심하는"},{"w":"drink","m":"마시다"},{"w":"eat","m":"먹다"},{"w":"enter","m":"들어가다"},{"w":"house","m":"집"},{"w":"kick","m":"차다"},{"w":"line","m":"줄"},{"w":"love","m":"사랑하다"},{"w":"over","m":"넘어서"},{"w":"push","m":"밀다"},{"w":"talk","m":"말하다"},{"w":"welcome","m":"환영하다"}],"sentences":["Don't sit here.","Be careful."]},{"name":"Lesson 4 Let's Play Basketball","words":[{"w":"bad","m":"나쁜"},{"w":"badminton","m":"배드민턴"},{"w":"baseball","m":"야구"},{"w":"basketball","m":"농구"},{"w":"busy","m":"바쁜"},{"w":"let","m":"~하게 하다"},{"w":"pass","m":"건네주다"},{"w":"play","m":"놀다"},{"w":"sick","m":"아픈"},{"w":"soccer","m":"축구"},{"w":"sound","m":"~하게 들리다"},{"w":"tennis","m":"테니스"}],"sentences":["Let's play baseball.","Sounds good.","Sorry, I can't.","That's too bad."]},{"name":"Lesson 5 I Want Chicken","words":[{"w":"bread","m":"빵"},{"w":"cream","m":"크림"},{"w":"help","m":"돕다"},{"w":"hot","m":"뜨거운"},{"w":"ice","m":"얼음"},{"w":"milk","m":"우유"},{"w":"much","m":"많은"},{"w":"noodles","m":"국수"},{"w":"salad","m":"샐러드"},{"w":"soup","m":"수프"},{"w":"want","m":"원하다"}],"sentences":["What do you want?","I want chicken.","Help yourself."]},{"name":"Lesson 6 Where's My Cap?","words":[{"w":"bed","m":"침대"},{"w":"box","m":"상자"},{"w":"bus","m":"버스"},{"w":"chair","m":"의자"},{"w":"desk","m":"책상"},{"w":"fan","m":"선풍기"},{"w":"know","m":"알다"},{"w":"table","m":"탁자"},{"w":"under","m":"~ 아래에"},{"w":"where","m":"어디에"}],"sentences":["Where's my cap?","It's on the table.","I don't know."]},{"name":"Lesson 7 It's Wednesday","words":[{"w":"art","m":"미술"},{"w":"birthday","m":"생일"},{"w":"class","m":"수업"},{"w":"computer","m":"컴퓨터"},{"w":"cook","m":"요리하다"},{"w":"day","m":"요일"},{"w":"hike","m":"하이킹하다"},{"w":"lunch","m":"점심"},{"w":"party","m":"파티"},{"w":"today","m":"오늘"},{"w":"wait","m":"기다리다"}],"sentences":["What day is it today?","It's Wednesday.","I have a computer class."]},{"name":"Lesson 8 How Much Is It?","words":[{"w":"car","m":"자동차"},{"w":"case","m":"상자"},{"w":"comic","m":"만화"},{"w":"hundred","m":"백(100)"},{"w":"idea","m":"생각"},{"w":"skirt","m":"치마"},{"w":"take","m":"사다"},{"w":"thousand","m":"천(1000)"},{"w":"toy","m":"장난감"},{"w":"will","m":"~할 것이다"}],"sentences":["How much is it?","It's seven hundred won.","I'll take it."]},{"name":"Lesson 9 Is This Your Bag?","words":[{"w":"bottle","m":"병"},{"w":"brown","m":"갈색"},{"w":"clean","m":"깨끗한"},{"w":"find","m":"찾다"},{"w":"gray","m":"회색"},{"w":"notebook","m":"공책"},{"w":"park","m":"공원"},{"w":"shoe","m":"신발"},{"w":"so","m":"정말"},{"w":"umbrella","m":"우산"},{"w":"watch","m":"손목시계"}],"sentences":["Is this your bag?","Yes, it is.","No, it isn't.","My cap is gray."]},{"name":"Lesson 10 What Time Is It?","words":[{"w":"breakfast","m":"아침 식사"},{"w":"dinner","m":"저녁 식사"},{"w":"eleven","m":"11(열하나)"},{"w":"fun","m":"재미있는"},{"w":"movie","m":"영화"},{"w":"music","m":"음악"},{"w":"school","m":"학교"},{"w":"thirty","m":"30(서른)"},{"w":"time","m":"시간"},{"w":"twelve","m":"12(열둘)"},{"w":"twenty","m":"20(스물)"}],"sentences":["What time is it?","It's ten thirty.","It's time for breakfast."]},{"name":"Lesson 11 I'm Drawing a Picture","words":[{"w":"cookie","m":"쿠키"},{"w":"draw","m":"그리다"},{"w":"homework","m":"숙제"},{"w":"make","m":"만들다"},{"w":"picture","m":"그림"},{"w":"read","m":"읽다"},{"w":"smell","m":"냄새가 나다"},{"w":"sure","m":"물론"}],"sentences":["What are you doing?","I'm doing homework.","Can I help you?"]},{"name":"Lesson 12 What Do You Do?","words":[{"w":"cool","m":"멋진"},{"w":"doctor","m":"의사"},{"w":"model","m":"모델"},{"w":"nurse","m":"간호사"},{"w":"painter","m":"화가"},{"w":"pilot","m":"비행기 조종사"},{"w":"teacher","m":"선생님"},{"w":"uncle","m":"삼촌"},{"w":"writer","m":"작가"}],"sentences":["What do you do?","I'm a doctor.","What does he do?","He's a model.","What does she do?","She's a model."]}]}</script>
+<script type="application/json" id="deck-data">{"sets":[{"id":"g3","name":"천재(함) 3학년","title":"3학년 영어 낱말 복습","sample":false,"units":[{"name":"Lesson 1 Hello, ABC!","words":[{"w":"apple","m":"사과"},{"w":"ball","m":"공"},{"w":"cat","m":"고양이"},{"w":"dog","m":"개"},{"w":"egg","m":"달걀"},{"w":"five","m":"5(다섯)"},{"w":"game","m":"게임"},{"w":"hat","m":"모자"},{"w":"hello","m":"안녕"},{"w":"in","m":"~ 안에"},{"w":"jump","m":"뛰다"},{"w":"king","m":"왕"},{"w":"lion","m":"사자"},{"w":"monkey","m":"원숭이"},{"w":"nine","m":"9(아홉)"},{"w":"orange","m":"오렌지"},{"w":"pizza","m":"피자"},{"w":"queen","m":"여왕"},{"w":"ring","m":"반지"},{"w":"sit","m":"앉다"},{"w":"six","m":"6(여섯)"},{"w":"ten","m":"10(열)"},{"w":"up","m":"위로"},{"w":"violin","m":"바이올린"},{"w":"wind","m":"바람"},{"w":"yellow","m":"노란색"},{"w":"zebra","m":"얼룩말"}],"sentences":["Hello, ABC!"]},{"name":"Lesson 2 Hi, I'm Momo","words":[{"w":"be","m":"~이다"},{"w":"bye","m":"잘 가"},{"w":"fine","m":"괜찮은"},{"w":"how","m":"어떻게"},{"w":"I","m":"나"},{"w":"you","m":"너"}],"sentences":["I'm Momo.","How are you?","I'm fine."]},{"name":"Lesson 3 What's This?","words":[{"w":"a","m":"하나의"},{"w":"bike","m":"자전거"},{"w":"cup","m":"컵"},{"w":"doll","m":"인형"},{"w":"it","m":"그것"},{"w":"look","m":"보다"},{"w":"nice","m":"멋진"},{"w":"robot","m":"로봇"},{"w":"that","m":"저것"},{"w":"this","m":"이것"},{"w":"what","m":"무엇"},{"w":"yes","m":"네"}],"sentences":["What's this?","What's that?","It's a bike."]},{"name":"Lesson 4 Stand Up, Please","words":[{"w":"close","m":"닫다"},{"w":"come","m":"오다"},{"w":"door","m":"문"},{"w":"down","m":"아래로"},{"w":"here","m":"여기"},{"w":"okay","m":"알았어"},{"w":"open","m":"열다"},{"w":"please","m":"부탁합니다"},{"w":"stand","m":"서다"},{"w":"thank","m":"고마워하다"},{"w":"the","m":"그"},{"w":"touch","m":"만지다"}],"sentences":["Stand up, please.","Sit down, please.","Thank you."]},{"name":"Lesson 5 How Many Cows?","words":[{"w":"cow","m":"소"},{"w":"eight","m":"8(여덟)"},{"w":"four","m":"4(넷)"},{"w":"many","m":"많은"},{"w":"no","m":"아니요"},{"w":"one","m":"1(하나)"},{"w":"pig","m":"돼지"},{"w":"right","m":"맞는"},{"w":"seven","m":"7(일곱)"},{"w":"three","m":"3(셋)"},{"w":"two","m":"2(둘)"}],"sentences":["How many cows?","Three cows.","That's right."]},{"name":"Lesson 6 Do You Have a Pencil?","words":[{"w":"at","m":"~에"},{"w":"book","m":"책"},{"w":"brush","m":"붓"},{"w":"do","m":"하다"},{"w":"eraser","m":"지우개"},{"w":"great","m":"훌륭한"},{"w":"have","m":"가지고 있다"},{"w":"not","m":"아니다"},{"w":"pen","m":"펜"},{"w":"pencil","m":"연필"},{"w":"tape","m":"테이프"}],"sentences":["Do you have a pencil?","Yes, I do.","No, I don't.","I have a brush.","I don't have a brush."]},{"name":"Lesson 7 What Color Is It?","words":[{"w":"black","m":"검은색"},{"w":"blue","m":"파란색"},{"w":"color","m":"색깔"},{"w":"flower","m":"꽃"},{"w":"green","m":"초록색"},{"w":"hand","m":"손"},{"w":"now","m":"지금"},{"w":"pink","m":"분홍색"},{"w":"red","m":"빨간색"},{"w":"sorry","m":"미안한"},{"w":"use","m":"사용하다"},{"w":"wash","m":"씻다"},{"w":"white","m":"흰색"}],"sentences":["What color is it?","It's pink.","I'm sorry.","That's okay."]},{"name":"Lesson 8 I Like Apples","words":[{"w":"and","m":"그리고"},{"w":"banana","m":"바나나"},{"w":"carrot","m":"당근"},{"w":"chicken","m":"닭고기"},{"w":"dad","m":"아빠"},{"w":"good","m":"좋은"},{"w":"juice","m":"주스"},{"w":"like","m":"좋아하다"},{"w":"potato","m":"감자"},{"w":"tomato","m":"토마토"}],"sentences":["Do you like apples?","Yes, I do.","No, I don't.","I like carrots.","I don't like carrots."]},{"name":"Lesson 9 Wow, It's Big!","words":[{"w":"big","m":"큰"},{"w":"bird","m":"새"},{"w":"cheese","m":"치즈"},{"w":"elephant","m":"코끼리"},{"w":"say","m":"말하다"},{"w":"small","m":"작은"},{"w":"tall","m":"키가 큰"},{"w":"too","m":"너무"},{"w":"tree","m":"나무"},{"w":"very","m":"매우"}],"sentences":["It's big.","Is it a bird?","Yes, it is.","No, it isn't."]},{"name":"Lesson 10 Can You Jump?","words":[{"w":"can","m":"~할 수 있다"},{"w":"dance","m":"춤추다"},{"w":"go","m":"가다"},{"w":"helmet","m":"헬멧"},{"w":"high","m":"높이"},{"w":"ready","m":"준비된"},{"w":"run","m":"달리다"},{"w":"sing","m":"노래하다"},{"w":"skate","m":"스케이트를 타다"},{"w":"swim","m":"수영하다"}],"sentences":["Can you skate?","Yes, I can.","No, I can't.","I can dance.","I can't dance."]},{"name":"Lesson 11 He's My Dad","words":[{"w":"brother","m":"남자 형제"},{"w":"for","m":"~을 위해"},{"w":"grandfather","m":"할아버지"},{"w":"grandmother","m":"할머니"},{"w":"he","m":"그(남자)"},{"w":"mom","m":"엄마"},{"w":"pretty","m":"예쁜"},{"w":"she","m":"그녀"},{"w":"sister","m":"여자 형제"},{"w":"who","m":"누구"}],"sentences":["Who's he?","Who's she?","He's my dad.","She's my sister.","He's tall."]},{"name":"Lesson 12 How's the Weather?","words":[{"w":"cap","m":"(챙 달린) 모자"},{"w":"cloudy","m":"흐린"},{"w":"coat","m":"외투"},{"w":"jacket","m":"재킷"},{"w":"on","m":"~ 위에"},{"w":"put","m":"놓다"},{"w":"raining","m":"비가 오는"},{"w":"sunny","m":"맑은"},{"w":"snowing","m":"눈이 오는"},{"w":"there","m":"거기"},{"w":"wake","m":"깨다"},{"w":"weather","m":"날씨"}],"sentences":["How's the weather?","It's snowing.","Put on your coat."]}]},{"id":"g4","name":"천재(함) 4학년","title":"4학년 영어 낱말 복습","sample":false,"units":[{"name":"Lesson 1 My Name Is Amy","words":[{"w":"afternoon","m":"오후"},{"w":"bag","m":"가방"},{"w":"evening","m":"저녁"},{"w":"everyone","m":"모두"},{"w":"friend","m":"친구"},{"w":"meet","m":"만나다"},{"w":"morning","m":"아침"},{"w":"name","m":"이름"},{"w":"new","m":"새로운"},{"w":"night","m":"밤"},{"w":"to","m":"~에게"},{"w":"we","m":"우리"}],"sentences":["What's your name?","My name is Amy.","Nice to meet you.","Nice to meet you, too.","Good morning."]},{"name":"Lesson 2 I'm Happy","words":[{"w":"again","m":"다시"},{"w":"angry","m":"화난"},{"w":"happy","m":"행복한"},{"w":"sad","m":"슬픈"},{"w":"sleepy","m":"졸린"},{"w":"some","m":"약간의"},{"w":"thirsty","m":"목마른"},{"w":"tired","m":"피곤한"},{"w":"try","m":"해 보다"},{"w":"water","m":"물"}],"sentences":["Are you happy?","Yes, I am.","No, I'm not.","I'm thirsty."]},{"name":"Lesson 3 Don't Sit Here","words":[{"w":"careful","m":"조심하는"},{"w":"drink","m":"마시다"},{"w":"eat","m":"먹다"},{"w":"enter","m":"들어가다"},{"w":"house","m":"집"},{"w":"kick","m":"차다"},{"w":"line","m":"줄"},{"w":"love","m":"사랑하다"},{"w":"over","m":"넘어서"},{"w":"push","m":"밀다"},{"w":"talk","m":"말하다"},{"w":"welcome","m":"환영하다"}],"sentences":["Don't sit here.","Be careful."]},{"name":"Lesson 4 Let's Play Basketball","words":[{"w":"bad","m":"나쁜"},{"w":"badminton","m":"배드민턴"},{"w":"baseball","m":"야구"},{"w":"basketball","m":"농구"},{"w":"busy","m":"바쁜"},{"w":"let","m":"~하게 하다"},{"w":"pass","m":"건네주다"},{"w":"play","m":"놀다"},{"w":"sick","m":"아픈"},{"w":"soccer","m":"축구"},{"w":"sound","m":"~하게 들리다"},{"w":"tennis","m":"테니스"}],"sentences":["Let's play baseball.","Sounds good.","Sorry, I can't.","That's too bad."]},{"name":"Lesson 5 I Want Chicken","words":[{"w":"bread","m":"빵"},{"w":"cream","m":"크림"},{"w":"help","m":"돕다"},{"w":"hot","m":"뜨거운"},{"w":"ice","m":"얼음"},{"w":"milk","m":"우유"},{"w":"much","m":"많은"},{"w":"noodles","m":"국수"},{"w":"salad","m":"샐러드"},{"w":"soup","m":"수프"},{"w":"want","m":"원하다"}],"sentences":["What do you want?","I want chicken.","Help yourself."]},{"name":"Lesson 6 Where's My Cap?","words":[{"w":"bed","m":"침대"},{"w":"box","m":"상자"},{"w":"bus","m":"버스"},{"w":"chair","m":"의자"},{"w":"desk","m":"책상"},{"w":"fan","m":"선풍기"},{"w":"know","m":"알다"},{"w":"table","m":"탁자"},{"w":"under","m":"~ 아래에"},{"w":"where","m":"어디에"}],"sentences":["Where's my cap?","It's on the table.","I don't know."]},{"name":"Lesson 7 It's Wednesday","words":[{"w":"art","m":"미술"},{"w":"birthday","m":"생일"},{"w":"class","m":"수업"},{"w":"computer","m":"컴퓨터"},{"w":"cook","m":"요리하다"},{"w":"day","m":"요일"},{"w":"hike","m":"하이킹하다"},{"w":"lunch","m":"점심"},{"w":"party","m":"파티"},{"w":"today","m":"오늘"},{"w":"wait","m":"기다리다"}],"sentences":["What day is it today?","It's Wednesday.","I have a computer class."]},{"name":"Lesson 8 How Much Is It?","words":[{"w":"car","m":"자동차"},{"w":"case","m":"상자"},{"w":"comic","m":"만화"},{"w":"hundred","m":"백(100)"},{"w":"idea","m":"생각"},{"w":"skirt","m":"치마"},{"w":"take","m":"사다"},{"w":"thousand","m":"천(1000)"},{"w":"toy","m":"장난감"},{"w":"will","m":"~할 것이다"}],"sentences":["How much is it?","It's seven hundred won.","I'll take it."]},{"name":"Lesson 9 Is This Your Bag?","words":[{"w":"bottle","m":"병"},{"w":"brown","m":"갈색"},{"w":"clean","m":"깨끗한"},{"w":"find","m":"찾다"},{"w":"gray","m":"회색"},{"w":"notebook","m":"공책"},{"w":"park","m":"공원"},{"w":"shoe","m":"신발"},{"w":"so","m":"정말"},{"w":"umbrella","m":"우산"},{"w":"watch","m":"손목시계"}],"sentences":["Is this your bag?","Yes, it is.","No, it isn't.","My cap is gray."]},{"name":"Lesson 10 What Time Is It?","words":[{"w":"breakfast","m":"아침 식사"},{"w":"dinner","m":"저녁 식사"},{"w":"eleven","m":"11(열하나)"},{"w":"fun","m":"재미있는"},{"w":"movie","m":"영화"},{"w":"music","m":"음악"},{"w":"school","m":"학교"},{"w":"thirty","m":"30(서른)"},{"w":"time","m":"시간"},{"w":"twelve","m":"12(열둘)"},{"w":"twenty","m":"20(스물)"}],"sentences":["What time is it?","It's ten thirty.","It's time for breakfast."]},{"name":"Lesson 11 I'm Drawing a Picture","words":[{"w":"cookie","m":"쿠키"},{"w":"draw","m":"그리다"},{"w":"homework","m":"숙제"},{"w":"make","m":"만들다"},{"w":"picture","m":"그림"},{"w":"read","m":"읽다"},{"w":"smell","m":"냄새가 나다"},{"w":"sure","m":"물론"}],"sentences":["What are you doing?","I'm doing homework.","Can I help you?"]},{"name":"Lesson 12 What Do You Do?","words":[{"w":"cool","m":"멋진"},{"w":"doctor","m":"의사"},{"w":"model","m":"모델"},{"w":"nurse","m":"간호사"},{"w":"painter","m":"화가"},{"w":"pilot","m":"비행기 조종사"},{"w":"teacher","m":"선생님"},{"w":"uncle","m":"삼촌"},{"w":"writer","m":"작가"}],"sentences":["What do you do?","I'm a doctor.","What does he do?","He's a model.","What does she do?","She's a model."]}]},{"id":"g5","name":"천재(함) 5학년","title":"5학년 영어 낱말 복습","sample":false,"units":[{"name":"Lesson 1 Where Are You From?","words":[{"w":"about","m":"~에 대해"},{"w":"beautiful","m":"아름다운"},{"w":"country","m":"나라"},{"w":"cousin","m":"사촌"},{"w":"from","m":"~에서"},{"w":"guy","m":"남자"},{"w":"ride","m":"타다"},{"w":"team","m":"팀"},{"w":"together","m":"함께"},{"w":"well","m":"잘"}],"sentences":["Where are you from?","I'm from Canada.","This is my friend, Uju.","Nice to meet you."]},{"name":"Lesson 2 What Are These?","words":[{"w":"album","m":"앨범"},{"w":"button","m":"단추"},{"w":"collect","m":"모으다"},{"w":"cut","m":"자르다"},{"w":"fork","m":"포크"},{"w":"kitchen","m":"부엌"},{"w":"late","m":"늦은"},{"w":"map","m":"지도"},{"w":"scissors","m":"가위"},{"w":"spoon","m":"숟가락"},{"w":"they","m":"그것들"}],"sentences":["What are these?","What are those?","They're buttons.","How nice!"]},{"name":"Lesson 3 Can I Take Pictures?","words":[{"w":"along","m":"~을 따라"},{"w":"animal","m":"동물"},{"w":"borrow","m":"빌리다"},{"w":"bring","m":"가져오다"},{"w":"energy","m":"에너지"},{"w":"grow","m":"자라다"},{"w":"just","m":"그냥"},{"w":"lake","m":"호수"},{"w":"piano","m":"피아노"},{"w":"problem","m":"문제"},{"w":"see","m":"보다"},{"w":"star","m":"별"},{"w":"vegetable","m":"채소"},{"w":"walk","m":"걷다"}],"sentences":["Can I take pictures?","Yes, you can.","No, you can't.","Thank you.","No problem."]},{"name":"Lesson 4 Whose Pen Is This?","words":[{"w":"airplane","m":"비행기"},{"w":"bear","m":"곰"},{"w":"boat","m":"배"},{"w":"key","m":"열쇠"},{"w":"old","m":"낡은"},{"w":"out","m":"밖으로"},{"w":"phone","m":"전화기"},{"w":"return","m":"돌려주다"},{"w":"space","m":"우주"},{"w":"textbook","m":"교과서"},{"w":"tiger","m":"호랑이"},{"w":"top","m":"팽이"},{"w":"with","m":"~와 함께"}],"sentences":["Whose pen is this?","Whose pen is that?","It's Amy's.","It's mine.","No, it's Uju's textbook."]},{"name":"Lesson 5 Let's Go Shopping","words":[{"w":"around","m":"~쯤"},{"w":"board","m":"판"},{"w":"but","m":"그러나"},{"w":"camp","m":"캠프"},{"w":"free","m":"한가한"},{"w":"library","m":"도서관"},{"w":"market","m":"시장"},{"w":"need","m":"필요하다"},{"w":"next","m":"다음의"},{"w":"parent","m":"부모"},{"w":"present","m":"선물"},{"w":"rabbit","m":"토끼"},{"w":"shop","m":"쇼핑하다"},{"w":"start","m":"시작하다"},{"w":"ticket","m":"표"},{"w":"tomorrow","m":"내일"},{"w":"week","m":"주"}],"sentences":["Let's go shopping.","Sounds good.","Sorry, but I'm busy.","How about at two twenty?"]},{"name":"Lesson 6 What Will You Do This Summer?","words":[{"w":"banh mi","m":"반미"},{"w":"beach","m":"해변"},{"w":"delicious","m":"맛있는"},{"w":"join","m":"참가하다"},{"w":"learn","m":"배우다"},{"w":"live","m":"살다"},{"w":"project","m":"과제"},{"w":"science","m":"과학"},{"w":"sport","m":"운동"},{"w":"summer","m":"여름"},{"w":"visit","m":"방문하다"}],"sentences":["What will you do this summer?","I'll join a science camp.","Have a good time."]},{"name":"Lesson 7 I Went to a Watermelon Festival","words":[{"w":"chocolate","m":"초콜릿"},{"w":"family","m":"가족"},{"w":"festival","m":"축제"},{"w":"grape","m":"포도"},{"w":"last","m":"지난"},{"w":"pick","m":"따다"},{"w":"sea","m":"바다"},{"w":"watermelon","m":"수박"},{"w":"weekend","m":"주말"},{"w":"year","m":"해(년)"},{"w":"yesterday","m":"어제"}],"sentences":["What did you do this summer?","I swam in the sea.","How was your weekend?","It was good.","It was great."]},{"name":"Lesson 8 What Would You Like?","words":[{"w":"all","m":"모든"},{"w":"beef","m":"소고기"},{"w":"cake","m":"케이크"},{"w":"chip","m":"감자칩"},{"w":"choose","m":"고르다"},{"w":"feel","m":"느끼다"},{"w":"fish","m":"생선"},{"w":"fruit","m":"과일"},{"w":"meat","m":"고기"},{"w":"or","m":"또는"},{"w":"sandwich","m":"샌드위치"},{"w":"sell","m":"팔다"},{"w":"spaghetti","m":"스파게티"},{"w":"steak","m":"스테이크"},{"w":"tasty","m":"맛이 좋은"},{"w":"would","m":"~하고 싶다"}],"sentences":["What would you like?","I'd like a fruit salad.","Do you want some more?","Yes, please.","No, thanks."]},{"name":"Lesson 9 They Are Twenty Thousand Won","words":[{"w":"ahead","m":"앞으로"},{"w":"cheap","m":"값이 싼"},{"w":"glass","m":"유리잔"},{"w":"glove","m":"장갑"},{"w":"only","m":"오직"},{"w":"pants","m":"바지"},{"w":"ribbon","m":"리본"},{"w":"sale","m":"할인 판매"},{"w":"sock","m":"양말"}],"sentences":["How much are the pants?","They're twenty thousand won.","What color do you want?","I want red, please."]},{"name":"Lesson 10 What Time Do You Get Up?","words":[{"w":"bake","m":"굽다"},{"w":"early","m":"일찍"},{"w":"fresh","m":"신선한"},{"w":"get","m":"얻다"},{"w":"home","m":"집"},{"w":"hour","m":"시간"},{"w":"job","m":"직업"},{"w":"practice","m":"연습하다"},{"w":"really","m":"정말로"},{"w":"study","m":"공부하다"},{"w":"tonight","m":"오늘 밤"}],"sentences":["What time do you get up?","I get up at 8."]},{"name":"Lesson 11 My Favorite Subject Is Math","words":[{"w":"difficult","m":"어려운"},{"w":"drone","m":"드론"},{"w":"favorite","m":"가장 좋아하는"},{"w":"food","m":"음식"},{"w":"math","m":"수학"},{"w":"speak","m":"말하다"},{"w":"subject","m":"과목"},{"w":"thing","m":"것"}],"sentences":["What's your favorite subject?","My favorite subject is math.","I'm good at drawing pictures."]},{"name":"Lesson 12 What Do You Want to Be?","words":[{"w":"act","m":"연기하다"},{"w":"character","m":"등장인물"},{"w":"design","m":"디자인하다"},{"w":"dream","m":"꿈"},{"w":"future","m":"미래"},{"w":"listen","m":"듣다"},{"w":"people","m":"사람들"},{"w":"place","m":"장소"},{"w":"story","m":"이야기"},{"w":"train","m":"기차"},{"w":"travel","m":"여행하다"},{"w":"video","m":"영상"}],"sentences":["What do you want to be?","I want to be a scientist.","I like doing science projects."]}]},{"id":"g6","name":"천재(함) 6학년","title":"6학년 영어 낱말 복습","sample":false,"units":[{"name":"Lesson 1 What Grade Are You In?","words":[{"w":"club","m":"동아리"},{"w":"drum","m":"드럼"},{"w":"first","m":"첫 번째"},{"w":"grade","m":"학년"},{"w":"guitar","m":"기타"},{"w":"hard","m":"열심히"},{"w":"luck","m":"행운"},{"w":"second","m":"두 번째"},{"w":"show","m":"보여 주다"},{"w":"ski","m":"스키를 타다"},{"w":"song","m":"노래"},{"w":"spell","m":"철자를 말하다"},{"w":"third","m":"세 번째"},{"w":"wear","m":"입다"}],"sentences":["What grade are you in?","I'm in the sixth grade.","How do you spell your name?"]},{"name":"Lesson 2 What Season Do You Like?","words":[{"w":"also","m":"또한"},{"w":"bright","m":"밝은"},{"w":"card","m":"카드"},{"w":"clear","m":"맑은"},{"w":"cold","m":"추운"},{"w":"fall","m":"가을"},{"w":"field","m":"들판"},{"w":"little","m":"작은"},{"w":"river","m":"강"},{"w":"season","m":"계절"},{"w":"sky","m":"하늘"},{"w":"spring","m":"봄"},{"w":"trip","m":"여행"},{"w":"warm","m":"따뜻한"},{"w":"winter","m":"겨울"}],"sentences":["What season do you like?","I like spring.","I can see beautiful flowers.","Good job!"]},{"name":"Lesson 3 When Is Your Birthday?","words":[{"w":"campaign","m":"캠페인"},{"w":"earth","m":"지구"},{"w":"off","m":"꺼진"},{"w":"paper","m":"종이"},{"w":"poster","m":"포스터"},{"w":"save","m":"아끼다"},{"w":"shirt","m":"셔츠"},{"w":"turn","m":"돌리다"},{"w":"twenty-one","m":"21(스물하나)"},{"w":"twenty-three","m":"23(스물셋)"},{"w":"twenty-two","m":"22(스물둘)"},{"w":"when","m":"언제"},{"w":"world","m":"세계"}],"sentences":["When is your birthday?","It's on May 7th.","I can't wait!"]},{"name":"Lesson 4 Why Are You Happy?","words":[{"w":"because","m":"~ 때문에"},{"w":"belt","m":"띠"},{"w":"birdhouse","m":"새집"},{"w":"break","m":"깨다"},{"w":"congratulation","m":"축하"},{"w":"test","m":"시험"},{"w":"why","m":"왜"},{"w":"worry","m":"걱정하다"},{"w":"wrong","m":"잘못된"}],"sentences":["Why are you happy?","Because I got a black belt.","Don't worry."]},{"name":"Lesson 5 Where Is ABC Library?","words":[{"w":"bank","m":"은행"},{"w":"block","m":"구역"},{"w":"hospital","m":"병원"},{"w":"hungry","m":"배고픈"},{"w":"left","m":"왼쪽"},{"w":"restaurant","m":"식당"},{"w":"restroom","m":"화장실"},{"w":"stop","m":"멈추다"},{"w":"store","m":"가게"},{"w":"straight","m":"똑바로"},{"w":"town","m":"시내"}],"sentences":["Where is ABC Library?","Go straight one block and turn right at Nuri bank.","It's next to the bank."]},{"name":"Lesson 6 He Has Blue Eyes","words":[{"w":"aunt","m":"이모"},{"w":"daughter","m":"딸"},{"w":"dress","m":"원피스"},{"w":"eye","m":"눈"},{"w":"hair","m":"머리카락"},{"w":"long","m":"긴"},{"w":"of","m":"~의"},{"w":"same","m":"같은"},{"w":"sand","m":"모래"},{"w":"short","m":"짧은"}],"sentences":["What does he look like?","What does she look like?","He has blue eyes.","She has blue eyes.","He is wearing a yellow shirt and blue pants.","She is wearing a yellow shirt and blue pants."]},{"name":"Lesson 7 Can You Come to the Movie Festival?","words":[{"w":"after","m":"~ 후에"},{"w":"biscuit","m":"비스킷"},{"w":"course","m":"과정"},{"w":"laser","m":"레이저"},{"w":"light","m":"빛"},{"w":"number","m":"번호"},{"w":"soft","m":"부드러운"},{"w":"tell","m":"말해 주다"}],"sentences":["Can you come to the movie festival?","Of course.","Sorry, but I can't.","Come to the sports park at 10."]},{"name":"Lesson 8 It's Taller Than the Tree","words":[{"w":"always","m":"항상"},{"w":"baby","m":"아기"},{"w":"catch","m":"잡다"},{"w":"clock","m":"시계"},{"w":"dribble","m":"드리블하다"},{"w":"fast","m":"빠른"},{"w":"giraffe","m":"기린"},{"w":"give","m":"주다"},{"w":"goal","m":"골"},{"w":"heavy","m":"무거운"},{"w":"race","m":"경주"},{"w":"side","m":"쪽"},{"w":"strong","m":"힘센"},{"w":"than","m":"~보다"},{"w":"tower","m":"탑"},{"w":"win","m":"이기다"}],"sentences":["It's taller than the tree.","That's not right."]},{"name":"Lesson 9 What Are You Going to Do?","words":[{"w":"any","m":"어떤"},{"w":"child","m":"아이"},{"w":"forest","m":"숲"},{"w":"hamburger","m":"햄버거"},{"w":"plan","m":"계획"},{"w":"program","m":"프로그램"},{"w":"room","m":"방"},{"w":"stay","m":"머무르다"},{"w":"tent","m":"텐트"},{"w":"village","m":"마을"},{"w":"zoo","m":"동물원"}],"sentences":["What are you going to do this weekend?","I'm going to stay home.","That's a good idea."]},{"name":"Lesson 10 How Often Do You Eat Vegetables?","words":[{"w":"almost","m":"거의"},{"w":"die","m":"죽다"},{"w":"enough","m":"충분한"},{"w":"exercise","m":"운동하다"},{"w":"habit","m":"습관"},{"w":"healthy","m":"건강한"},{"w":"life","m":"생명"},{"w":"lot","m":"많음"},{"w":"member","m":"구성원"},{"w":"nothing","m":"아무것도 아닌 것"},{"w":"often","m":"자주"},{"w":"once","m":"한 번"},{"w":"should","m":"~해야 한다"},{"w":"tooth","m":"이"},{"w":"twice","m":"두 번"}],"sentences":["How often do you eat vegetables?","Once a day.","Good for you."]},{"name":"Lesson 11 Do You Know Anything About Tuho?","words":[{"w":"air","m":"공기"},{"w":"boomerang","m":"부메랑"},{"w":"clever","m":"영리한"},{"w":"hit","m":"치다"},{"w":"into","m":"~ 안으로"},{"w":"sari","m":"사리"}],"sentences":["Do you know anything about Tuho?","Yes, I do.","It's a Korean game.","No, I don't.","I have no idea."]},{"name":"Lesson 12 We Made a Class Album","words":[{"w":"boy","m":"소년"},{"w":"forget","m":"잊다"},{"w":"quiz","m":"퀴즈"},{"w":"street","m":"거리"},{"w":"wall","m":"벽"},{"w":"wish","m":"바라다"}],"sentences":["Did you paint the wall?","Yes, I did.","No, I didn't.","Hana won the quiz."]}]}]}</script>
 <script id="app-js">
 (function(){
 'use strict';
@@ -351,27 +368,45 @@ function unitParts(u,i){
   var m=/^(?:lesson|unit|단원)\s*(\d+)\s*[.:)\-]?\s*(.*)$/i.exec(u.name);
   return{num:m?m[1]:String(i+1),title:(m&&m[2])||u.name||(i+1)+'단원'};
 }
-var book,deck,sel=[];
-try{book=clean(JSON.parse(document.getElementById('deck-data').textContent))}catch(e){book=clean({})}
-if(LOCAL){var ld=store.get('nm-local-deck',null);if(ld)book=clean(ld)}
+/* the library holds one word book per textbook; the student picks one on the first screen */
+var SETS=[{id:'g3',name:'천재(함) 3학년'},{id:'g4',name:'천재(함) 4학년'},{id:'g5',name:'천재(함) 5학년'},{id:'g6',name:'천재(함) 6학년'}];
+function cleanLib(d){
+  d=d||{};
+  /* a page saved before the grade picker holds a single book: that was the 4th-grade book */
+  var raw=Array.isArray(d.sets)?d.sets:[Object.assign({id:'g4'},d)],byId={},ids=SETS.map(function(s){return s.id});
+  raw.forEach(function(s){if(s&&s.id){byId[s.id]=s;if(ids.indexOf(s.id)<0)ids.push(s.id)}});
+  return{sets:ids.map(function(id){
+    var meta=SETS.filter(function(s){return s.id===id})[0]||{},s=byId[id]||{},c=clean(s),g=/(\d)학년/.exec(meta.name||s.name||'');
+    return{id:id,name:String(s.name||meta.name||id).trim().slice(0,40),title:s.title?c.title:(g?g[1]+'학년 영어 낱말 복습':c.title),sample:c.sample,units:c.units};
+  })};
+}
+function setWords(s){var n=0;s.units.forEach(function(u){n+=u.words.length});return n}
+function setReady(s){return setWords(s)>=3}
+var lib,book=null,deck=null,sel=[];
+try{lib=cleanLib(JSON.parse(document.getElementById('deck-data').textContent))}catch(e){lib=cleanLib({})}
+if(LOCAL){var ld=store.get('nm-local-deck',null);if(ld)lib=cleanLib(ld)}
 function allUnits(){return book.units.map(function(_,i){return i})}
 /* deck = what the games play with: every selected unit merged together */
 function applySel(arr){
   var n=book.units.length,seen={};
   arr=(Array.isArray(arr)?arr:[]).map(Number).filter(function(i){if(i>=0&&i<n&&!seen[i]){seen[i]=1;return true}return false}).sort(function(a,b){return a-b});
   if(n===1)arr=[0];
-  sel=arr;store.set('nm-units',arr);
+  sel=arr;store.set('nm-units:'+book.id,arr);
   var us=arr.map(function(i){return book.units[i]});
   deck={title:book.title,sample:book.sample,units:us,
     words:[].concat.apply([],us.map(function(u){return u.words})),sentences:[].concat.apply([],us.map(function(u){return u.sentences}))};
+}
+/* open one textbook; each keeps its own unit selection on this device */
+function useSet(id){
+  var s=lib.sets.filter(function(x){return x.id===id})[0];if(!s)return false;
+  book=s;store.set('nm-set',id);
+  var saved=store.get('nm-units:'+id,null);applySel(saved===null?allUnits():saved);return true;
 }
 function selTag(){
   if(sel.length===book.units.length)return'전체';
   if(sel.length===1)return unitParts(book.units[sel[0]],sel[0]).num+'단원';
   return sel.length+'개 단원';
 }
-var savedSel=store.get('nm-units',null);
-applySel(savedSel===null?allUnits():savedSel);
 
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
@@ -522,7 +557,7 @@ var ORDER=['memory','shisen','merge','sentence','balloon'];
 /* app shell */
 var app=document.getElementById('app');
 app.innerHTML='<header class="top"><button class="brand" data-act="home" aria-label="낱말 놀이터 처음 화면">'+EGG+'<span>낱말 놀이터</span></button>'+
- '<div class="top-actions"><button class="btn small" id="bgmBtn"></button><button class="btn small" id="sfxBtn"></button><button class="btn small" id="teachBtn" data-act="teacher" hidden>'+icon('pencil')+'낱말 바꾸기</button></div></header><main id="view"></main>';
+ '<div class="top-actions"><button class="btn small" id="gradeBtn" data-act="start" hidden></button><button class="btn small" id="bgmBtn"></button><button class="btn small" id="sfxBtn"></button><button class="btn small" id="teachBtn" data-act="teacher" hidden>'+icon('pencil')+'낱말 바꾸기</button></div></header><main id="view"></main>';
 var view=document.getElementById('view');
 var canTeach=LOCAL,artifactNS=null,cleanup=null,keyHandler=null,current='home';
 function syncTop(){
@@ -530,6 +565,8 @@ function syncTop(){
   b.innerHTML=icon(bgmOn?'music':'musicOff')+'<span class="hide-sm">음악 '+(bgmOn?'켬':'끔')+'</span><span class="kbd hide-sm">M</span>';b.setAttribute('aria-pressed',String(bgmOn));b.setAttribute('aria-label','배경음악 '+(bgmOn?'켜짐':'꺼짐'));
   s.innerHTML=icon(sfxOn?'soundOn':'soundOff')+'<span class="hide-sm">효과음 '+(sfxOn?'켬':'끔')+'</span>';s.setAttribute('aria-pressed',String(sfxOn));s.setAttribute('aria-label','효과음 '+(sfxOn?'켜짐':'꺼짐'));
   b.classList.toggle('on',bgmOn);s.classList.toggle('on',sfxOn);
+  var gb=document.getElementById('gradeBtn');gb.hidden=!book||current==='start';
+  if(book){gb.innerHTML=icon('grid')+'<span>'+esc(book.name)+'</span>';gb.title='교과서 바꾸기 (Esc)';gb.setAttribute('aria-label','교과서 바꾸기, 지금 '+book.name)}
   document.getElementById('teachBtn').hidden=!canTeach;
 }
 syncTop();
@@ -537,6 +574,8 @@ document.getElementById('bgmBtn').onclick=toggleBgm;
 document.getElementById('sfxBtn').onclick=function(){sfxOn=!sfxOn;store.set('nm-sfx',sfxOn);syncTop();sfx('tap')};
 
 app.addEventListener('click',function(e){
+  var gs=e.target.closest('[data-set]');
+  if(gs){if(useSet(gs.dataset.set)){sfx('start');go('home')}return}
   var u=e.target.closest('[data-unit]');
   if(u){var ui=+u.dataset.unit,at=sel.indexOf(ui),next=sel.slice();if(at>=0)next.splice(at,1);else next.push(ui);
     applySel(next);sfx(at>=0?'tap':'select');renderHome('unit:'+ui);return}
@@ -545,6 +584,7 @@ app.addEventListener('click',function(e){
   var a=e.target.closest('[data-act]');if(!a)return;
   var act=a.dataset.act;
   if(act==='home')go('home');
+  else if(act==='start')go('start');
   else if(act==='teacher')go('teacher');
   else if(act==='again')go(current);
   else if(act==='play')go(a.dataset.game);
@@ -555,7 +595,8 @@ document.addEventListener('keydown',function(e){
   if(e.key==='m'||e.key==='M'){e.preventDefault();toggleBgm();return}
   var modal=document.querySelector('.modal-back');
   if(modal){if(e.key==='Escape'){e.preventDefault();go('home')}return}
-  if(current==='home'){var i='12345'.indexOf(e.key);if(i>=0&&GAMES[ORDER[i]].need()){e.preventDefault();go(ORDER[i])}return}
+  if(current==='start'){var gc=view.querySelector('[data-key="g'+e.key+'"]:not([disabled])');if(gc){e.preventDefault();gc.click()}return}
+  if(current==='home'){if(e.key==='Escape'){e.preventDefault();go('start');return}var i='12345'.indexOf(e.key);if(i>=0&&GAMES[ORDER[i]].need()){e.preventDefault();go(ORDER[i])}return}
   if(e.key==='Escape'){e.preventDefault();go('home');return}
   if(keyHandler&&keyHandler(e))e.preventDefault();
 });
@@ -564,11 +605,29 @@ function go(screen){
   if(cleanup){try{cleanup()}catch(e){}cleanup=null}
   keyHandler=null;
   var m=document.querySelector('.modal-back');if(m)m.remove();
+  if(screen!=='start'&&!book)screen='start';
   var prev=current;current=screen;
-  if(screen==='home')renderHome(prev);
+  syncTop();
+  if(screen==='start')renderStart(prev);
+  else if(screen==='home')renderHome(prev);
   else if(screen==='teacher')renderTeacher();
   else if(GAMES[screen])renderGame(screen);
   window.scrollTo(0,0);
+}
+
+/* first screen: pick a textbook. Grades not filled in yet stay closed for students; the teacher can open them to add words */
+var GRADE_COLOR={g3:'--melon',g4:'--emerald',g5:'--canary',g6:'--sky1'};
+function renderStart(prev){
+  view.innerHTML='<section class="lcd pick-lcd"><h1>어느 교과서로 복습할까요?</h1><p class="pick-hint">학년을 고르면 단원과 놀이 다섯 가지가 나와요. 키보드 숫자 <span class="kbd">3</span>~<span class="kbd">6</span>으로도 고를 수 있어요.</p></section>'+
+    '<div class="sets">'+lib.sets.map(function(s){
+      var g=(/(\d)학년/.exec(s.name)||[])[1]||'',n=setWords(s),ready=setReady(s),open=ready||canTeach;
+      var units=s.units.filter(function(u){return u.words.length}).length;
+      return'<button class="set-card" data-set="'+esc(s.id)+'"'+(g?' data-key="g'+g+'"':'')+' style="--c:var('+(GRADE_COLOR[s.id]||'--lime')+')"'+(open?'':' disabled')+'>'+
+        '<span class="set-num" aria-hidden="true"><b>'+(g||'?')+'</b><small>학년</small></span>'+
+        '<span class="set-body"><b>'+esc(s.name)+'</b><small>'+(ready?'영어 '+units+'단원 · 낱말 '+n+'개':'준비 중이에요')+'</small></span>'+
+        (g?'<span class="kbd" aria-hidden="true">'+g+'</span>':'')+'</button>';
+    }).join('')+'</div>';
+  if(prev&&book){var c=view.querySelector('[data-set="'+book.id+'"]');if(c)c.focus({preventScroll:true})}
 }
 
 function renderHome(prev){
@@ -578,7 +637,7 @@ function renderHome(prev){
   var units=multi?'<div class="units" role="group" aria-label="복습할 단원 고르기, 여러 개 고를 수 있어요">'+
     book.units.map(function(u,i){var p=unitParts(u,i),on=sel.indexOf(i)>=0;
       return'<button class="unit'+(on?' on':'')+'" data-unit="'+i+'" aria-pressed="'+on+'" title="'+esc(u.name)+'"><span class="chk" aria-hidden="true">'+(on?icon('check'):'')+'</span><span class="num">'+esc(p.num)+'</span><span class="ut">'+esc(p.title)+'</span></button>'}).join('')+'</div>':'';
-  var bulk=multi?'<div class="unit-all"><button class="btn small" data-units="all"'+(allOn?' disabled':'')+'>'+icon('check')+'모두 고르기</button><button class="btn small" data-units="none"'+(sel.length?'':' disabled')+'>'+icon('x')+'모두 풀기</button></div>':'';
+  var bulk=multi?'<div class="unit-all">'+('<button class="btn small" data-units="all"'+(allOn?' disabled':'')+'>'+icon('check')+'모두 고르기</button><button class="btn small" data-units="none"'+(sel.length?'':' disabled')+'>'+icon('x')+'모두 풀기</button>')+'</div>':'';
   var one=sel.length===1?unitParts(book.units[sel[0]],sel[0]):null;
   var label=multi?(allOn?'모든 단원':one?one.num+'단원 '+esc(one.title):sel.length?sel.length+'개 단원':'단원을 골라 주세요'):'';
   view.innerHTML='<section class="lcd" aria-label="오늘 복습할 단원"><div class="lcd-top"><div class="lcd-head"><h1>'+esc(deck.title)+'</h1>'+
@@ -622,10 +681,12 @@ function fit(el,box){
   function over(){return el.scrollWidth>el.clientWidth+.5||box.scrollWidth>box.clientWidth+.5||box.scrollHeight>box.clientHeight+.5}
   while(n++<16&&fs>9&&over()){fs-=1;el.style.fontSize=fs+'px'}
   /* last resort on very narrow screens: let a long word wrap onto two lines */
-  if(el.scrollWidth>el.clientWidth+.5||box.scrollWidth>box.clientWidth+.5){el.style.wordBreak='break-all';fs=Math.min(fs+2,13);el.style.fontSize=fs+'px';n=0;while(n++<8&&fs>9&&over()){fs-=1;el.style.fontSize=fs+'px'}}
+  if(el.scrollWidth>el.clientWidth+.5||box.scrollWidth>box.clientWidth+.5){el.style.wordBreak='break-all';fs=Math.min(fs+2,13);el.style.fontSize=fs+'px';n=0;while(n++<10&&fs>8&&over()){fs-=1;el.style.fontSize=fs+'px'}}
 }
 function fitAll(root,sel,boxSel){[].forEach.call(root.querySelectorAll(sel),function(el){fit(el,boxSel?el.closest(boxSel):el)})}
-function fitStage(){var s=document.getElementById('stage');if(!s)return;fitAll(s,'.mg-word b','.mg-cell');fitAll(s,'.ss-tile');fitAll(s,'.mface.front b','.mface');fitAll(s,'.balloon')}
+/* merge tiles: when even the smallest text still overflows, drop the small 낱말/뜻 label to make room */
+function fitMerge(root){fitAll(root,'.mg-word b','.mg-cell');[].forEach.call(root.querySelectorAll('.mg-cell'),function(c){c.classList.remove('tight');if(c.scrollHeight>c.clientHeight+.5){c.classList.add('tight');var b=c.querySelector('.mg-word b');if(b)fit(b,c)}})}
+function fitStage(){var s=document.getElementById('stage');if(!s)return;fitMerge(s);fitAll(s,'.ss-tile');fitAll(s,'.mface.front b','.mface');fitAll(s,'.balloon')}
 if(LOCAL)window.__nmFit=fit;
 var fitTimer;window.addEventListener('resize',function(){clearTimeout(fitTimer);fitTimer=setTimeout(fitStage,120)});
 /* Hangul glyphs are wider than Latin ones, so weigh them more when picking a starting size */
@@ -830,7 +891,7 @@ function gMerge(stage,setStats){
     }).join('')+'</div><div class="mg-side"><button class="btn primary nav" data-mg="spawn" data-key="spawn"'+(full||over?' disabled':'')+'>'+icon('plus')+'낱말 뽑기<span class="kbd hide-sm">N</span></button>'+
     '<div class="goal"><h3>16단계 '+LV[MAXLV]+'까지!</h3><div class="ladder" aria-label="지금 최고 '+best+'단계">'+ladder()+'</div>'+
     '<ul><li>낱말 + 뜻 = 1단계</li><li>별 + 별 = 높은 쪽 +1</li><li>같은 단계끼리 = <b>+2</b></li></ul></div></div></div>';
-  });fitAll(stage,'.mg-word b','.mg-cell');setStats('점수 '+score+' · 최고 '+(best?best+'단계':'없음'))}
+  });fitMerge(stage);setStats('점수 '+score+' · 최고 '+(best?best+'단계':'없음'))}
   function checkEnd(){
     if(over)return;
     if(best>=MAXLV){over=true;timers.push(setTimeout(function(){finish('merge',3,'16단계 '+LV[MAXLV]+'을 만들었어요! 점수는 '+score+'점이에요.')},800));return}
@@ -985,7 +1046,7 @@ function parseLine(line){
 function unq(s){s=s.trim();if(s.length>1&&s[0]==='"'&&s[s.length-1]==='"')s=s.slice(1,-1).replace(/""/g,'"');return s.trim()}
 /* a unit header line starts a new unit: "Lesson 1 My Name Is Amy", "Unit 3 ...", "단원 2 ..." or "[단원] 이름" */
 function unitHeader(line){
-  if(/[\t,]/.test(line))return null;
+  if(/\t/.test(line))return null;
   var m=/^\[(?:단원|unit|lesson)\]\s*(.+)$/i.exec(line);if(m)return m[1].trim();
   return/^(?:lesson|unit|단원)\s*\d+/i.test(line)?line:null;
 }
@@ -1013,12 +1074,14 @@ function parseFile(text){
   var w=0,s=0;units.forEach(function(u){w+=u.words.length;s+=u.sentences.length});
   return{units:units,headed:headed,words:w,sentences:s,skipped:skipped};
 }
+if(LOCAL)window.__nmParse=parseFile;
 function renderTeacher(){
   if(!canTeach){go('home');return}
+  if(!book){toast('먼저 학년을 고른 뒤 낱말 바꾸기를 눌러 주세요');go('start');return}
   var draft={title:book.title,units:book.units.map(function(u){return{name:u.name,words:u.words.map(function(x){return{w:x.w,m:x.m}}),sentences:u.sentences.slice()}})};
   var ui=sel.length?sel[0]:0;
   view.innerHTML='<div class="ghead"><button class="btn small" data-act="home">'+icon('back')+'<span class="hide-sm">놀이 목록</span><span class="kbd">Esc</span></button><h2>낱말 바꾸기</h2></div>'+
-    '<p class="howto">저장하면 이 링크로 들어오는 학생 모두에게 새 낱말과 문장이 쓰여요. 학생은 홈 화면에서 단원을 골라 복습해요. 학생 화면에는 이 버튼이 보이지 않아요.</p>'+
+    '<p class="howto"><b>'+esc(book.name)+'</b> 낱말을 고치고 있어요. 저장하면 이 링크로 들어오는 학생 모두에게 새 낱말과 문장이 쓰여요. 학생은 홈 화면에서 단원을 골라 복습해요. 학생 화면에는 이 버튼이 보이지 않아요.</p>'+
     '<div class="teach"><section class="panel"><h3>단원과 낱말</h3>'+
       '<label class="lbl" for="t-title">놀이 제목 (학생 화면 맨 위)</label><input class="tx" id="t-title" maxlength="40">'+
       '<div class="unit-bar"><div><label class="lbl" for="unitSel">고칠 단원</label><select class="tx" id="unitSel"></select></div>'+
@@ -1137,13 +1200,14 @@ function renderTeacher(){
     var btn=this,msg=$('saveMsg');syncSents();
     var next=clean({title:$('t-title').value,sample:false,units:draft.units});
     var total=0;next.units.forEach(function(u){total+=u.words.length});
+    var nextLib={sets:lib.sets.map(function(s){return s.id===book.id?{id:s.id,name:s.name,title:next.title,sample:false,units:next.units}:s})};
     if(total<3){msg.className='msg-bad';msg.textContent='낱말과 뜻이 모두 채워진 줄이 3개 이상 있어야 저장할 수 있어요.';return}
     if(LOCAL||!artifactNS){
-      if(LOCAL){store.set('nm-local-deck',next);book=next;applySel(sel.length?sel:allUnits());toast('이 컴퓨터에 저장했어요');go('home');return}
+      if(LOCAL){store.set('nm-local-deck',nextLib);lib=cleanLib(nextLib);var keep=sel.slice();useSet(book.id);applySel(keep.length?keep:allUnits());toast('이 컴퓨터에 저장했어요');go('home');return}
       msg.className='msg-bad';msg.textContent='이 화면에서는 저장할 수 없어요. Claude에서 이 페이지를 열어 저장해 주세요.';return;
     }
     btn.disabled=true;msg.className='';msg.textContent='저장하는 중…';
-    artifactNS.publish(buildDoc(next)).then(function(){
+    artifactNS.publish(buildDoc(nextLib)).then(function(){
       msg.className='msg-good';msg.textContent='저장했어요. 새 낱말로 페이지를 다시 불러와요.';
     },function(err){
       btn.disabled=false;var code=err&&err.code;msg.className='msg-bad';
@@ -1162,11 +1226,16 @@ function renderTeacher(){
   window.claude.use('user').then(function(u){return u?u.canEdit():false}).then(function(ok){
     if(!ok)return;
     return window.claude.use('artifact').then(function(ns){
-      artifactNS=ns;canTeach=!!ns;syncTop();if(current==='home')renderHome();
+      artifactNS=ns;canTeach=!!ns;syncTop();if(current==='home')renderHome();else if(current==='start')renderStart();
     });
   }).catch(function(){});
 })();
 
-renderHome();
+(function(){
+  var h=location.hash.replace('#','');
+  if(h&&useSet(h)&&setReady(book)){current='home';renderHome()}
+  else{book=null;current='start';renderStart()}
+  syncTop();
+})();
 })();
 </script>

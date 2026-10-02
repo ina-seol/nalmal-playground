@@ -7,7 +7,7 @@ const url = 'file:///' + path.join(__dirname, 'preview.html').replace(/\\/g, '/'
   const browser = await chromium.launch({ channel: 'msedge' });
   const p = await browser.newPage({ viewport: { width: 1366, height: 657 } });
   const errs = []; p.on('pageerror', e => errs.push(e.message));
-  await p.goto(url); await p.waitForTimeout(300);
+  await p.goto(url + '#g4'); await p.waitForTimeout(300);
   const out = {};
   // 1. memory
   await p.keyboard.press('1'); await p.waitForTimeout(200);
@@ -17,7 +17,7 @@ const url = 'file:///' + path.join(__dirname, 'preview.html').replace(/\\/g, '/'
   await p.keyboard.press('2'); await p.waitForTimeout(300);
   out.shisenStart = await p.evaluate(() => ({ rocks: document.querySelectorAll('.ss-rock').length, tiles: document.querySelectorAll('.ss-tile').length, cols: getComputedStyle(document.querySelector('.ss-board')).getPropertyValue('--cols') }));
   out.shisenSolve = await p.evaluate(async () => {
-    const words = JSON.parse(document.getElementById('deck-data').textContent).units.flatMap(u => u.words);
+    const words = JSON.parse(document.getElementById('deck-data').textContent).sets.flatMap(s => s.units).flatMap(u => u.words);
     const meaningOf = {}; words.forEach(w => { meaningOf[w.w] = meaningOf[w.w] || new Set(); meaningOf[w.w].add(w.m); });
     const sleep = ms => new Promise(r => setTimeout(r, ms));
     let removed = 0, reshuffles = 0, t0 = Date.now();
@@ -44,7 +44,7 @@ const url = 'file:///' + path.join(__dirname, 'preview.html').replace(/\\/g, '/'
   // 3. merge: two Lv1 stars -> Lv3 (same level +2), Lv3 + Lv1 -> Lv4
   await p.keyboard.press('3'); await p.waitForTimeout(300);
   out.merge = await p.evaluate(async () => {
-    const words = JSON.parse(document.getElementById('deck-data').textContent).units.flatMap(u => u.words);
+    const words = JSON.parse(document.getElementById('deck-data').textContent).sets.flatMap(s => s.units).flatMap(u => u.words);
     const sleep = ms => new Promise(r => setTimeout(r, ms));
     const cells = () => [...document.querySelectorAll('.mg-cell')];
     const label = el => el.getAttribute('aria-label');
@@ -71,7 +71,7 @@ const url = 'file:///' + path.join(__dirname, 'preview.html').replace(/\\/g, '/'
   // 4. sentence: solve two sentences perfectly -> 100 then +120 (streak bonus)
   await p.keyboard.press('4'); await p.waitForTimeout(300);
   out.sentence = await p.evaluate(async () => {
-    const sents = JSON.parse(document.getElementById('deck-data').textContent).units.flatMap(u => u.sentences);
+    const sents = JSON.parse(document.getElementById('deck-data').textContent).sets.flatMap(s => s.units).flatMap(u => u.sentences);
     const sleep = ms => new Promise(r => setTimeout(r, ms));
     const scores = [];
     for (let round = 0; round < 2; round++) {

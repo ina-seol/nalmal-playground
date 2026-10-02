@@ -12,6 +12,7 @@ fs.writeFileSync(preview, '<!doctype html><html><head><meta charset=utf8><meta n
 const url = 'file:///' + preview.replace(/\\/g, '/');
 
 const SCREENS = [
+  ['start', async p => {}],
   ['home', async p => {}],
   ['memory', async p => { await p.keyboard.press('1'); await p.waitForTimeout(200); const c = p.locator('.mcard'); await c.nth(0).click(); await c.nth(1).click(); await p.waitForTimeout(500); }],
   ['shisen', async p => { await p.keyboard.press('2'); await p.waitForTimeout(200); await p.click('[data-ss=hint]'); await p.waitForTimeout(100); }],
@@ -23,7 +24,7 @@ const SCREENS = [
     // 덱의 낱말-뜻 짝을 읽어 카드 순서대로 짝을 맞춰 결과 창 띄우기
     const pairs = await p.evaluate(() => {
       const data = JSON.parse(document.getElementById('deck-data').textContent);
-      const deck = data.units ? data.units.flatMap(u => u.words) : data.words;
+      const deck = data.sets.flatMap(s => s.units.flatMap(u => u.words));
       const texts = [...document.querySelectorAll('.mcard .front b')].map(e => e.textContent);
       const out = [], used = new Set();
       texts.forEach((t, i) => { if (used.has(i)) return; const w = deck.find(d => d.w === t); if (!w) return;
@@ -59,7 +60,7 @@ const CHECK = () => {
       const errs = [];
       p.on('pageerror', e => errs.push('pageerror: ' + e.message));
       p.on('console', m => { if (m.type() === 'error') errs.push('console: ' + m.text()); });
-      await p.goto(url); await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(700);
+      await p.goto(name === 'start' ? url : url + '#g4'); await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(700);
       try { await act(p); } catch (e) { errs.push('action failed: ' + e.message.split('\n')[0]); }
       const issues = await p.evaluate(CHECK);
       await p.screenshot({ path: path.join(out, `${dev}-${name}${suffix}.png`), fullPage: name !== 'balloon' });
