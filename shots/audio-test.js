@@ -12,7 +12,7 @@ fs.writeFileSync(preview, '<!doctype html><html><head><meta charset=utf8><meta n
   await p.addInitScript(() => { window.__osc = 0; window.__noise = 0; const pl = HTMLMediaElement.prototype.play; HTMLMediaElement.prototype.play = function () { window.__bgm = this; return pl.call(this); };
     const o = AudioContext.prototype.createOscillator; AudioContext.prototype.createOscillator = function () { window.__osc++; return o.call(this); };
     const b = AudioContext.prototype.createBufferSource; AudioContext.prototype.createBufferSource = function () { window.__noise++; return b.call(this); }; });
-  await p.goto('file:///' + preview.replace(/\\/g, '/')); await p.waitForTimeout(400);
+  await p.goto('file:///' + preview.replace(/\\/g, '/') + '#g4'); await p.waitForTimeout(400);
   const out = {};
   out.labelsBefore = [await p.textContent('#bgmBtn'), await p.textContent('#sfxBtn')];
   await p.click('#bgmBtn'); await p.waitForTimeout(1800);

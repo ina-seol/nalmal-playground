@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "nalmal-playground.src.html"
+        ],
+        "createdAt": "2026-10-02T02:40:44.271Z",
+        "reason": "Claude: the only one-sided border is .kbd, a keyboard keycap drawn with a thicker bottom edge for the Chromebook key hints; not a card accent tab"
+      }
+    ]
+  }
+}
