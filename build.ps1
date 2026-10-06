@@ -14,6 +14,6 @@ $utf8 = New-Object System.Text.UTF8Encoding $false
 
 # GitHub Pages 용 index.html: Claude 게시 때 자동으로 붙는 문서 틀(doctype, viewport)을 직접 붙입니다.
 $head = '<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>낱말 놀이터</title><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">' +
-  '<meta name="description" content="초등 낱말 복습 미니게임 5종"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>'
+  '<meta name="description" content="초등 낱말 복습 미니게임 6종"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>'
 [System.IO.File]::WriteAllText((Join-Path $root 'index.html'), $head + $out + '</body></html>', $utf8)
 "built index.html for GitHub Pages ({0:N0} KB)" -f ((Get-Item (Join-Path $root 'index.html')).Length / 1KB)

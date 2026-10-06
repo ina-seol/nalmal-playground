@@ -107,7 +107,8 @@ h1,h2,h3{font-weight:700;text-wrap:balance;margin:0;line-height:1.15;letter-spac
 .notice b{font-weight:700}
 
 /* cartridges */
-.games{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px}
+.games{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px}
+@media (max-width:1100px){.games{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}}
 .cart{--c:var(--melon);position:relative;display:grid;grid-template-rows:auto 1fr;gap:10px;padding:10px;text-align:left;
   background:var(--shell);border:1px solid var(--line);border-radius:var(--r-panel);box-shadow:var(--shadow-sm);
   transition:transform .16s cubic-bezier(.2,.9,.3,1.3),box-shadow .16s}
@@ -260,6 +261,34 @@ h1,h2,h3{font-weight:700;text-wrap:balance;margin:0;line-height:1.15;letter-spac
 .bl-start{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:16px;text-align:center;padding:16px}
 .bl-start p{margin:0;max-width:32ch;font-weight:300}
 
+/* solitaire: 위쪽 줄 = 덱·버린 카드·짝 칸, 아래 = 카드 열. 열은 맨 위 카드만 앞면 */
+.so{position:relative;width:100%;display:grid;gap:14px;margin:0 auto}
+.so-row,.so-tab{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:10px;align-items:start}
+.so-col{display:flex;flex-direction:column;min-width:0}
+/* 겹친 카드: 세로 여백 %는 열 너비 기준이라, 카드 높이(너비/.72)에서 너비의 24%만 보이게 당깁니다 */
+.so-col>*+*{margin-top:calc(-100% / .72 + 24%)}
+.so-card,.so-empty{position:relative;width:100%;aspect-ratio:.72;min-width:0;border-radius:12px;padding:4px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;container-type:inline-size}
+.so-card{border:1px solid var(--line);background:var(--shell);color:var(--ink);box-shadow:var(--shadow-sm);transition:transform .12s,opacity .25s}
+.so-card small{font-size:12px;font-weight:300;color:var(--ink-soft);line-height:1}
+.so-card b{font-weight:700;font-size:clamp(11px,21cqi,22px);line-height:1.15;max-width:100%}
+.so-card.m{background:var(--canary-lt)}
+.so-card.m b{font-weight:500}
+.so-back{background-color:var(--royal);background-image:radial-gradient(rgba(255,255,255,.4) 2px,transparent 2.6px);background-size:12px 12px;border-color:var(--royal-dk)}
+.so-stock{color:var(--shell)}
+.so-stock .so-count{font-family:var(--font-pixel);font-size:clamp(16px,24cqi,26px);background:var(--royal-dk);border-radius:999px;padding:0 10px;line-height:1.4}
+.so-stock small{color:var(--shell)}
+.so-empty{border:2px dashed #C9CBD1;background:var(--lcd);color:var(--ink-soft);box-shadow:none}
+.so-empty small{font-size:13px;font-weight:300}
+span.so-empty{border-color:var(--line)}
+.so-card.sel{transform:translateY(-5px);outline:4px solid var(--melon);outline-offset:2px;z-index:1}
+.so-card.hint,.so-empty.hint{animation:pulse .7s 3}
+.so-card.vanish{opacity:0;transform:scale(.6) rotate(6deg)}
+.so-col .so-card:last-child.flip{animation:bump .35s}
+.so .gain{right:auto;white-space:nowrap;font-size:20px;z-index:2}
+.so-card b{overflow-wrap:normal;word-break:keep-all}
+@media (max-width:560px){.so-row,.so-tab{gap:6px}.so-card,.so-empty{border-radius:9px;padding:2px}.so-card small{font-size:10px}.so-empty small{font-size:11px}}
+
 /* teacher */
 .teach{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:24px;align-items:start}
 .panel{background:var(--shell);border:1px solid var(--line);border-radius:var(--r-panel);box-shadow:var(--shadow-sm);padding:18px;display:grid;gap:12px;min-width:0}
@@ -311,8 +340,6 @@ label.btn{cursor:pointer}
 
 @media (max-width:900px){
   .games{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .cart,.cart:nth-child(-n+2){grid-column:span 1}
-  .cart:first-child{grid-column:span 2}
 
   .mg{grid-template-columns:minmax(0,440px)}
   .teach{grid-template-columns:minmax(0,1fr)}
@@ -320,7 +347,6 @@ label.btn{cursor:pointer}
 @media (max-width:560px){
   #app{padding-inline:16px}
   .games{grid-template-columns:minmax(0,1fr);gap:18px}
-  .cart:first-child{grid-column:span 1}
   .cart .ill{height:92px}
   .cart .ill svg{height:76px}
   .ghead{grid-template-columns:auto 1fr}
@@ -534,23 +560,26 @@ var ILL={
  shisen:'<svg viewBox="0 0 130 90"><rect class="f" x="12" y="14" width="32" height="32" rx="7"/><rect class="f" x="49" y="14" width="32" height="32" rx="7"/><rect class="h" x="86" y="50" width="32" height="32" rx="7"/><rect class="f" x="12" y="50" width="32" height="32" rx="7"/><path class="s" d="M28 30V6h74v44"/></svg>',
  merge:'<svg viewBox="0 0 130 90"><rect class="f" x="6" y="28" width="34" height="34" rx="7"/><rect class="h" x="44" y="28" width="34" height="34" rx="7"/><path class="s" d="M84 45h12m-6-6l6 6-6 6"/><path class="f" d="M112 24l5 11 12 1.4-9 8.4 2.4 12L112 51l-10.4 5.8 2.4-12-9-8.4 12-1.4z"/></svg>',
  sentence:'<svg viewBox="0 0 130 90"><rect class="f" x="6" y="14" width="36" height="24" rx="6"/><rect class="f" x="47" y="14" width="28" height="24" rx="6"/><rect class="f" x="80" y="14" width="44" height="24" rx="6"/><path class="s" d="M8 74h114"/><rect class="h" x="10" y="48" width="32" height="18" rx="5"/><rect class="h" x="47" y="48" width="24" height="18" rx="5"/></svg>',
- balloon:'<svg viewBox="0 0 130 90"><ellipse class="f" cx="45" cy="32" rx="21" ry="25"/><path class="w" d="M45 57q-4 12 2 26"/><ellipse class="h" cx="88" cy="26" rx="18" ry="22"/><path class="w" d="M88 48q6 11-1 24"/></svg>'
+ balloon:'<svg viewBox="0 0 130 90"><ellipse class="f" cx="45" cy="32" rx="21" ry="25"/><path class="w" d="M45 57q-4 12 2 26"/><ellipse class="h" cx="88" cy="26" rx="18" ry="22"/><path class="w" d="M88 48q6 11-1 24"/></svg>',
+ solitaire:'<svg viewBox="0 0 130 90"><rect class="f" x="12" y="6" width="34" height="46" rx="6"/><rect class="f" x="12" y="18" width="34" height="46" rx="6"/><rect class="f" x="12" y="30" width="34" height="46" rx="6"/><text x="16" y="58">dog</text><path class="s" d="M54 54h20m-6-6l6 6-6 6"/><rect class="h" x="84" y="20" width="34" height="46" rx="6" transform="rotate(6 101 43)"/><text x="94" y="49" transform="rotate(6 101 43)">개</text></svg>'
 };
 var GAMES={
  memory:{name:'짝꿍 카드',color:'--melon',desc:'카드 24장 속에서 낱말과 뜻의 짝을 찾아요.',how:'카드를 두 장씩 뒤집어 낱말과 뜻을 짝지어요. 적게 뒤집을수록 별이 많아요.',need:function(){return deck.words.length>=3},needMsg:'낱말이 3개 이상 필요해요'},
  shisen:{name:'낱말 사천성',color:'--emerald',desc:'바위를 피해 두 번 이하로 꺾이는 선으로 짝을 이어요.',how:'낱말과 뜻을 차례로 고르세요. 다른 패나 바위에 막히지 않고 두 번 이하로 꺾여 이어지면 사라져요. 바위는 없어지지 않아요.',need:function(){return deck.words.length>=3},needMsg:'낱말이 3개 이상 필요해요'},
  merge:{name:'낱말 머지',color:'--canary',desc:'낱말과 뜻을 합쳐 별을 만들고 16단계까지 키워요.',how:'칸 두 개를 차례로 고르면 합쳐져요. 낱말과 뜻은 1단계 별이 되고, 별끼리 합치면 높은 쪽보다 1단계, 같은 단계끼리는 2단계 올라가요. 빈 칸을 고르면 옮겨져요.',need:function(){return deck.words.length>=3},needMsg:'낱말이 3개 이상 필요해요'},
  sentence:{name:'문장 퍼즐',color:'--lime',desc:'문장 10개를 완성하며 점수를 모아요.',how:'아래 낱말 조각을 순서대로 고르세요. 놓은 조각을 다시 고르면 돌아가요. 실수 없이 맞히면 점수를 더 받아요.',need:function(){return deck.sentences.length>=1},needMsg:'문장이 1개 이상 필요해요'},
- balloon:{name:'풍선 팡팡',color:'--royal',desc:'빠르게 떠오르는 풍선 중 뜻에 맞는 낱말을 터뜨려요.',how:'위에 나온 뜻에 맞는 낱말 풍선을 누르세요. 틀리거나 놓치면 하트가 하나 줄어요.',need:function(){return deck.words.length>=4},needMsg:'낱말이 4개 이상 필요해요'}
+ balloon:{name:'풍선 팡팡',color:'--royal',desc:'빠르게 떠오르는 풍선 중 뜻에 맞는 낱말을 터뜨려요.',how:'위에 나온 뜻에 맞는 낱말 풍선을 누르세요. 틀리거나 놓치면 하트가 하나 줄어요.',need:function(){return deck.words.length>=4},needMsg:'낱말이 4개 이상 필요해요'},
+ solitaire:{name:'낱말 솔리테어',color:'--sky1',desc:'뒤집힌 카드 속에서 낱말과 뜻의 짝을 찾아 판을 비워요.',how:'열 맨 위 카드를 고르고 그 짝을 고르면 둘 다 사라져요. 짝이 안 보이면 카드를 위쪽 짝 칸이나 빈 열로 옮겨 아래 카드를 뒤집으세요. 덱을 누르면 카드가 한 장씩 나와요.',need:function(){return deck.words.length>=6},needMsg:'낱말이 6개 이상 필요해요'}
 };
 var KEYHOW={
  memory:' 키보드: <span class="kbd">←↑↓→</span> 이동, <span class="kbd">Enter</span> 뒤집기.',
  shisen:' 키보드: <span class="kbd">←↑↓→</span> 이동, <span class="kbd">Enter</span> 고르기.',
  merge:' 키보드: <span class="kbd">←↑↓→</span> 이동, <span class="kbd">Enter</span> 고르기, <span class="kbd">N</span> 낱말 뽑기.',
  sentence:' 키보드: <span class="kbd">←→</span> 이동, <span class="kbd">Enter</span> 놓기, <span class="kbd">Backspace</span> 한 조각 빼기.',
- balloon:' 키보드: 풍선에 적힌 숫자 <span class="kbd">1</span>~<span class="kbd">6</span>을 누르세요.'
+ balloon:' 키보드: 풍선에 적힌 숫자 <span class="kbd">1</span>~<span class="kbd">6</span>을 누르세요.',
+ solitaire:' 키보드: <span class="kbd">←↑↓→</span> 이동, <span class="kbd">Enter</span> 고르기, <span class="kbd">D</span> 덱 넘기기, <span class="kbd">H</span> 힌트, <span class="kbd">Z</span> 되돌리기.'
 };
-var ORDER=['memory','shisen','merge','sentence','balloon'];
+var ORDER=['memory','shisen','merge','sentence','balloon','solitaire'];
 
 /* app shell */
 var app=document.getElementById('app');
@@ -594,7 +623,7 @@ document.addEventListener('keydown',function(e){
   var modal=document.querySelector('.modal-back');
   if(modal){if(e.key==='Escape'){e.preventDefault();go('home')}return}
   if(current==='start'){var gc=view.querySelector('[data-key="g'+e.key+'"]:not([disabled])');if(gc){e.preventDefault();gc.click()}return}
-  if(current==='home'){if(e.key==='Escape'){e.preventDefault();go('start');return}var i='12345'.indexOf(e.key);if(i>=0&&GAMES[ORDER[i]].need()){e.preventDefault();go(ORDER[i])}return}
+  if(current==='home'){if(e.key==='Escape'){e.preventDefault();go('start');return}var i='123456'.indexOf(e.key);if(i>=0&&GAMES[ORDER[i]].need()){e.preventDefault();go(ORDER[i])}return}
   if(e.key==='Escape'){e.preventDefault();go('home');return}
   if(keyHandler&&keyHandler(e))e.preventDefault();
 });
@@ -616,7 +645,7 @@ function go(screen){
 /* first screen: pick a textbook. Grades not filled in yet stay closed for students; the teacher can open them to add words */
 var GRADE_COLOR={g3:'--melon',g4:'--emerald',g5:'--canary',g6:'--sky1'};
 function renderStart(prev){
-  view.innerHTML='<section class="lcd pick-lcd"><h1>어느 교과서로 복습할까요?</h1><p class="pick-hint">학년을 고르면 단원과 놀이 다섯 가지가 나와요. 키보드 숫자 <span class="kbd">3</span>~<span class="kbd">6</span>으로도 고를 수 있어요.</p></section>'+
+  view.innerHTML='<section class="lcd pick-lcd"><h1>어느 교과서로 복습할까요?</h1><p class="pick-hint">학년을 고르면 단원과 놀이 여섯 가지가 나와요. 키보드 숫자 <span class="kbd">3</span>~<span class="kbd">6</span>으로도 고를 수 있어요.</p></section>'+
     '<div class="sets">'+lib.sets.map(function(s){
       var g=(/(\d)학년/.exec(s.name)||[])[1]||'',n=setWords(s),ready=setReady(s),open=ready||canTeach;
       var units=s.units.filter(function(u){return u.words.length}).length;
@@ -658,7 +687,7 @@ function renderGame(key){
     '<p class="howto">'+g.how+'<span class="hide-sm">'+KEYHOW[key]+'</span></p><div id="stage"></div>';
   var stage=document.getElementById('stage'),stats=document.getElementById('stats');
   var setStats=function(h){stats.innerHTML=h};
-  ({memory:gMemory,shisen:gShisen,merge:gMerge,sentence:gSentence,balloon:gBalloon})[key](stage,setStats);
+  ({memory:gMemory,shisen:gShisen,merge:gMerge,sentence:gSentence,balloon:gBalloon,solitaire:gSolitaire})[key](stage,setStats);
 }
 
 function finish(key,stars,line){
@@ -685,7 +714,7 @@ function fit(el,box,widthOnly){
 function fitAll(root,sel,boxSel){[].forEach.call(root.querySelectorAll(sel),function(el){fit(el,boxSel?el.closest(boxSel):el)})}
 /* merge tiles: when even the smallest text still overflows, drop the small 낱말/뜻 label to make room */
 function fitMerge(root){fitAll(root,'.mg-word b','.mg-cell');[].forEach.call(root.querySelectorAll('.mg-cell'),function(c){c.classList.remove('tight');if(c.scrollHeight>c.clientHeight+.5){c.classList.add('tight');var b=c.querySelector('.mg-word b');if(b)fit(b,c)}})}
-function fitStage(){var s=document.getElementById('stage');if(!s)return;fitMerge(s);fitAll(s,'.ss-tile');fitAll(s,'.mface.front b','.mface');[].forEach.call(s.querySelectorAll('.balloon'),function(b){fit(b,b,true)})}
+function fitStage(){var s=document.getElementById('stage');if(!s)return;fitMerge(s);fitAll(s,'.ss-tile');fitAll(s,'.mface.front b','.mface');fitAll(s,'.so-card b','.so-card');[].forEach.call(s.querySelectorAll('.balloon'),function(b){fit(b,b,true)})}
 if(LOCAL)window.__nmFit=fit;
 var fitTimer;window.addEventListener('resize',function(){clearTimeout(fitTimer);fitTimer=setTimeout(fitStage,120)});
 /* Hangul glyphs are wider than Latin ones, so weigh them more when picking a starting size */
@@ -1025,6 +1054,209 @@ function gBalloon(stage,setStats){
     balloons.forEach(function(b){if(b.lane===d)hit(b)});return true;
   };
   cleanup=function(){alive=false;cancelAnimationFrame(raf);timers.forEach(clearTimeout)};
+}
+
+/* 6. solitaire: Klondike-style columns, only the top card of each column face up.
+   pick a card, then its partner, and both leave. Park cards in the pair slots or an empty column to dig.
+   the deck deals one card at a time and can be gone through again and again */
+function gSolitaire(stage,setStats){
+  var narrow=innerWidth<600,COLS=narrow?5:6,SLOTS=COLS-2,timers=[];
+  /* a meaning shared by two words would make two right answers, so keep words and meanings unique */
+  var seenW={},seenM={},ws=[];
+  shuffle(deck.words.slice()).forEach(function(w){if(ws.length<(narrow?11:14)&&!seenW[w.w]&&!seenM[w.m]){seenW[w.w]=seenM[w.m]=1;ws.push(w)}});
+  var P=ws.length,cards=[];
+  ws.forEach(function(w,i){cards.push({id:i,k:'w',t:w.w},{id:i,k:'m',t:w.m})});
+  cards.forEach(function(c,i){c.n=i});
+  /* columns hold 1..COLS cards; trimmed so at least four cards stay in the deck */
+  var sizes=[],i;for(i=1;i<=COLS;i++)sizes.push(i);
+  function total(a){return a.reduce(function(x,y){return x+y},0)}
+  while(total(sizes)>2*P-4){var mx=Math.max.apply(null,sizes);sizes[sizes.lastIndexOf(mx)]--}
+  var cols,stock,waste,slots;
+  function deal(){
+    var order=shuffle(cards.slice()),at=0;
+    cols=sizes.map(function(n){var c=order.slice(at,at+n);at+=n;return c});
+    stock=order.slice(at);waste=[];slots=new Array(SLOTS).fill(null);
+  }
+  /* solver: pairs are always worth taking, so take them all, then try parking a column top.
+     every deck card can be reached by going through the deck, but two deck cards need a free place to meet.
+     used to deal a board that can be cleared, and for the hint's next move. sure=false when it gave up early */
+  function search(c0,s0,r0){
+    var seen={},nodes=0,first=null;
+    function take(st,c){
+      for(var a=0;a<st.cols.length;a++){var col=st.cols[a];if(col.length&&col[col.length-1]===c){col.pop();return}}
+      var k=st.slots.indexOf(c);if(k>=0){st.slots.splice(k,1);return}
+      st.res.splice(st.res.indexOf(c),1);
+    }
+    function settle(st){
+      for(;;){
+        var acc=[],found=null;
+        st.cols.forEach(function(c){if(c.length)acc.push({c:c[c.length-1],r:false})});
+        st.slots.forEach(function(c){acc.push({c:c,r:false})});
+        st.res.forEach(function(c){acc.push({c:c,r:true})});
+        var spare=st.slots.length<SLOTS||st.cols.some(function(c){return!c.length});
+        for(var a=0;a<acc.length&&!found;a++)for(var b=a+1;b<acc.length;b++){
+          if(acc[a].c.id!==acc[b].c.id||(acc[a].r&&acc[b].r&&!spare))continue;
+          found=[acc[a].c,acc[b].c];break;
+        }
+        if(!found)return;
+        take(st,found[0]);take(st,found[1]);
+      }
+    }
+    function dfs(st,depth){
+      if(++nodes>4000)return false;
+      settle(st);
+      if(!st.res.length&&!st.slots.length&&!st.cols.some(function(c){return c.length}))return true;
+      var key=st.cols.map(function(c){return c.map(function(x){return x.n}).join(',')}).join('|')+'#'+st.slots.map(function(x){return x.n}).sort().join(',')+'#'+st.res.length;
+      if(seen[key])return false;seen[key]=1;
+      var empty=-1;st.cols.forEach(function(c,ci){if(!c.length&&empty<0)empty=ci});
+      for(var ci=0;ci<st.cols.length;ci++){
+        var col=st.cols[ci];if(!col.length)continue;
+        var moves=[];
+        if(st.slots.length<SLOTS)moves.push('slot');
+        if(empty>=0&&col.length>1)moves.push('col');
+        for(var m=0;m<moves.length;m++){
+          var nx={cols:st.cols.map(function(c){return c.slice()}),slots:st.slots.slice(),res:st.res.slice()};
+          var top=nx.cols[ci].pop();
+          if(moves[m]==='slot')nx.slots.push(top);else nx.cols[empty].push(top);
+          if(dfs(nx,depth+1)){if(!depth)first={ci:ci,to:moves[m]};return true}
+        }
+      }
+      return false;
+    }
+    var ok=dfs({cols:c0.map(function(c){return c.slice()}),slots:s0.slice(),res:r0.slice()},0);
+    return{ok:ok,sure:nodes<=4000,first:first};
+  }
+  for(var tries=0;tries<60;tries++){deal();if(search(cols,[],stock).ok)break}
+
+  var sel=null,done=0,hints=0,undos=0,mistakes=0,hist=[],busy=false,start=Date.now();
+  var tick=setInterval(upd,1000);
+  function time(){var s=Math.floor((Date.now()-start)/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+  function upd(){setStats('짝 '+done+'/'+P+' · '+time())}
+  /* a place on the table: {w:'col'|'slot'|'waste', i} */
+  function place(a){var p=a.split(':');return{w:p[0],i:+p[1]||0}}
+  function keyOf(l){return l.w==='col'?'c'+l.i:l.w==='slot'?'s'+l.i:'waste'}
+  function cardAt(l){if(l.w==='col'){var c=cols[l.i];return c[c.length-1]||null}if(l.w==='slot')return slots[l.i];return waste[waste.length-1]||null}
+  function takeAt(l){if(l.w==='col')return cols[l.i].pop();if(l.w==='slot'){var c=slots[l.i];slots[l.i]=null;return c}return waste.pop()}
+  function save(){hist.push({cols:cols.map(function(c){return c.slice()}),stock:stock.slice(),waste:waste.slice(),slots:slots.slice(),done:done})}
+  function label(c){return(c.k==='w'?'낱말 ':'뜻 ')+c.t}
+  function face(c,data,key,extra){
+    return'<button class="so-card nav '+c.k+(extra||'')+'" data-so="'+data+'" data-key="'+key+'" aria-label="'+esc(label(c))+'"'+(sel&&keyOf(sel)===key?' aria-pressed="true"':'')+'><small>'+(c.k==='w'?'낱말':'뜻')+'</small><b>'+esc(c.t)+'</b></button>';
+  }
+  /* board height ≈ 2.9 card heights (top row + a column of six); size its width from the screen height so a Chromebook shows it all */
+  var maxW=innerWidth>560?'max-width:min(820px,calc((100dvh - 282px) / 2.9 * .72 * '+COLS+' + '+(COLS-1)*10+'px));':'';
+  function draw(fx){fx=fx||{};keepFocus(stage,function(){
+    function cls(key){return(sel&&keyOf(sel)===key?' sel':'')+(fx.flip===key?' flip':'')+(fx.shake&&fx.shake.indexOf(key)>=0?' shake':'')}
+    var top=stock.length
+      ?'<button class="so-card so-back so-stock nav" data-so="stock" data-key="stock" aria-label="덱, 남은 카드 '+stock.length+'장"><span class="so-count">'+stock.length+'</span><small>덱</small></button>'
+      :waste.length?'<button class="so-empty nav" data-so="stock" data-key="stock" aria-label="덱 다시 쌓기">'+icon('undo')+'<small>다시</small></button>'
+      :'<span class="so-empty" aria-hidden="true"></span>';
+    var w=waste[waste.length-1];
+    top+=w?face(w,'waste','waste',cls('waste')):'<span class="so-empty" aria-hidden="true"><small>버린 카드</small></span>';
+    slots.forEach(function(c,si){
+      top+=c?face(c,'slot:'+si,'s'+si,cls('s'+si)):'<button class="so-empty nav" data-so="slot:'+si+'" data-key="s'+si+'" aria-label="빈 짝 칸 '+(si+1)+'"><small>짝 칸</small></button>';
+    });
+    var tab=cols.map(function(c,ci){
+      var h='<div class="so-col">';
+      for(var k=0;k<c.length-1;k++)h+='<span class="so-card so-back" aria-hidden="true"></span>';
+      if(c.length)h+=face(c[c.length-1],'col:'+ci,'c'+ci,cls('c'+ci)).replace('aria-label="','aria-label="'+(ci+1)+'열'+(c.length>1?', 아래 뒤집힌 카드 '+(c.length-1)+'장':'')+', ');
+      else h+='<button class="so-empty nav" data-so="col:'+ci+'" data-key="c'+ci+'" aria-label="빈 열 '+(ci+1)+'"><small>빈 열</small></button>';
+      return h+'</div>';
+    }).join('');
+    stage.innerHTML='<div class="ss-layout"><div class="so" style="--cols:'+COLS+';'+maxW+'"><div class="so-row">'+top+'</div><div class="so-tab">'+tab+'</div></div>'+
+      '<div class="tools ss-tools"><button class="btn nav" data-so="hint" data-key="hint">'+icon('bulb')+'힌트<span class="kbd hide-sm">H</span></button>'+
+      '<button class="btn nav" data-so="undo" data-key="undo"'+(hist.length?'':' disabled')+'>'+icon('undo')+'되돌리기<span class="kbd hide-sm">Z</span></button></div></div>';
+  });fitAll(stage,'.so-card b','.so-card');upd()}
+  function pulse(keys){keys.forEach(function(k){var el=stage.querySelector('[data-key="'+k+'"]');if(el)el.classList.add('hint')})}
+  /* cards that could meet a partner: column tops, slots and the open deck card, plus the rest of the deck by going through it */
+  function open(){var a=[];cols.forEach(function(c,ci){if(c.length)a.push({c:c[c.length-1],key:'c'+ci})});slots.forEach(function(c,si){if(c)a.push({c:c,key:'s'+si})});if(waste.length)a.push({c:waste[waste.length-1],key:'waste'});return a}
+  function visiblePair(){var a=open();for(var x=0;x<a.length;x++)for(var y=x+1;y<a.length;y++)if(a[x].c.id===a[y].c.id)return[a[x].key,a[y].key];return null}
+  /* an open card whose partner is still in the deck. the open deck card itself is left out: drawing would cover it */
+  function deckPair(){var a=open(),pile=stock.concat(waste.slice(0,-1));for(var x=0;x<a.length;x++){if(a[x].key==='waste')continue;for(var y=0;y<pile.length;y++)if(a[x].c.id===pile[y].id)return a[x].key}return null}
+  function freeSlot(){return slots.indexOf(null)}
+  function emptyCol(){for(var c=0;c<cols.length;c++)if(!cols[c].length)return c;return -1}
+  function now(){return search(cols,slots.filter(Boolean),stock.concat(waste))}
+  /* two cards that belong together, both still in the deck */
+  function deckTwins(){var pile=stock.concat(waste);for(var x=0;x<pile.length;x++)for(var y=x+1;y<pile.length;y++)if(pile[x].id===pile[y].id)return[pile[x],pile[y]];return null}
+  function after(){
+    if(done===P){clearInterval(tick);var pen=hints+undos+mistakes;
+      timers.push(setTimeout(function(){finish('solitaire',pen<=2?3:pen<=6?2:1,time()+' 만에 '+P+'쌍을 모두 찾았어요. 힌트 '+hints+'번, 되돌리기 '+undos+'번.')},500));return}
+    var r=now();
+    if(!r.ok&&r.sure){toast('이대로는 다 풀 수 없어요. 되돌리기를 눌러 보세요');pulse(['undo'])}
+  }
+  function drawStock(){
+    if(busy)return;
+    if(stock.length){save();waste.push(stock.pop());sel=null;sfx('flip');draw()}
+    else if(waste.length){save();stock=waste.reverse();waste=[];sel=null;sfx('shuffle');draw()}
+  }
+  function undo(){if(busy||!hist.length||done===P)return;var h=hist.pop();cols=h.cols;stock=h.stock;waste=h.waste;slots=h.slots;done=h.done;sel=null;undos++;sfx('tap');draw()}
+  function hint(){
+    if(busy||done===P)return;sel=null;
+    var p=visiblePair();
+    if(p){hints++;draw();sfx('hint');pulse(p);return}
+    var d=deckPair();
+    if(d&&(stock.length||waste.length>1)){hints++;draw();sfx('hint');pulse([d,'stock']);toast('덱을 넘기면 이 카드의 짝이 나와요');return}
+    var fs=freeSlot(),ec=emptyCol(),tw=deckTwins(),wt=waste[waste.length-1];
+    if(tw&&(fs>=0||ec>=0)){
+      hints++;draw();sfx('hint');
+      if(wt&&(wt===tw[0]||wt===tw[1])){pulse(['waste',fs>=0?'s'+fs:'c'+ec]);toast('버린 카드를 옮겨 두고 덱을 넘기면 짝이 나와요')}
+      else{pulse(['stock']);toast('덱을 넘겨 보세요. 짝이 될 두 장이 덱에 있어요')}
+      return;
+    }
+    var r=now();
+    if(r.ok&&r.first){
+      var to=r.first.to==='slot'?'s'+fs:'c'+ec;
+      hints++;draw();sfx('hint');pulse(['c'+r.first.ci,to]);toast(r.first.to==='slot'?'이 카드를 짝 칸에 옮기면 아래 카드가 뒤집혀요':'이 카드를 빈 열로 옮기면 아래 카드가 뒤집혀요');return;
+    }
+    toast('되돌리기를 눌러 다른 길을 찾아보세요');pulse(['undo']);
+  }
+  function pair(a,b){
+    var ca=cardAt(a),cb=cardAt(b),el=stage.querySelector('[data-key="'+keyOf(b)+'"]'),box=stage.querySelector('.so');
+    var r=el.getBoundingClientRect(),br=box.getBoundingClientRect();
+    busy=true;sfx('ok');
+    [a,b].forEach(function(l){var x=stage.querySelector('[data-key="'+keyOf(l)+'"]');if(x)x.classList.add('vanish')});
+    timers.push(setTimeout(function(){
+      save();takeAt(a);takeAt(b);done++;sel=null;busy=false;
+      var reveal=a.w==='col'&&cols[a.i].length?'c'+a.i:b.w==='col'&&cols[b.i].length?'c'+b.i:null;
+      draw({flip:reveal});if(reveal)sfx('flip');
+      var w=ca.k==='w'?ca:cb,m=ca.k==='w'?cb:ca,g=document.createElement('span');
+      g.className='gain';g.setAttribute('aria-hidden','true');g.textContent=w.t+' = '+m.t;
+      g.style.left=Math.max(0,r.left-br.left+r.width/2-60)+'px';g.style.top=(r.top-br.top+r.height/3)+'px';
+      var so=stage.querySelector('.so');if(so)so.appendChild(g);
+      after();
+    },260));
+  }
+  draw();
+  keyHandler=function(e){
+    var k=e.key.toLowerCase();
+    if(k==='d'){drawStock();return true}
+    if(k==='h'){hint();return true}
+    if(k==='z'||e.key==='Backspace'){undo();return true}
+    return spatialNav(stage,e);
+  };
+  stage.onclick=function(e){
+    var t=e.target.closest('[data-so]');if(!t||busy)return;
+    var a=t.dataset.so;
+    if(a==='hint'){hint();return}
+    if(a==='undo'){undo();return}
+    if(a==='stock'){drawStock();return}
+    var l=place(a),c=cardAt(l);
+    if(!sel){if(c){sel=l;sfx('select');draw()}return}
+    if(keyOf(sel)===keyOf(l)){sel=null;sfx('tap');draw();return}
+    var sc=cardAt(sel);
+    if(c){
+      if(c.id===sc.id){pair(sel,l);return}
+      mistakes++;sfx('bad');var prev=keyOf(sel);sel=l;draw({shake:[prev,keyOf(l)]});return;
+    }
+    /* empty slot or empty column: park the picked card there */
+    if(l.w==='waste')return;
+    if(l.w==='col'&&sel.w==='col'&&cols[sel.i].length===1){sel=null;draw();return}
+    save();var from=sel,card=takeAt(from);
+    if(l.w==='col')cols[l.i].push(card);else slots[l.i]=card;
+    sel=null;sfx('place');
+    draw({flip:from.w==='col'&&cols[from.i].length?'c'+from.i:null});
+    after();
+  };
+  cleanup=function(){clearInterval(tick);timers.forEach(clearTimeout)};
 }
 
 /* teacher editor */
