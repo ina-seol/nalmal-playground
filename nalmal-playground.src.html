@@ -10,7 +10,7 @@
   --lime:#A0CB75; --lime-lt:#E6F2D9; --emerald:#10B183; --emerald-lt:#D4F1E7;
   --bg:#FFFFFF; --dot:transparent; --shell:#FFFFFF; --line:#E4E5E9;
   --lcd:#F4F5F7; --lcd-ink:#1A1C21; --lcd-dot:transparent;
-  --good:#0A7F5E; --bad:#B8325C; --sky1:#BCCDEF; --sky2:#F4F6FC;
+  --good:#0A7F5E; --bad:#B8325C; --sky1:#BCCDEF; --sky2:#F4F6FC; --lilac:#D7CFF3; --peach:#FAD9C4; --mole:#A47148;
   --shadow:0 1px 2px rgba(16,24,40,.06),0 6px 16px -4px rgba(16,24,40,.08); --shadow-sm:0 1px 2px rgba(16,24,40,.08);
   --drop:var(--shadow);
   --font:"Aggravo","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
@@ -107,27 +107,32 @@ h1,h2,h3{font-weight:700;text-wrap:balance;margin:0;line-height:1.15;letter-spac
 .notice b{font-weight:700}
 
 /* cartridges */
-.games{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px}
-@media (max-width:1100px){.games{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}}
-.cart{--c:var(--melon);position:relative;display:grid;grid-template-rows:auto 1fr;gap:10px;padding:10px;text-align:left;
+.games{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:1100px){.games{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* 가로형 카드: 그림은 왼쪽, 이름·설명·별은 오른쪽. 놀이 12개가 크롬북 한 화면에 들어오도록 */
+.cart{--c:var(--melon);position:relative;display:grid;grid-template-columns:84px minmax(0,1fr);align-items:stretch;gap:12px;padding:8px;text-align:left;
   background:var(--shell);border:1px solid var(--line);border-radius:var(--r-panel);box-shadow:var(--shadow-sm);
   transition:transform .16s cubic-bezier(.2,.9,.3,1.3),box-shadow .16s}
 .cart:hover:not(:disabled){transform:translateY(-2px);box-shadow:var(--shadow)}
 .cart:active:not(:disabled){transform:scale(.97);box-shadow:var(--shadow-sm)}
 .cart:disabled{filter:grayscale(.7);opacity:.75}
-.cart .ill{height:84px;display:grid;place-items:center;background:var(--c);border-radius:12px}
-.cart .ill svg{height:62px;width:auto;max-width:100%}
+.cart .ill{position:relative;min-height:74px;display:grid;place-items:center;background:var(--c);border-radius:12px}
+/* 단축키는 그림 왼쪽 위, 별은 그림 아래에 얹어 카드 높이를 줄입니다 */
+.cart .ill .kbd{position:absolute;top:4px;left:4px;min-width:22px;height:20px;font-size:12px}
+.cart .ill .stars{position:absolute;bottom:3px;left:50%;translate:-50% 0;gap:0;padding:1px 3px;background:var(--shell);border-radius:999px}
+.cart .ill .stars .ico{width:14px;height:14px}
+.cart .ill svg{width:74px;height:auto;max-width:100%}
 .ill .f{fill:var(--shell);stroke:var(--royal-dk);stroke-width:2.6}
 .ill .h{fill:var(--canary-lt);stroke:var(--royal-dk);stroke-width:2.6}
 .ill .s{fill:none;stroke:var(--royal-dk);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
 .ill .w{fill:none;stroke:var(--shell);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
 .ill text{font-family:var(--font);font-weight:700;font-size:14px;fill:var(--royal-dk)}
-.label{display:grid;grid-template-rows:auto 1fr auto;gap:4px;padding:4px 6px 6px}
-.label h2{font-size:22px}
-.label p{margin:0;font-weight:300;font-size:15px;line-height:1.45;color:var(--ink-soft)}
-.label .row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;font-size:14px;color:var(--ink-soft)}
+.label{display:grid;align-content:center;gap:3px;padding:2px 2px 2px 0;min-width:0}
+.label h2{font-size:19px}
+.label p{margin:0;font-weight:300;font-size:14px;line-height:1.35;color:var(--ink-soft);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.label p.need{color:var(--bad);font-weight:500}
 .stars{display:inline-flex;gap:2px;align-items:center}
-.stars .ico{width:20px;height:20px;fill:var(--line);stroke:none}
+.stars .ico{width:18px;height:18px;fill:var(--line);stroke:none}
 .stars .on{fill:var(--canary);stroke:var(--royal-dk);stroke-width:1.6}
 
 /* game screen */
@@ -289,6 +294,132 @@ span.so-empty{border-color:var(--line)}
 .so-card b{overflow-wrap:normal;word-break:keep-all}
 @media (max-width:560px){.so-row,.so-tab{gap:6px}.so-card,.so-empty{border-radius:9px;padding:2px}.so-card small{font-size:10px}.so-empty small{font-size:11px}}
 
+/* snake: 캔버스 판 + 뜻과 철자 칸. 터치 화면에는 방향 버튼 */
+.sn{display:grid;gap:10px;justify-items:center;max-width:1000px;margin:0 auto}
+.sn-q{display:flex;align-items:center;justify-content:center;gap:10px 16px;flex-wrap:wrap;text-align:center}
+.sn-q small{color:var(--ink-soft);font-weight:300;font-size:16px}
+.sn-q b{font-weight:700;font-size:clamp(24px,4vw,34px);background:var(--emerald-lt);border:1px solid var(--line);border-radius:var(--r-ctl);padding:0 16px;box-shadow:var(--shadow-sm)}
+.sn-slots{display:flex;gap:6px;min-height:44px}
+.sn-slots span{display:grid;place-items:center;width:34px;height:42px;border-bottom:4px solid var(--line);font-weight:700;font-size:28px;line-height:1;color:var(--ink)}
+.sn-slots span.on{border-color:var(--emerald)}
+.sn-slots span.next{border-color:var(--canary)}
+.sn-wrap{position:relative;width:100%}
+.sn-wrap canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:var(--r-panel);background:var(--lcd);box-shadow:var(--shadow);touch-action:none}
+.sn-wrap .gain{top:12px;left:50%;right:auto;translate:-50% 0;white-space:nowrap}
+.sn-pad{display:grid;grid-template-columns:repeat(3,64px);gap:6px}
+.sn-pad .btn{min-height:52px;padding:0}
+.sn-pad .up{grid-column:2}
+@media (hover:hover) and (pointer:fine){.sn-pad{display:none}}
+
+/* tetris: 줄마다 블록이 쌓이는 판 + 옆에 다음 블록과 진행 */
+.tt{display:flex;gap:22px;justify-content:center;align-items:flex-start}
+.tt-wrap{position:relative;width:100%;flex:0 1 auto}
+.tt-board{position:relative;width:100%;overflow:hidden;background-color:var(--lcd);border:1px solid var(--line);border-radius:var(--r-panel);box-shadow:var(--shadow);
+  background-image:linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:calc(100% / var(--cols)) 100%}
+.tt-tile,.tt-ghost{position:absolute;padding:3px;display:flex}
+.tt-tile b{flex:1;display:grid;place-items:center;min-width:0;overflow:hidden;text-align:center;padding:2px 4px;border:1px solid var(--line);border-radius:10px;background:var(--shell);
+  box-shadow:var(--shadow-sm);font-weight:700;font-size:clamp(12px,1.9vw,19px);line-height:1.1;overflow-wrap:normal;word-break:keep-all;transition:opacity .25s,transform .25s}
+.tt-tile.m b{background:var(--canary-lt);font-weight:500}
+.tt-tile.fall b{outline:4px solid var(--melon);outline-offset:-1px}
+.tt-tile.vanish b{opacity:0;transform:scale(.5) rotate(8deg)}
+.tt-ghost::after{content:"";flex:1;border:2px dashed var(--melon);border-radius:10px;opacity:.55}
+.tt-col{position:absolute;top:0;bottom:0;border:0;padding:0;background:transparent;z-index:2;border-radius:0}
+.tt-col:hover{background:rgba(43,71,137,.06)}
+.tt-wrap .gain{top:10px;left:50%;right:auto;translate:-50% 0;white-space:nowrap;z-index:3}
+.tt-side{display:grid;gap:14px;width:220px;flex:none}
+.tt-next{display:grid;gap:6px;padding:14px;background:var(--shell);border:1px solid var(--line);border-radius:var(--r-panel)}
+.tt-next small{color:var(--ink-soft);font-size:14px}
+.tt-next .tt-tile{position:relative;height:56px;padding:0}
+.tt-pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tt-pad .btn{padding:0}
+@media (max-width:900px){.tt{flex-direction:column;align-items:center}.tt-side{width:100%;max-width:520px;grid-template-columns:1fr 1fr}.tt-pad{grid-column:1 / -1}}
+
+/* match-3 */
+.m3-wrap{position:relative;width:100%}
+.m3-board{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:6px;padding:10px;background:var(--shell);border:1px solid var(--line);border-radius:var(--r-panel);box-shadow:var(--shadow);touch-action:none}
+.m3-cell{aspect-ratio:var(--asp,1.15);min-width:0;border:1px solid var(--line);border-radius:12px;background:var(--shell);box-shadow:var(--shadow-sm);padding:3px;
+  font-weight:700;font-size:clamp(12px,1.8vw,18px);line-height:1.1;color:var(--ink);overflow:hidden;transition:transform .15s,opacity .25s}
+.m3-cell b{display:block;font-weight:inherit;overflow-wrap:normal;word-break:keep-all}
+.m3-cell.m{background:var(--canary-lt);font-weight:500}
+.m3-cell.sel{transform:translateY(-4px);outline:4px solid var(--melon);outline-offset:2px}
+.m3-cell.hint{animation:pulse .7s 3}
+.m3-cell.vanish{opacity:0;transform:scale(.4) rotate(10deg)}
+.m3-cell.drop{animation:drop .3s cubic-bezier(.3,.7,.3,1.2)}
+@keyframes drop{from{transform:translateY(-60%);opacity:0}}
+.m3-wrap .gain{top:-12px;left:50%;right:auto;translate:-50% 0;white-space:nowrap}
+.m3-goal{display:grid;gap:6px;padding:14px;background:var(--shell);border:1px solid var(--line);border-radius:var(--r-panel);font-size:15px;font-weight:300}
+.m3-goal b{font-family:var(--font-pixel);font-weight:400;font-size:26px}
+@media (max-width:560px){.m3-board{gap:4px;padding:6px}.m3-cell{border-radius:9px;font-size:12px}}
+
+/* fishing: 문장 빈칸 + 물고기가 헤엄치는 연못 */
+.fs{display:grid;gap:12px;max-width:900px;margin:0 auto}
+.fs-sent{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:6px 10px;padding:14px 18px;background:var(--shell);border:1px solid var(--line);border-radius:var(--r-panel);box-shadow:var(--shadow);
+  font-weight:700;font-size:clamp(22px,3.2vw,32px);line-height:1.3;min-height:72px}
+.fs-blank{display:inline-block;min-width:var(--bw,4em);border-bottom:4px dashed var(--royal);text-align:center;color:var(--good)}
+.fs-blank.got{border-bottom-style:solid;border-color:var(--emerald);background:var(--emerald-lt);border-radius:8px 8px 0 0;padding:0 6px}
+.fs-pond{position:relative;height:clamp(220px,calc(100dvh - 380px),420px);border:1px solid var(--line);border-radius:var(--r-panel);overflow:hidden;
+  background:linear-gradient(var(--sky1),#8FA9DE);box-shadow:var(--shadow)}
+.fish{--bc:var(--canary);position:absolute;left:0;top:0;height:54px;min-width:96px;display:flex;align-items:center;justify-content:center;padding:0 26px 0 18px;
+  border:1px solid var(--royal-dk);border-radius:28px 40px 40px 28px;background:var(--bc);color:var(--ink);font-weight:700;font-size:19px;white-space:nowrap;will-change:transform;touch-action:manipulation}
+.fish::after{content:"";position:absolute;left:-20px;top:50%;width:24px;height:32px;translate:0 -50%;background:var(--royal-dk);clip-path:polygon(0 0,100% 50%,0 100%)}
+.fish::before{content:"";position:absolute;right:11px;top:13px;width:7px;height:7px;border-radius:50%;background:var(--ink)}
+.fish.lf{padding:0 18px 0 26px;border-radius:40px 28px 28px 40px}
+.fish.lf::after{left:auto;right:-20px;clip-path:polygon(100% 0,0 50%,100% 100%)}
+.fish.lf::before{right:auto;left:11px}
+.fish.c0{--bc:var(--canary)} .fish.c1{--bc:var(--melon-lt)} .fish.c2{--bc:var(--lime)} .fish.c3{--bc:var(--shell)}
+.fish .k{position:absolute;top:-10px;left:50%;translate:-50% 0;font-family:var(--font-pixel);font-size:12px;font-weight:400;background:var(--shell);border:1px solid var(--line);border-radius:6px;padding:0 5px;line-height:16px}
+.fish.wrong{opacity:.45;animation:shake .35s}
+.fish.caught{--bc:var(--emerald-lt)}
+.fs-line{position:absolute;top:0;width:2px;background:var(--royal-dk);pointer-events:none}
+@media (max-width:560px){.fish{height:46px;min-width:76px;font-size:16px;padding:0 20px 0 14px}.fish.lf{padding:0 14px 0 20px}}
+
+/* ladder (wordle): 칸 격자 + 화면 자판 */
+.ld{display:grid;gap:12px;justify-items:center;max-width:1000px;margin:0 auto}
+.ld-q{display:flex;align-items:center;justify-content:center;gap:8px 14px;flex-wrap:wrap;text-align:center}
+.ld-q small{color:var(--ink-soft);font-weight:300;font-size:16px}
+.ld-q b{font-weight:700;font-size:clamp(24px,4vw,34px);background:var(--lilac);border:1px solid var(--line);border-radius:var(--r-ctl);padding:0 16px;box-shadow:var(--shadow-sm)}
+.ld-main{display:flex;gap:28px;align-items:center;justify-content:center;flex-wrap:wrap}
+.ld-grid{--cell:clamp(30px,min(calc((100dvh - 330px) / 6 - 6px),calc((100vw - 40px) / var(--n) - 6px)),56px);display:grid;grid-template-columns:repeat(var(--n),var(--cell));gap:6px}
+.ld-cell{width:var(--cell);height:var(--cell);display:grid;place-items:center;border:2px solid var(--line);border-radius:10px;background:var(--shell);
+  font-weight:700;font-size:calc(var(--cell) * .52);line-height:1}
+.ld-cell.typed{border-color:var(--ink-soft);animation:bump .15s}
+.ld-cell.g{background:var(--emerald);border-color:var(--emerald);color:#fff}
+.ld-cell.y{background:var(--canary);border-color:var(--canary)}
+.ld-cell.x{background:#C9CBD1;border-color:#C9CBD1;color:var(--ink)}
+.ld-cell.flip{animation:flipin .45s both}
+@keyframes flipin{0%{transform:rotateX(90deg)}100%{transform:none}}
+.ld-grid .bad{animation:shake .35s}
+.ld-keys{display:grid;gap:6px}
+.ld-krow{display:flex;gap:5px;justify-content:center}
+.ld-key{min-width:36px;height:46px;padding:0 6px;border:1px solid var(--line);border-radius:8px;background:var(--shell);box-shadow:var(--shadow-sm);font-weight:700;font-size:17px;color:var(--ink)}
+.ld-key.wide{min-width:58px;font-size:14px}
+.ld-key.g{background:var(--emerald);border-color:var(--emerald);color:#fff}
+.ld-key.y{background:var(--canary);border-color:var(--canary)}
+.ld-key.x{background:#C9CBD1;border-color:#C9CBD1}
+.ld-key:active{transform:scale(.95)}
+/* phones: the keyboard stays pinned to the bottom of the screen while the grid scrolls */
+@media (max-width:560px){.ld-keys{position:sticky;bottom:0;z-index:2;padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px));background:var(--bg);box-shadow:0 -8px 12px -8px rgba(16,24,40,.12)}.ld-key{min-width:0;flex:1;height:44px;font-size:15px;padding:0 2px}.ld-key.wide{flex:1.6;min-width:0;font-size:12px}.ld-keys{width:100%}.ld-krow{gap:4px}}
+
+/* mole: 3x3 구멍, 두더지가 낱말 팻말을 들고 올라와요 */
+.ml{display:grid;gap:12px;max-width:900px;margin:0 auto;justify-items:center}
+.ml-wrap{position:relative;width:100%}
+.ml-field{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px;background:var(--lime-lt);border:1px solid var(--line);border-radius:var(--r-panel);box-shadow:var(--shadow)}
+.ml-hole{position:relative;aspect-ratio:1.45;overflow:hidden;border:0;padding:0;background:transparent;border-radius:14px;touch-action:manipulation}
+.ml-hole::before{content:"";position:absolute;left:8%;right:8%;bottom:4%;height:26%;background:#3B2A22;border-radius:50%}
+.ml-hole::after{content:"";position:absolute;left:2%;right:2%;bottom:-8%;height:20%;background:var(--lime);border-radius:50% 50% 0 0 / 100% 100% 0 0;z-index:2}
+.ml-mole{position:absolute;left:20%;right:20%;bottom:9%;height:80%;background:var(--mole);border:2px solid var(--royal-dk);border-radius:50% 50% 16% 16% / 58% 58% 16% 16%;
+  transform:translateY(110%);transition:transform .16s ease-out}
+.ml-hole.up .ml-mole{transform:none}
+.ml-face{position:absolute;inset:0 0 auto 0;height:55%;background:radial-gradient(circle at 34% 40%,var(--ink) 0 3.5px,transparent 4.5px),radial-gradient(circle at 66% 40%,var(--ink) 0 3.5px,transparent 4.5px),radial-gradient(ellipse at 50% 70%,var(--melon) 0 7px,transparent 8px)}
+.ml-sign{position:absolute;left:-22%;right:-22%;bottom:16%;padding:2px 4px;background:var(--shell);border:1.5px solid var(--royal-dk);border-radius:8px;
+  font-weight:700;font-size:clamp(13px,1.9vw,20px);line-height:1.2;text-align:center;white-space:nowrap;overflow:hidden}
+.ml-hole.hit .ml-sign{background:var(--emerald-lt)}
+.ml-hole.hit .ml-face{background:radial-gradient(circle at 34% 40%,var(--ink) 0 1.5px,transparent 2.5px),radial-gradient(circle at 66% 40%,var(--ink) 0 1.5px,transparent 2.5px),radial-gradient(ellipse at 50% 70%,var(--melon) 0 7px,transparent 8px)}
+.ml-hole.wrong .ml-sign{background:var(--melon-lt)}
+.ml-hole.wrong .ml-mole{animation:shake .35s}
+.ml-hole .k{position:absolute;top:4px;left:6px;z-index:3;font-family:var(--font-pixel);font-size:12px;background:var(--shell);border:1px solid var(--line);border-radius:6px;padding:0 5px;line-height:16px}
+.ml-wrap .gain{top:-8px;left:50%;right:auto;translate:-50% 0;white-space:nowrap;z-index:4}
+
 /* teacher */
 .teach{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:24px;align-items:start}
 .panel{background:var(--shell);border:1px solid var(--line);border-radius:var(--r-panel);box-shadow:var(--shadow-sm);padding:18px;display:grid;gap:12px;min-width:0}
@@ -346,9 +477,7 @@ label.btn{cursor:pointer}
 }
 @media (max-width:560px){
   #app{padding-inline:16px}
-  .games{grid-template-columns:minmax(0,1fr);gap:18px}
-  .cart .ill{height:92px}
-  .cart .ill svg{height:76px}
+  .games{grid-template-columns:minmax(0,1fr);gap:10px}
   .ghead{grid-template-columns:auto 1fr}
   .ghead .stats{grid-column:1 / -1;justify-self:start}
   .ghead .btn .kbd,.hide-sm{display:none}
@@ -561,7 +690,13 @@ var ILL={
  merge:'<svg viewBox="0 0 130 90"><rect class="f" x="6" y="28" width="34" height="34" rx="7"/><rect class="h" x="44" y="28" width="34" height="34" rx="7"/><path class="s" d="M84 45h12m-6-6l6 6-6 6"/><path class="f" d="M112 24l5 11 12 1.4-9 8.4 2.4 12L112 51l-10.4 5.8 2.4-12-9-8.4 12-1.4z"/></svg>',
  sentence:'<svg viewBox="0 0 130 90"><rect class="f" x="6" y="14" width="36" height="24" rx="6"/><rect class="f" x="47" y="14" width="28" height="24" rx="6"/><rect class="f" x="80" y="14" width="44" height="24" rx="6"/><path class="s" d="M8 74h114"/><rect class="h" x="10" y="48" width="32" height="18" rx="5"/><rect class="h" x="47" y="48" width="24" height="18" rx="5"/></svg>',
  balloon:'<svg viewBox="0 0 130 90"><ellipse class="f" cx="45" cy="32" rx="21" ry="25"/><path class="w" d="M45 57q-4 12 2 26"/><ellipse class="h" cx="88" cy="26" rx="18" ry="22"/><path class="w" d="M88 48q6 11-1 24"/></svg>',
- solitaire:'<svg viewBox="0 0 130 90"><rect class="f" x="12" y="6" width="34" height="46" rx="6"/><rect class="f" x="12" y="18" width="34" height="46" rx="6"/><rect class="f" x="12" y="30" width="34" height="46" rx="6"/><text x="16" y="58">dog</text><path class="s" d="M54 54h20m-6-6l6 6-6 6"/><rect class="h" x="84" y="20" width="34" height="46" rx="6" transform="rotate(6 101 43)"/><text x="94" y="49" transform="rotate(6 101 43)">개</text></svg>'
+ solitaire:'<svg viewBox="0 0 130 90"><rect class="f" x="12" y="6" width="34" height="46" rx="6"/><rect class="f" x="12" y="18" width="34" height="46" rx="6"/><rect class="f" x="12" y="30" width="34" height="46" rx="6"/><text x="16" y="58">dog</text><path class="s" d="M54 54h20m-6-6l6 6-6 6"/><rect class="h" x="84" y="20" width="34" height="46" rx="6" transform="rotate(6 101 43)"/><text x="94" y="49" transform="rotate(6 101 43)">개</text></svg>',
+ snake:'<svg viewBox="0 0 130 90"><path class="s" d="M14 64h30v-26h30v26h18" style="stroke-width:12;stroke:var(--emerald)"/><path class="s" d="M14 64h30v-26h30v26h18"/><circle class="h" cx="96" cy="64" r="8"/><rect class="f" x="104" y="20" width="20" height="22" rx="5"/><text x="109" y="36">p</text><rect class="f" x="6" y="16" width="20" height="22" rx="5"/><text x="11" y="32">a</text></svg>',
+ tetris:'<svg viewBox="0 0 130 90"><rect class="f" x="44" y="6" width="42" height="20" rx="5"/><path class="s" d="M65 30v8m-4-4l4 4 4-4"/><rect class="f" x="16" y="64" width="32" height="20" rx="5"/><rect class="h" x="50" y="64" width="32" height="20" rx="5"/><rect class="f" x="84" y="64" width="32" height="20" rx="5"/><rect class="h" x="84" y="42" width="32" height="20" rx="5"/></svg>',
+ match:'<svg viewBox="0 0 130 90"><rect class="f" x="10" y="12" width="32" height="30" rx="6"/><rect class="h" x="49" y="12" width="32" height="30" rx="6"/><rect class="f" x="88" y="12" width="32" height="30" rx="6"/><path class="s" d="M14 27h102"/><rect class="h" x="10" y="50" width="32" height="30" rx="6"/><rect class="f" x="49" y="50" width="32" height="30" rx="6"/><rect class="h" x="88" y="50" width="32" height="30" rx="6"/></svg>',
+ fishing:'<svg viewBox="0 0 130 90"><path class="s" d="M104 2v42"/><path class="s" d="M104 44a6 6 0 1 1-6 6"/><path class="h" d="M30 62c10-14 40-14 52 0-12 14-42 14-52 0z"/><path class="h" d="M30 62l-12-9v18z"/><circle cx="72" cy="59" r="2.5" fill="var(--royal-dk)"/><rect class="f" x="6" y="8" width="84" height="26" rx="6"/><text x="14" y="26">I ___ it.</text></svg>',
+ ladder:'<svg viewBox="0 0 130 90"><g stroke="var(--royal-dk)" stroke-width="2.4"><rect x="26" y="12" width="24" height="26" rx="4" fill="var(--canary)"/><rect x="53" y="12" width="24" height="26" rx="4" fill="var(--emerald)"/><rect x="80" y="12" width="24" height="26" rx="4" fill="var(--shell)"/><rect x="26" y="48" width="24" height="26" rx="4" fill="var(--emerald)"/><rect x="53" y="48" width="24" height="26" rx="4" fill="var(--emerald)"/><rect x="80" y="48" width="24" height="26" rx="4" fill="var(--emerald)"/></g><text x="33" y="30">t</text><text x="59" y="30">a</text><text x="87" y="30">p</text><text x="33" y="66" style="fill:#fff">c</text><text x="59" y="66" style="fill:#fff">a</text><text x="88" y="66" style="fill:#fff">t</text></svg>',
+ mole:'<svg viewBox="0 0 130 90"><ellipse cx="65" cy="78" rx="46" ry="10" fill="var(--royal-dk)"/><path d="M38 78V46a27 27 0 0 1 54 0v32z" fill="var(--mole)" stroke="var(--royal-dk)" stroke-width="2.6"/><circle cx="56" cy="40" r="3" fill="var(--royal-dk)"/><circle cx="74" cy="40" r="3" fill="var(--royal-dk)"/><ellipse cx="65" cy="49" rx="6" ry="4" fill="var(--melon)"/><rect class="f" x="40" y="58" width="50" height="17" rx="4"/><text x="53" y="71">cat</text></svg>'
 };
 var GAMES={
  memory:{name:'짝꿍 카드',color:'--melon',desc:'카드 24장 속에서 낱말과 뜻의 짝을 찾아요.',how:'카드를 두 장씩 뒤집어 낱말과 뜻을 짝지어요. 적게 뒤집을수록 별이 많아요.',need:function(){return deck.words.length>=3},needMsg:'낱말이 3개 이상 필요해요'},
@@ -569,7 +704,13 @@ var GAMES={
  merge:{name:'낱말 머지',color:'--canary',desc:'낱말과 뜻을 합쳐 별을 만들고 16단계까지 키워요.',how:'칸 두 개를 차례로 고르면 합쳐져요. 낱말과 뜻은 1단계 별이 되고, 별끼리 합치면 높은 쪽보다 1단계, 같은 단계끼리는 2단계 올라가요. 빈 칸을 고르면 옮겨져요.',need:function(){return deck.words.length>=3},needMsg:'낱말이 3개 이상 필요해요'},
  sentence:{name:'문장 퍼즐',color:'--lime',desc:'문장 10개를 완성하며 점수를 모아요.',how:'아래 낱말 조각을 순서대로 고르세요. 놓은 조각을 다시 고르면 돌아가요. 실수 없이 맞히면 점수를 더 받아요.',need:function(){return deck.sentences.length>=1},needMsg:'문장이 1개 이상 필요해요'},
  balloon:{name:'풍선 팡팡',color:'--royal',desc:'빠르게 떠오르는 풍선 중 뜻에 맞는 낱말을 터뜨려요.',how:'위에 나온 뜻에 맞는 낱말 풍선을 누르세요. 틀리거나 놓치면 하트가 하나 줄어요.',need:function(){return deck.words.length>=4},needMsg:'낱말이 4개 이상 필요해요'},
- solitaire:{name:'낱말 솔리테어',color:'--sky1',desc:'뒤집힌 카드 속에서 낱말과 뜻의 짝을 찾아 판을 비워요.',how:'열 맨 위 카드를 고르고 그 짝을 고르면 둘 다 사라져요. 짝이 안 보이면 카드를 위쪽 짝 칸이나 빈 열로 옮겨 아래 카드를 뒤집으세요. 덱을 누르면 카드가 한 장씩 나와요.',need:function(){return deck.words.length>=6},needMsg:'낱말이 6개 이상 필요해요'}
+ solitaire:{name:'낱말 솔리테어',color:'--sky1',desc:'뒤집힌 카드 속에서 낱말과 뜻의 짝을 찾아 판을 비워요.',how:'열 맨 위 카드를 고르고 그 짝을 고르면 둘 다 사라져요. 짝이 안 보이면 카드를 위쪽 짝 칸이나 빈 열로 옮겨 아래 카드를 뒤집으세요. 덱을 누르면 카드가 한 장씩 나와요.',need:function(){return deck.words.length>=6},needMsg:'낱말이 6개 이상 필요해요'},
+ snake:{name:'철자 뱀',color:'--emerald-lt',desc:'뜻을 보고 영어 철자를 순서대로 먹어 낱말을 완성해요.',how:'위에 나온 뜻의 영어 낱말을 생각하고, 뱀을 움직여 알파벳을 철자 순서대로 먹으세요. 다른 글자를 먹거나 몸에 부딪히면 하트가 줄어요. 벽은 반대편으로 이어져요.',need:function(){return snakeWords().length>=4},needMsg:'영어 낱말이 4개 이상 필요해요'},
+ tetris:{name:'낱말 테트리스',color:'--melon-lt',desc:'떨어지는 블록을 짝 옆에 놓아 없애요.',how:'떨어지는 블록을 짝(낱말과 뜻) 위나 옆에 닿게 놓으면 둘 다 사라져요. 가로 한 줄을 다 채워도 줄이 지워져요. 블록이 맨 위까지 쌓이면 끝나요. 줄을 누르면 그 줄로 바로 떨어져요.',need:function(){return deck.words.length>=4},needMsg:'낱말이 4개 이상 필요해요'},
+ match:{name:'낱말 매치',color:'--canary-lt',desc:'같은 낱말 세 개를 한 줄로 이어 터뜨려요.',how:'이웃한 두 칸을 차례로 고르거나 밀어서 바꾸세요. 같은 낱말이 세 개 이상 한 줄로 이어지면 터져요. 낱말과 뜻은 섞여 있어도 돼요(apple·사과·apple). 20번 움직이는 동안 점수를 모아요.',need:function(){return uniqueWords(deck.words).length>=5},needMsg:'낱말이 5개 이상 필요해요'},
+ fishing:{name:'빈칸 문장 낚시',color:'--lime-lt',desc:'문장의 빈칸에 들어갈 낱말 물고기를 낚아요.',how:'위 문장의 빈칸에 들어갈 낱말이 적힌 물고기를 누르세요. 맞히면 문장을 읽어 줘요. 틀린 물고기는 잠깐 도망가요.',need:function(){return blankList().length>=2},needMsg:'문장이 2개 이상 필요해요'},
+ ladder:{name:'글자 사다리',color:'--lilac',desc:'뜻을 보고 영어 철자를 여섯 번 안에 맞혀요.',how:'뜻에 맞는 영어 낱말을 칸 수만큼 쓰고 확인을 누르세요. 초록은 자리까지 맞은 글자, 노랑은 낱말에 있지만 자리가 다른 글자, 회색은 없는 글자예요. 세 번 틀리면 첫 글자를 알려 줘요.',need:function(){return ladderWords().length>=3},needMsg:'영어 낱말이 3개 이상 필요해요',typing:true},
+ mole:{name:'두더지 잡기',color:'--peach',desc:'뜻에 맞는 낱말을 든 두더지만 재빨리 잡아요.',how:'위에 나온 뜻에 맞는 낱말 팻말을 든 두더지를 누르세요. 60초 안에 15마리를 잡아 보세요. 다른 두더지를 잡으면 실수로 세요.',need:function(){return uniqueWords(deck.words).length>=4},needMsg:'낱말이 4개 이상 필요해요'}
 };
 var KEYHOW={
  memory:' 키보드: <span class="kbd">←↑↓→</span> 이동, <span class="kbd">Enter</span> 뒤집기.',
@@ -577,9 +718,17 @@ var KEYHOW={
  merge:' 키보드: <span class="kbd">←↑↓→</span> 이동, <span class="kbd">Enter</span> 고르기, <span class="kbd">N</span> 낱말 뽑기.',
  sentence:' 키보드: <span class="kbd">←→</span> 이동, <span class="kbd">Enter</span> 놓기, <span class="kbd">Backspace</span> 한 조각 빼기.',
  balloon:' 키보드: 풍선에 적힌 숫자 <span class="kbd">1</span>~<span class="kbd">6</span>을 누르세요.',
- solitaire:' 키보드: <span class="kbd">←↑↓→</span> 이동, <span class="kbd">Enter</span> 고르기, <span class="kbd">D</span> 덱 넘기기, <span class="kbd">H</span> 힌트, <span class="kbd">Z</span> 되돌리기.'
+ solitaire:' 키보드: <span class="kbd">←↑↓→</span> 이동, <span class="kbd">Enter</span> 고르기, <span class="kbd">D</span> 덱 넘기기, <span class="kbd">H</span> 힌트, <span class="kbd">Z</span> 되돌리기.',
+ snake:' 키보드: <span class="kbd">←↑↓→</span> 또는 <span class="kbd">WASD</span>로 방향 바꾸기.',
+ tetris:' 키보드: <span class="kbd">←→</span> 옮기기, <span class="kbd">↓</span> 한 칸 내리기, <span class="kbd">Space</span> 바로 떨어뜨리기.',
+ match:' 키보드: <span class="kbd">←↑↓→</span> 이동, <span class="kbd">Enter</span> 고르기, 옆 칸에서 <span class="kbd">Enter</span> 바꾸기.',
+ fishing:' 키보드: 물고기에 적힌 숫자 <span class="kbd">1</span>~<span class="kbd">4</span>를 누르세요.',
+ ladder:' 키보드: 글자를 치고 <span class="kbd">Enter</span>로 확인, <span class="kbd">Backspace</span>로 지우기.',
+ mole:' 키보드: 구멍 숫자 <span class="kbd">1</span>~<span class="kbd">9</span>를 누르세요.'
 };
-var ORDER=['memory','shisen','merge','sentence','balloon','solitaire'];
+var ORDER=['memory','shisen','merge','sentence','balloon','solitaire','snake','tetris','match','fishing','ladder','mole'];
+/* home shortcuts: the first ten games get a number key, 0 standing for the tenth */
+var GAME_KEYS='1234567890';
 
 /* app shell */
 var app=document.getElementById('app');
@@ -619,11 +768,11 @@ app.addEventListener('click',function(e){
 document.addEventListener('keydown',function(e){
   var t=e.target,typing=t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT');
   if(typing||e.ctrlKey||e.metaKey||e.altKey)return;
-  if(e.key==='m'||e.key==='M'){e.preventDefault();toggleBgm();return}
+  if((e.key==='m'||e.key==='M')&&!(GAMES[current]&&GAMES[current].typing)){e.preventDefault();toggleBgm();return}
   var modal=document.querySelector('.modal-back');
   if(modal){if(e.key==='Escape'){e.preventDefault();go('home')}return}
   if(current==='start'){var gc=view.querySelector('[data-key="g'+e.key+'"]:not([disabled])');if(gc){e.preventDefault();gc.click()}return}
-  if(current==='home'){if(e.key==='Escape'){e.preventDefault();go('start');return}var i='123456'.indexOf(e.key);if(i>=0&&GAMES[ORDER[i]].need()){e.preventDefault();go(ORDER[i])}return}
+  if(current==='home'){if(e.key==='Escape'){e.preventDefault();go('start');return}var i=GAME_KEYS.indexOf(e.key);if(i>=0&&GAMES[ORDER[i]].need()){e.preventDefault();go(ORDER[i])}return}
   if(e.key==='Escape'){e.preventDefault();go('home');return}
   if(keyHandler&&keyHandler(e))e.preventDefault();
 });
@@ -645,7 +794,7 @@ function go(screen){
 /* first screen: pick a textbook. Grades not filled in yet stay closed for students; the teacher can open them to add words */
 var GRADE_COLOR={g3:'--melon',g4:'--emerald',g5:'--canary',g6:'--sky1'};
 function renderStart(prev){
-  view.innerHTML='<section class="lcd pick-lcd"><h1>어느 교과서로 복습할까요?</h1><p class="pick-hint">학년을 고르면 단원과 놀이 여섯 가지가 나와요. 키보드 숫자 <span class="kbd">3</span>~<span class="kbd">6</span>으로도 고를 수 있어요.</p></section>'+
+  view.innerHTML='<section class="lcd pick-lcd"><h1>어느 교과서로 복습할까요?</h1><p class="pick-hint">학년을 고르면 단원과 놀이 열두 가지가 나와요. 키보드 숫자 <span class="kbd">3</span>~<span class="kbd">6</span>으로도 고를 수 있어요.</p></section>'+
     '<div class="sets">'+lib.sets.map(function(s){
       var g=(/(\d)학년/.exec(s.name)||[])[1]||'',n=setWords(s),ready=setReady(s),open=ready||canTeach;
       var units=s.units.filter(function(u){return u.words.length}).length;
@@ -672,9 +821,10 @@ function renderHome(prev){
     units+'</section>'+notice+
     '<div class="games">'+ORDER.map(function(k,i){
       var g=GAMES[k],ok=g.need(),b=best[k]||0;
-      return'<button class="cart" data-act="play" data-game="'+k+'" style="--c:var('+g.color+')"'+(ok?'':' disabled')+' aria-label="'+g.name+' 시작 (숫자 '+(i+1)+')">'+
-        '<span class="ill" aria-hidden="true">'+ILL[k]+'</span><span class="label"><h2>'+g.name+'</h2><p>'+g.desc+'</p>'+
-        '<span class="row">'+(ok?(b?starsHTML(b):'<span>아직 안 해 봤어요</span>'):'<span>'+(multi&&!sel.length?'단원을 먼저 골라 주세요':g.needMsg)+'</span>')+'<span class="kbd" aria-hidden="true">'+(i+1)+'</span></span></span></button>';
+      var key=GAME_KEYS.charAt(i);
+      return'<button class="cart" data-act="play" data-game="'+k+'" style="--c:var('+g.color+')"'+(ok?'':' disabled')+' aria-label="'+g.name+' 시작'+(key?' (숫자 '+key+')':'')+'">'+
+        '<span class="ill"><span aria-hidden="true">'+ILL[k]+'</span>'+(key?'<span class="kbd" aria-hidden="true">'+key+'</span>':'')+(ok&&b?starsHTML(b):'')+'</span>'+
+        '<span class="label"><h2>'+g.name+'</h2>'+(ok?'<p>'+g.desc+'</p>':'<p class="need">'+(multi&&!sel.length?'단원을 먼저 골라 주세요':g.needMsg)+'</p>')+'</span></button>';
     }).join('')+'</div>';
   if(prev&&GAMES[prev]){var c=view.querySelector('[data-game="'+prev+'"]');if(c)c.focus({preventScroll:true})}
   else if(prev&&prev.indexOf('unit')===0){var u=view.querySelector(prev==='units'?'.unit':'[data-unit="'+prev.slice(5)+'"]');if(u)u.focus({preventScroll:true})}
@@ -687,9 +837,14 @@ function renderGame(key){
     '<p class="howto">'+g.how+'<span class="hide-sm">'+KEYHOW[key]+'</span></p><div id="stage"></div>';
   var stage=document.getElementById('stage'),stats=document.getElementById('stats');
   var setStats=function(h){stats.innerHTML=h};
-  ({memory:gMemory,shisen:gShisen,merge:gMerge,sentence:gSentence,balloon:gBalloon,solitaire:gSolitaire})[key](stage,setStats);
+  ({memory:gMemory,shisen:gShisen,merge:gMerge,sentence:gSentence,balloon:gBalloon,solitaire:gSolitaire,snake:gSnake,tetris:gTetris,match:gMatch,fishing:gFishing,ladder:gLadder,mole:gMole})[key](stage,setStats);
 }
 
+/* phones: a timed game needs the whole board on screen, so fold the instructions and scroll the game header to the top */
+function playMode(){
+  var h=view.querySelector('.howto');if(h&&innerWidth<600)h.hidden=true;
+  var g=view.querySelector('.ghead');if(g)g.scrollIntoView({block:'start',behavior:reduceMotion?'auto':'smooth'});
+}
 function finish(key,stars,line){
   if(current!==key)return;
   sfx('win');duckBgm();
@@ -714,11 +869,29 @@ function fit(el,box,widthOnly){
 function fitAll(root,sel,boxSel){[].forEach.call(root.querySelectorAll(sel),function(el){fit(el,boxSel?el.closest(boxSel):el)})}
 /* merge tiles: when even the smallest text still overflows, drop the small 낱말/뜻 label to make room */
 function fitMerge(root){fitAll(root,'.mg-word b','.mg-cell');[].forEach.call(root.querySelectorAll('.mg-cell'),function(c){c.classList.remove('tight');if(c.scrollHeight>c.clientHeight+.5){c.classList.add('tight');var b=c.querySelector('.mg-word b');if(b)fit(b,c)}})}
-function fitStage(){var s=document.getElementById('stage');if(!s)return;fitMerge(s);fitAll(s,'.ss-tile');fitAll(s,'.mface.front b','.mface');fitAll(s,'.so-card b','.so-card');[].forEach.call(s.querySelectorAll('.balloon'),function(b){fit(b,b,true)})}
+function fitStage(){var s=document.getElementById('stage');if(!s)return;fitMerge(s);fitAll(s,'.ss-tile');fitAll(s,'.mface.front b','.mface');fitAll(s,'.so-card b','.so-card');fitAll(s,'.tt-tile b');fitAll(s,'.m3-cell b','.m3-cell');fitAll(s,'.ml-sign');[].forEach.call(s.querySelectorAll('.balloon'),function(b){fit(b,b,true)})}
 if(LOCAL)window.__nmFit=fit;
 var fitTimer;window.addEventListener('resize',function(){clearTimeout(fitTimer);fitTimer=setTimeout(fitStage,120)});
 /* Hangul glyphs are wider than Latin ones, so weigh them more when picking a starting size */
 function textSize(s){var w=s.length+(s.match(/[가-힣]/g)||[]).length*.65;return w>8?'xlong':w>5.2?'long':''}
+/* words whose spelling and meaning both appear once, so a match never has two right answers */
+function uniqueWords(list){var sw={},sm={};return shuffle(list.slice()).filter(function(w){if(sw[w.w]||sm[w.m])return false;sw[w.w]=sm[w.m]=1;return true})}
+/* snake spells plain words only: no spaces, apostrophes or hyphens */
+function snakeWords(){var seen={};return deck.words.filter(function(w){var k=w.w.toLowerCase();if(!/^[a-z]{2,8}$/.test(k)||seen[k])return false;seen[k]=1;return true})}
+/* ladder spells words of 3 to 7 plain letters */
+function ladderWords(){return snakeWords().filter(function(w){return w.w.length>=3&&w.w.length<=7})}
+/* sentences with a word that can be blanked out: a whole token of two or more letters, punctuation kept outside the blank */
+function blankList(){
+  var out=[];
+  deck.sentences.forEach(function(s){
+    var toks=s.split(' '),cands=[];
+    toks.forEach(function(t,i){var m=/^([^A-Za-z]*)([A-Za-z](?:[A-Za-z']*[A-Za-z])?)([^A-Za-z]*)$/.exec(t);if(m&&m[2].length>=2)cands.push({i:i,pre:m[1],core:m[2],post:m[3]})});
+    if(cands.length)out.push({s:s,toks:toks,cands:cands});
+  });
+  return out;
+}
+/* read an English word aloud when the browser can; quiet when sound effects are off */
+function say(text){if(!sfxOn||!window.speechSynthesis)return;try{var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.85;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
 function wordPairs(list){return[].concat.apply([],list.map(function(w){var id=w.w+'\u0001'+w.m;return[{id:id,k:'w',t:w.w},{id:id,k:'m',t:w.m}]}))}
 
 /* 1. memory: up to 12 pairs, 24 cards */
@@ -1257,6 +1430,561 @@ function gSolitaire(stage,setStats){
     after();
   };
   cleanup=function(){clearInterval(tick);timers.forEach(clearTimeout)};
+}
+
+/* 7. spelling snake: eat the letters of the word in order. walls wrap around; a wrong letter or bumping into yourself costs a heart */
+function gSnake(stage,setStats){
+  var list=pick(snakeWords(),8),N=list.length;
+  var narrow=innerWidth<600,C=narrow?12:18,R=narrow?13:11;
+  var round=0,pi=0,word='',snake,dir,queue=[],letters=[],hearts=3,done=0,miss=0,alive=true,started=false,paused=true,raf=0,last=0,acc=0,timers=[],flash=0,cell=20,dpr=1;
+  var DIRS={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
+  var wrapStyle='max-width:min(1000px,calc((100dvh - '+(narrow?260:352)+'px) * '+(C/R).toFixed(3)+'));';
+  stage.innerHTML='<div class="sn"><div class="sn-q"><small>이 뜻의 낱말은?</small><b id="snQ">?</b></div><div class="sn-slots" id="snSlots" aria-live="polite"></div>'+
+    '<div class="sn-wrap" style="'+wrapStyle+'"><canvas id="snC" role="img" aria-label="철자 뱀 놀이판" style="aspect-ratio:'+C+' / '+R+'"></canvas>'+
+    '<div class="bl-start" id="snStart"><p>뜻을 보고 영어 낱말의 철자를 순서대로 먹어요. 낱말 '+N+'개를 완성해 보세요!</p><button class="btn primary" id="snGo">'+icon('play','fill')+'시작하기<span class="kbd hide-sm">Enter</span></button></div></div>'+
+    '<div class="sn-pad" role="group" aria-label="방향 버튼"><button class="btn up" data-dir="up" aria-label="위">↑</button><button class="btn" data-dir="left" aria-label="왼쪽">←</button><button class="btn" data-dir="down" aria-label="아래">↓</button><button class="btn" data-dir="right" aria-label="오른쪽">→</button></div></div>';
+  var cv=stage.querySelector('#snC'),ctx=cv.getContext('2d'),wrap=stage.querySelector('.sn-wrap');
+  var font=getComputedStyle(document.body).fontFamily;
+  function size(){var w=cv.clientWidth||600;dpr=window.devicePixelRatio||1;cell=w/C;cv.width=Math.round(w*dpr);cv.height=Math.round(w*R/C*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);paint()}
+  function upd(){var h='';for(var i=0;i<3;i++)h+=icon('heart',i<hearts?'':'off');setStats('<span class="hearts" aria-label="하트 '+hearts+'개">'+h+'</span> 낱말 '+done+'/'+N)}
+  function slots(){
+    stage.querySelector('#snSlots').innerHTML=word.split('').map(function(ch,i){return'<span class="'+(i<pi?'on':i===pi?'next':'')+'">'+(i<pi?esc(ch):'')+'</span>'}).join('');
+    stage.querySelector('#snSlots').setAttribute('aria-label',pi+'글자 먹었어요, 모두 '+word.length+'글자');
+  }
+  function occupied(x,y){return snake.some(function(p){return p.x===x&&p.y===y})||letters.some(function(l){return l.x===x&&l.y===y})}
+  /* a free cell that is not right in front of the head, so a letter never lands in the snake's mouth */
+  function freeCell(){
+    var h=snake[0],ahead=[];for(var k=1;k<=3;k++)ahead.push(((h.x+dir[0]*k)%C+C)%C+','+((h.y+dir[1]*k)%R+R)%R);
+    for(var g=0;g<400;g++){var x=Math.floor(Math.random()*C),y=Math.floor(Math.random()*R);if(!occupied(x,y)&&ahead.indexOf(x+','+y)<0)return{x:x,y:y}}
+    return{x:0,y:0};
+  }
+  function setup(){
+    var w=list[round];word=w.w.toLowerCase();pi=0;miss=0;letters=[];
+    stage.querySelector('#snQ').textContent=w.m;
+    word.split('').forEach(function(ch){var p=freeCell();letters.push({ch:ch,x:p.x,y:p.y})});
+    var abc='abcdefghijklmnopqrstuvwxyz'.split('').filter(function(ch){return word.indexOf(ch)<0});
+    pick(abc,3).forEach(function(ch){var p=freeCell();letters.push({ch:ch,x:p.x,y:p.y})});
+    slots();upd();
+  }
+  function hurt(msg){hearts--;flash=1;sfx('bad');upd();if(msg)toast(msg);if(hearts<=0){paused=true;timers.push(setTimeout(end,700))}}
+  function step(){
+    var d=queue.shift();if(d)dir=d;
+    var h=snake[0],nx={x:(h.x+dir[0]+C)%C,y:(h.y+dir[1]+R)%R};
+    if(snake.slice(0,-1).some(function(p){return p.x===nx.x&&p.y===nx.y})){snake=snake.slice(0,3);hurt('몸에 부딪혔어요. 뱀이 짧아졌어요');return}
+    snake.unshift(nx);
+    var li=-1;letters.forEach(function(l,i){if(l.x===nx.x&&l.y===nx.y)li=i});
+    var grow=false;
+    if(li>=0){
+      var l=letters[li];letters.splice(li,1);
+      if(l.ch===word[pi]){
+        pi++;grow=true;sfx('place');slots();
+        if(pi===word.length){
+          done++;paused=true;sfx('ok');say(word);upd();
+          var g=document.createElement('span');g.className='gain';g.setAttribute('aria-hidden','true');g.textContent=word+' = '+list[round].m;wrap.appendChild(g);
+          timers.push(setTimeout(function(){g.remove();round++;if(round>=N)end();else{setup();paused=false}},1100));
+        }
+      }else{miss++;var p=freeCell();letters.push({ch:l.ch,x:p.x,y:p.y});hurt('“'+l.ch+'” 차례가 아니에요')}
+    }
+    if(!grow)snake.pop();
+  }
+  function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+  function paint(){
+    var W=cell*C,H=cell*R;ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#E4E5E9';for(var x=0;x<C;x++)for(var y=0;y<R;y++){ctx.beginPath();ctx.arc((x+.5)*cell,(y+.5)*cell,1.4,0,7);ctx.fill()}
+    letters.forEach(function(l){
+      /* after a wrong letter, the next right letter glows yellow */
+      var glow=miss>0&&l.ch===word[pi];
+      rr(l.x*cell+3,l.y*cell+3,cell-6,cell-6,cell*.22);ctx.fillStyle=glow?'#E7DD6A':'#FFFFFF';ctx.fill();ctx.lineWidth=1.5;ctx.strokeStyle='#1A1C21';ctx.stroke();
+      ctx.fillStyle='#1A1C21';ctx.font='700 '+Math.round(cell*.6)+'px '+font;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(l.ch,(l.x+.5)*cell,(l.y+.54)*cell);
+    });
+    if(snake)snake.slice().reverse().forEach(function(p,i,a){
+      var head=i===a.length-1,pad=head?1.5:3;
+      rr(p.x*cell+pad,p.y*cell+pad,cell-pad*2,cell-pad*2,cell*.3);ctx.fillStyle=head?'#0A7F5E':'#10B183';ctx.fill();
+      if(head){ctx.fillStyle='#FFFFFF';var ex=dir[1]?[.32,.68]:[.5,.5],ey=dir[0]?[.32,.68]:[.5,.5];
+        for(var k=0;k<2;k++){ctx.beginPath();ctx.arc((p.x+ex[k]+dir[0]*.12)*cell,(p.y+ey[k]+dir[1]*.12)*cell,cell*.09,0,7);ctx.fill()}}
+    });
+    if(flash>0){ctx.fillStyle='rgba(184,50,92,'+(flash*.25)+')';ctx.fillRect(0,0,W,H)}
+  }
+  function loop(t){
+    if(!alive)return;
+    var dt=Math.min(250,t-last);last=t;acc+=dt;flash=Math.max(0,flash-dt/400);
+    var ms=Math.max(120,240-round*14)*(reduceMotion?1.3:1);
+    while(acc>=ms){acc-=ms;if(!paused)step();if(!alive)return}
+    paint();raf=requestAnimationFrame(loop);
+  }
+  function end(){
+    if(!alive)return;alive=false;cancelAnimationFrame(raf);
+    finish('snake',done===N?(hearts===3?3:2):1,N+'개 낱말 중 '+done+'개를 철자대로 완성했어요.');
+  }
+  function turn(name){
+    if(!started||paused)return;
+    var d=DIRS[name],lastDir=queue[queue.length-1]||dir;
+    if(d[0]===-lastDir[0]&&d[1]===-lastDir[1])return;
+    if(d[0]===lastDir[0]&&d[1]===lastDir[1])return;
+    if(queue.length<2)queue.push(d);
+  }
+  function begin(){
+    if(started)return;started=true;stage.querySelector('#snStart').remove();sfx('start');playMode();
+    paused=false;last=performance.now();raf=requestAnimationFrame(loop);
+  }
+  var my=Math.floor(R/2);dir=DIRS.right;snake=[{x:4,y:my},{x:3,y:my},{x:2,y:my}];
+  setup();size();
+  stage.querySelector('#snGo').onclick=begin;stage.querySelector('#snGo').focus({preventScroll:true});
+  stage.querySelector('.sn-pad').onclick=function(e){var b=e.target.closest('[data-dir]');if(b)turn(b.dataset.dir)};
+  var sx=0,sy=0;
+  cv.addEventListener('pointerdown',function(e){sx=e.clientX;sy=e.clientY});
+  cv.addEventListener('pointerup',function(e){var dx=e.clientX-sx,dy=e.clientY-sy;if(Math.max(Math.abs(dx),Math.abs(dy))<18)return;turn(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'))});
+  var KEYS={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right',W:'up',S:'down',A:'left',D:'right'};
+  keyHandler=function(e){
+    if(!started&&e.key==='Enter'){begin();return true}
+    if(KEYS[e.key]){turn(KEYS[e.key]);return true}
+    return false;
+  };
+  window.addEventListener('resize',size);
+  if(LOCAL)window.__nmGame={snake:function(){return{snake:snake,letters:letters,word:word,pi:pi,C:C,R:R,dir:dir,paused:paused}}};
+  cleanup=function(){alive=false;cancelAnimationFrame(raf);timers.forEach(clearTimeout);window.removeEventListener('resize',size)};
+}
+
+/* 8. word tetris: a falling word or meaning; land it on or beside its partner and both clear. a full row clears too */
+function gTetris(stage,setStats){
+  var narrow=innerWidth<600,C=narrow?4:5,R=narrow?9:8,ASP=narrow?1.5:1.8,GOAL=narrow?10:12;
+  var ws=uniqueWords(deck.words).slice(0,10),uid=0;
+  function tile(id,k){return{id:id,k:k,t:k==='w'?ws[id].w:ws[id].m,u:++uid}}
+  function randTile(){return tile(Math.floor(Math.random()*ws.length),Math.random()<.5?'w':'m')}
+  function partner(t){return tile(t.id,t.k==='w'?'m':'w')}
+  function isPair(a,b){return a&&b&&a.id===b.id&&a.k!==b.k}
+  var grid=[],r,c;for(r=0;r<R;r++){grid.push(new Array(C).fill(null))}
+  /* two starting rows with no pair already touching */
+  for(r=R-2;r<R;r++)for(c=0;c<C;c++){
+    if(r===R-2&&Math.random()<.5)continue;
+    for(var g=0;g<30;g++){var t=randTile();if(!isPair(t,grid[r][c-1])&&!(r+1<R&&isPair(t,grid[r+1][c])))break}
+    grid[r][c]=t;
+  }
+  /* settle the top row so nothing floats */
+  for(c=0;c<C;c++)if(!grid[R-1][c]&&grid[R-2][c]){grid[R-1][c]=grid[R-2][c];grid[R-2][c]=null}
+  function exposed(){var a=[];for(var c=0;c<C;c++)for(var r=0;r<R;r++)if(grid[r][c]){a.push(grid[r][c]);break}return a}
+  /* most blocks are the partner of a block you can reach, so every drop can be useful */
+  function makeNext(){var ex=exposed();return ex.length&&Math.random()<.72?partner(rnd(ex)):randTile()}
+  var fall=null,next=makeNext(),cleared=0,misses=0,alive=true,started=false,busy=false,acc=0,timers=[];
+  var stepMs=function(){return Math.max(360,880-cleared*40)*(reduceMotion?1.3:1)};
+  var boardStyle='aspect-ratio:'+(C*ASP).toFixed(2)+' / '+R+';--cols:'+C;
+  var wrapStyle='max-width:min(760px,calc((100dvh - '+(narrow?280:290)+'px) * '+(C*ASP/R).toFixed(3)+'));';
+  function landRow(c){for(var r=0;r<R;r++)if(grid[r][c])return r-1;return R-1}
+  function pos(r,c){return'left:'+(c*100/C)+'%;top:'+(r*100/R)+'%;width:'+(100/C)+'%;height:'+(100/R)+'%'}
+  function tileHTML(t,r,c,cls){return'<span class="tt-tile '+t.k+(cls||'')+'" style="'+pos(r,c)+'" aria-hidden="true"><b>'+esc(t.t)+'</b></span>'}
+  function upd(){setStats('짝 '+cleared+'/'+GOAL)}
+  function draw(marks){keepFocus(stage,function(){
+    var h='';
+    for(var r=0;r<R;r++)for(var c=0;c<C;c++)if(grid[r][c])h+=tileHTML(grid[r][c],r,c,marks&&marks[r+','+c]?' vanish':'');
+    if(fall){var lr=landRow(fall.c);if(lr>fall.r)h+='<span class="tt-ghost" style="'+pos(lr,fall.c)+'" aria-hidden="true"></span>';h+=tileHTML(fall.t,fall.r,fall.c,' fall')}
+    for(var cc=0;cc<C;cc++)h+='<button class="tt-col" data-col="'+cc+'" data-key="col'+cc+'" style="left:'+(cc*100/C)+'%;width:'+(100/C)+'%" aria-label="'+(cc+1)+'번째 줄로 떨어뜨리기"></button>';
+    stage.querySelector('#ttBoard').innerHTML=h;
+    stage.querySelector('#ttNext').innerHTML=tileHTML(next,0,0).replace(/style="[^"]*"/,'');
+    stage.querySelector('#ttNow').textContent=fall?(fall.t.k==='w'?'낱말 ':'뜻 ')+fall.t.t+', '+(fall.c+1)+'번째 줄':'';
+  });fitAll(stage,'.tt-tile b');upd()}
+  stage.innerHTML='<div class="tt"><div class="tt-wrap" style="'+wrapStyle+'"><div class="tt-board" id="ttBoard" style="'+boardStyle+'"></div>'+
+    '<div class="bl-start" id="ttStart"><p>떨어지는 블록을 짝 위나 옆에 놓아 없애요. 짝 '+GOAL+'개를 맞추면 이겨요!</p><button class="btn primary" id="ttGo">'+icon('play','fill')+'시작하기<span class="kbd hide-sm">Enter</span></button></div></div>'+
+    '<div class="tt-side"><div class="tt-next"><small>다음 블록</small><div id="ttNext"></div></div><div class="tt-next"><small>떨어지는 블록</small><b id="ttNow" aria-live="polite" style="font-size:15px"></b></div>'+
+    '<div class="tt-pad"><button class="btn" data-tt="left" aria-label="왼쪽으로">←</button><button class="btn" data-tt="drop" aria-label="바로 떨어뜨리기">↓</button><button class="btn" data-tt="right" aria-label="오른쪽으로">→</button></div></div></div>';
+  function spawn(){
+    if(!alive)return;
+    var c=Math.floor(C/2);
+    if(grid[0][c]){lose();return}
+    fall={t:next,c:c,r:0};next=makeNext();acc=0;draw();
+  }
+  function move(dx){if(!fall||busy)return;var nc=fall.c+dx;if(nc<0||nc>=C||grid[fall.r][nc])return;fall.c=nc;sfx('tap');draw()}
+  function down(){if(!fall||busy)return;if(fall.r+1<R&&!grid[fall.r+1][fall.c]){fall.r++;draw()}else land()}
+  function drop(){if(!fall||busy)return;fall.r=landRow(fall.c);land()}
+  function dropAt(c){
+    if(!fall||busy)return;
+    /* slide along the current row only while the way is clear */
+    var step=c>fall.c?1:-1;while(fall.c!==c&&!grid[fall.r][fall.c+step])fall.c+=step;
+    drop();
+  }
+  function land(){var f=fall;fall=null;grid[f.r][f.c]=f.t;sfx('place');resolve(1,f)}
+  function resolve(chain,landed){
+    var marks={},pairs=0,rows=0,shown=null;
+    for(var r=0;r<R;r++)for(var c=0;c<C;c++){
+      var t=grid[r][c];if(!t)continue;
+      [[0,1],[1,0]].forEach(function(d){var r2=r+d[0],c2=c+d[1];if(r2<R&&c2<C&&isPair(t,grid[r2][c2])&&!marks[r+','+c]&&!marks[r2+','+c2]){marks[r+','+c]=marks[r2+','+c2]=1;pairs++;shown=t}});
+    }
+    for(r=0;r<R;r++){if(grid[r].every(Boolean)){rows++;for(c=0;c<C;c++)marks[r+','+c]=1}}
+    if(!pairs&&!rows){
+      if(chain===1)misses++;
+      busy=false;draw();
+      if(cleared>=GOAL)win();else timers.push(setTimeout(spawn,150));
+      return;
+    }
+    busy=true;draw(marks);sfx(chain>1||rows?'merge':'ok');
+    if(shown){var w=shown.k==='w'?shown.t:ws[shown.id].w,g=document.createElement('span');g.className='gain';g.setAttribute('aria-hidden','true');
+      g.textContent=(chain>1?'연쇄! ':'')+w+' = '+ws[shown.id].m;stage.querySelector('.tt-wrap').appendChild(g);timers.push(setTimeout(function(){g.remove()},1000))}
+    if(rows)toast('한 줄을 다 채워서 지웠어요!');
+    timers.push(setTimeout(function(){
+      for(var k in marks){var p=k.split(',');grid[+p[0]][+p[1]]=null}
+      cleared+=pairs;
+      /* everything above falls down */
+      for(var c=0;c<C;c++){var col=[];for(var r=R-1;r>=0;r--)if(grid[r][c])col.push(grid[r][c]);for(r=R-1;r>=0;r--)grid[r][c]=col[R-1-r]||null}
+      draw();timers.push(setTimeout(function(){resolve(chain+1)},180));
+    },280));
+  }
+  function stop(){alive=false;clearInterval(ticker);timers.forEach(clearTimeout)}
+  function win(){stop();finish('tetris',misses<=6?3:misses<=14?2:1,'짝 '+cleared+'개를 맞췄어요. 짝 없이 놓은 블록은 '+misses+'개예요.')}
+  function lose(){stop();sfx('lose');finish('tetris',1,'블록이 맨 위까지 쌓였어요. 짝 '+cleared+'개를 맞췄어요.')}
+  var ticker=setInterval(function(){if(!started||busy||!fall)return;acc+=50;if(acc>=stepMs()){acc=0;down()}},50);
+  function begin(){if(started)return;started=true;stage.querySelector('#ttStart').remove();sfx('start');playMode();spawn()}
+  draw();
+  stage.querySelector('#ttGo').onclick=begin;stage.querySelector('#ttGo').focus({preventScroll:true});
+  stage.onclick=function(e){
+    if(!started)return;
+    var col=e.target.closest('[data-col]');if(col){dropAt(+col.dataset.col);return}
+    var b=e.target.closest('[data-tt]');if(!b)return;
+    if(b.dataset.tt==='left')move(-1);else if(b.dataset.tt==='right')move(1);else drop();
+  };
+  keyHandler=function(e){
+    if(!started){if(e.key==='Enter'){begin();return true}return false}
+    if(e.key==='ArrowLeft'){move(-1);return true}
+    if(e.key==='ArrowRight'){move(1);return true}
+    if(e.key==='ArrowDown'){down();return true}
+    if(e.key===' '||e.key==='ArrowUp'){drop();return true}
+    return false;
+  };
+  if(LOCAL)window.__nmGame={tetris:function(){return{grid:grid,fall:fall,busy:busy,C:C,R:R}}};
+  cleanup=stop;
+}
+
+/* 9. word match-3: swap neighbours; three or more of the same word in a line (word or meaning, mixed) pop */
+function gMatch(stage,setStats){
+  var narrow=innerWidth<600,C=6,R=7,K=5,MOVES=20,ASP=narrow?1.15:1.5,uid=0;
+  var ws=uniqueWords(deck.words).slice(0,K);K=ws.length;
+  function tile(){var id=Math.floor(Math.random()*K),k=Math.random()<.5?'w':'m';return{id:id,k:k,t:k==='w'?ws[id].w:ws[id].m,u:++uid}}
+  var b=new Array(R*C).fill(null),sel=-1,moves=MOVES,score=0,popped=0,hints=3,busy=false,timers=[],fresh={};
+  function at(r,c){return r>=0&&r<R&&c>=0&&c<C?b[r*C+c]:null}
+  function same(x,y){return x&&y&&x.id===y.id}
+  /* every cell that sits in a line of three or more of the same word */
+  function runs(){
+    var m={},groups=[];
+    function scan(len,get,idx){
+      for(var line=0;line<len[0];line++){var s=0;
+        for(var i=1;i<=len[1];i++){
+          if(i<len[1]&&same(get(line,i),get(line,s)))continue;
+          if(i-s>=3){var g=[];for(var j=s;j<i;j++){m[idx(line,j)]=1;g.push(idx(line,j))}groups.push(g)}
+          s=i;
+        }
+      }
+    }
+    scan([R,C],function(r,c){return at(r,c)},function(r,c){return r*C+c});
+    scan([C,R],function(c,r){return at(r,c)},function(c,r){return r*C+c});
+    return{cells:Object.keys(m).map(Number),groups:groups};
+  }
+  function swap(i,j){var t=b[i];b[i]=b[j];b[j]=t}
+  function findMove(){
+    for(var i=0;i<R*C;i++){var r=Math.floor(i/C),c=i%C;
+      var ns=[];if(c+1<C)ns.push(i+1);if(r+1<R)ns.push(i+C);
+      for(var k=0;k<ns.length;k++){swap(i,ns[k]);var ok=runs().cells.length>0;swap(i,ns[k]);if(ok)return[i,ns[k]]}}
+    return null;
+  }
+  function fillFresh(){for(var i=0;i<R*C;i++)if(!b[i]){for(var g=0;g<40;g++){b[i]=tile();if(!runs().cells.length)break}}}
+  function reshuffle(){for(var g=0;g<50;g++){b.fill(null);fillFresh();if(findMove())break}}
+  reshuffle();
+  function adj(i,j){var dr=Math.abs(Math.floor(i/C)-Math.floor(j/C)),dc=Math.abs(i%C-j%C);return dr+dc===1}
+  var wrapStyle=narrow?'':'max-width:min(760px,calc((100dvh - 290px) * '+(ASP*C/R).toFixed(3)+' + 20px));';
+  function upd(){setStats('남은 이동 '+moves+' · 점수 '+score)}
+  function draw(fx){fx=fx||{};keepFocus(stage,function(){
+    stage.innerHTML='<div class="ss-layout"><div class="m3-wrap" style="'+wrapStyle+'"><div class="m3-board" style="--cols:'+C+';--asp:'+ASP+'">'+b.map(function(t,i){
+      if(!t)return'<span class="m3-cell" aria-hidden="true" style="visibility:hidden"></span>';
+      var cls='m3-cell nav '+t.k+(i===sel?' sel':'')+(fx.vanish&&fx.vanish.indexOf(i)>=0?' vanish':'')+(fx.shake&&fx.shake.indexOf(i)>=0?' shake':'')+(fresh[t.u]?' drop':'');
+      return'<button class="'+cls+'" data-i="'+i+'" data-key="m'+i+'" aria-pressed="'+(i===sel)+'" aria-label="'+(t.k==='w'?'낱말 ':'뜻 ')+esc(t.t)+', '+(Math.floor(i/C)+1)+'행 '+(i%C+1)+'열"><b>'+esc(t.t)+'</b></button>';
+    }).join('')+'</div></div>'+
+    '<div class="tools ss-tools"><div class="m3-goal"><span>남은 이동</span><b>'+moves+'</b><span>점수</span><b>'+score+'</b></div><button class="btn" data-m3="hint"'+(hints&&!busy?'':' disabled')+'>'+icon('bulb')+'힌트 '+hints+'번</button></div></div>';
+  });fresh={};fitAll(stage,'.m3-cell b','.m3-cell');upd()}
+  function gain(text){var w=stage.querySelector('.m3-wrap');if(!w)return;var g=document.createElement('span');g.className='gain';g.setAttribute('aria-hidden','true');g.textContent=text;w.appendChild(g);timers.push(setTimeout(function(){g.remove()},1000))}
+  function trySwap(i,j){
+    busy=true;sel=-1;swap(i,j);
+    if(!runs().cells.length){swap(i,j);sfx('bad');draw({shake:[i,j]});timers.push(setTimeout(function(){busy=false},300));return}
+    moves--;sfx('place');resolve(1);
+  }
+  function resolve(combo){
+    var r=runs();
+    if(!r.cells.length){
+      busy=false;
+      if(moves<=0){draw();timers.push(setTimeout(end,400));return}
+      if(!findMove()){toast('바꿀 수 있는 칸이 없어서 섞었어요');reshuffle();b.forEach(function(t){if(t)fresh[t.u]=1});sfx('shuffle')}
+      draw();return;
+    }
+    var big=r.groups.reduce(function(m,g){return Math.max(m,g.length)},0),w=ws[b[r.groups[0][0]].id];
+    score+=r.cells.length*10*combo+(big>=4?(big-3)*30:0);popped+=r.cells.length;
+    sfx(combo>1?'merge':'ok');draw({vanish:r.cells});
+    gain((combo>1?combo+'연쇄! ':'')+w.w+' = '+w.m);
+    if(big>=5)toast(big+'개를 한 번에! 보너스');else if(big===4)toast('4개 연결! 보너스');
+    timers.push(setTimeout(function(){
+      r.cells.forEach(function(i){b[i]=null});
+      /* tiles fall down each column, new ones drop in from the top */
+      for(var c=0;c<C;c++){
+        var col=[];for(var rr=R-1;rr>=0;rr--)if(b[rr*C+c])col.push(b[rr*C+c]);
+        for(rr=R-1;rr>=0;rr--){var t=col[R-1-rr];if(!t){t=tile();fresh[t.u]=1}else if(R-1-rr>=col.length)fresh[t.u]=1;b[rr*C+c]=t}
+      }
+      draw();timers.push(setTimeout(function(){resolve(combo+1)},320));
+    },280));
+  }
+  function end(){finish('match',score>=1500?3:score>=900?2:1,MOVES+'번 움직여 '+score+'점을 모았어요. 낱말 '+popped+'개를 터뜨렸어요.')}
+  draw();
+  var down=null,swiped=false;
+  stage.addEventListener('pointerdown',function(e){var c=e.target.closest('.m3-cell[data-i]');down=c?{i:+c.dataset.i,x:e.clientX,y:e.clientY}:null;swiped=false});
+  stage.addEventListener('pointerup',function(e){
+    if(!down||busy)return;var dx=e.clientX-down.x,dy=e.clientY-down.y;
+    if(Math.max(Math.abs(dx),Math.abs(dy))<20)return;
+    var r=Math.floor(down.i/C),c=down.i%C;
+    if(Math.abs(dx)>Math.abs(dy))c+=dx>0?1:-1;else r+=dy>0?1:-1;
+    swiped=true;if(r>=0&&r<R&&c>=0&&c<C)trySwap(down.i,r*C+c);
+  });
+  stage.onclick=function(e){
+    if(swiped){swiped=false;return}
+    if(busy)return;
+    if(e.target.closest('[data-m3="hint"]')){
+      if(!hints)return;var mv=findMove();if(!mv)return;hints--;sel=-1;draw();sfx('hint');
+      mv.forEach(function(i){var el=stage.querySelector('[data-i="'+i+'"]');if(el)el.classList.add('hint')});return;
+    }
+    var cell=e.target.closest('.m3-cell[data-i]');if(!cell)return;
+    var i=+cell.dataset.i;
+    if(sel<0){sel=i;sfx('select');draw();return}
+    if(sel===i){sel=-1;draw();return}
+    if(adj(sel,i)){trySwap(sel,i);return}
+    sel=i;sfx('select');draw();
+  };
+  keyHandler=function(e){return spatialNav(stage,e)};
+  if(LOCAL)window.__nmGame={match:function(){return{board:b.map(function(t){return t&&t.id}),busy:busy,C:C,R:R,moves:moves,findMove:findMove}}};
+  cleanup=function(){timers.forEach(clearTimeout)};
+}
+
+/* 10. sentence fishing: a sentence with one word blanked out; catch the fish carrying that word */
+function gFishing(stage,setStats){
+  var all=blankList(),rounds=pick(all,10),N=rounds.length,narrow=innerWidth<600,FISH=4;
+  var vocab={};deck.words.forEach(function(w){vocab[w.w.toLowerCase()]=1});
+  /* words to put on the other fish: vocabulary plus words from the other sentences */
+  var pool={};
+  deck.words.forEach(function(w){if(/^[A-Za-z](?:[A-Za-z']*[A-Za-z])?$/.test(w.w)&&w.w.length>=2)pool[w.w.toLowerCase()]=w.w});
+  all.forEach(function(x){x.cands.forEach(function(c){var k=c.core.toLowerCase();if(!pool[k])pool[k]=c.core})});
+  var ri=0,mistakes=0,cur=null,fish=[],alive=true,started=false,busy=true,raf=0,last=0,timers=[];
+  stage.innerHTML='<div class="fs"><div class="fs-sent" id="fsSent" aria-live="polite"></div><div class="fs-pond" id="pond">'+
+    '<div class="bl-start"><p>문장의 빈칸에 들어갈 낱말 물고기를 낚아요. 문장 '+N+'개가 나와요.</p><button class="btn primary" id="fsGo">'+icon('play','fill')+'시작하기<span class="kbd hide-sm">Enter</span></button></div></div></div>';
+  var pond=stage.querySelector('#pond'),sentEl=stage.querySelector('#fsSent');
+  function upd(){setStats('문장 '+Math.min(ri+1,N)+'/'+N+' · 실수 '+mistakes)}
+  function sentence(filled){
+    sentEl.innerHTML=cur.toks.map(function(t,i){
+      if(i!==cur.c.i)return'<span>'+esc(t)+'</span>';
+      return'<span>'+esc(cur.c.pre)+'<span class="fs-blank'+(filled?' got':'')+'" style="--bw:'+(cur.c.core.length*.62+1.2).toFixed(1)+'em">'+(filled?esc(cur.c.core):'&nbsp;')+'</span>'+esc(cur.c.post)+'</span>';
+    }).join(' ');
+    sentEl.setAttribute('aria-label',filled?cur.s:cur.toks.map(function(t,i){return i===cur.c.i?cur.c.pre+'빈칸'+cur.c.post:t}).join(' '));
+  }
+  function next(){
+    if(!alive)return;
+    if(ri>=N){end();return}
+    var r=rounds[ri];
+    /* blank a vocabulary word when the sentence has one, otherwise its longest word */
+    var vs=r.cands.filter(function(c){return vocab[c.core.toLowerCase()]});
+    var c=vs.length?rnd(vs):r.cands.slice().sort(function(a,b){return b.core.length-a.core.length})[0];
+    cur={s:r.s,toks:r.toks,c:c};
+    var ans=c.core,cap=c.i===0&&/^[A-Z]/.test(ans);
+    var others=pick(Object.keys(pool).filter(function(k){return k!==ans.toLowerCase()}),FISH-1).map(function(k){var w=pool[k];return cap?w.charAt(0).toUpperCase()+w.slice(1):w});
+    var words=shuffle([ans].concat(others));
+    sentence(false);
+    pond.innerHTML='';
+    var W=pond.clientWidth,H=pond.clientHeight,lanes=shuffle(words.map(function(_,i){return i}));
+    fish=words.map(function(w,i){
+      var el=document.createElement('button');
+      el.className='fish c'+(i%4);
+      el.innerHTML=esc(w)+'<span class="k" aria-hidden="true">'+(i+1)+'</span>';
+      el.setAttribute('aria-label',w+' (숫자 '+(i+1)+')');
+      pond.appendChild(el);
+      var fw=el.offsetWidth,fh=el.offsetHeight,sp=(narrow?34:46)+ri*4+Math.random()*24;
+      var f={el:el,w:w,ok:w===ans,x:Math.random()*Math.max(1,W-fw),y:(lanes[i]+.5)*H/words.length-fh/2,fw:fw,vx:Math.random()<.5?sp:-sp,away:0,caught:false};
+      el.onclick=function(){hit(f)};
+      return f;
+    });
+    busy=false;upd();
+  }
+  function hit(f){
+    if(busy||f.caught||f.away>0)return;
+    if(f.ok){
+      busy=true;f.caught=true;f.el.classList.add('caught');sfx('ok');sentence(true);say(cur.s);
+      var line=document.createElement('span');line.className='fs-line';pond.appendChild(line);f.line=line;
+      timers.push(setTimeout(function(){ri++;next()},1700));
+    }else{
+      mistakes++;sfx('bad');f.el.classList.add('wrong');f.away=1;upd();
+      timers.push(setTimeout(function(){f.away=0;f.el.classList.remove('wrong')},1000));
+    }
+  }
+  function loop(t){
+    if(!alive)return;
+    var dt=Math.min(.05,(t-last)/1000),W=pond.clientWidth;last=t;
+    fish.forEach(function(f){
+      if(f.caught){
+        /* reel the fish up on the line */
+        f.y-=260*dt;f.line.style.left=(f.x+f.fw/2)+'px';f.line.style.height=Math.max(0,f.y+4)+'px';
+      }else{
+        var v=f.vx*(f.away?2.4:1)*(reduceMotion?.6:1);f.x+=v*dt;
+        if(f.x<0){f.x=0;f.vx=Math.abs(f.vx)}else if(f.x+f.fw>W){f.x=W-f.fw;f.vx=-Math.abs(f.vx)}
+        f.el.classList.toggle('lf',f.vx<0);
+      }
+      f.el.style.transform='translate('+f.x.toFixed(1)+'px,'+(f.y+(f.caught?0:Math.sin(t/400+f.fw)*4)).toFixed(1)+'px)';
+    });
+    raf=requestAnimationFrame(loop);
+  }
+  function end(){
+    if(!alive)return;alive=false;cancelAnimationFrame(raf);
+    finish('fishing',mistakes<=1?3:mistakes<=4?2:1,N+'개 문장의 빈칸을 채웠어요. 실수는 '+mistakes+'번이에요.');
+  }
+  function begin(){if(started)return;started=true;sfx('start');playMode();next();last=performance.now();raf=requestAnimationFrame(loop)}
+  stage.querySelector('#fsGo').onclick=begin;stage.querySelector('#fsGo').focus({preventScroll:true});
+  cur={s:'',toks:['?'],c:{i:-1}};upd();
+  keyHandler=function(e){
+    if(!started){if(e.key==='Enter'){begin();return true}return false}
+    var d='1234'.indexOf(e.key);if(d<0||!fish[d])return false;
+    hit(fish[d]);return true;
+  };
+  if(LOCAL)window.__nmGame={fishing:function(){return{busy:busy,fish:fish.map(function(f){return{w:f.w,ok:f.ok}})}}};
+  cleanup=function(){alive=false;cancelAnimationFrame(raf);timers.forEach(clearTimeout)};
+}
+
+/* 11. letter ladder (Wordle style): spell the word for the meaning in six tries.
+   green = right letter, right place; yellow = in the word, elsewhere; grey = not in the word */
+function gLadder(stage,setStats){
+  var list=pick(ladderWords(),5),N=list.length,MAXR=6;
+  var ri=0,word,L,rows,cur,keys,solved=0,tries=0,busy=false,bad=false,fresh=-1,timers=[];
+  function setup(){word=list[ri].w.toLowerCase();L=word.length;rows=[];cur='';keys={};fresh=-1;draw()}
+  function judge(g){
+    var res=new Array(L).fill('x'),left={},i;
+    for(i=0;i<L;i++){if(g[i]===word[i])res[i]='g';else left[word[i]]=(left[word[i]]||0)+1}
+    for(i=0;i<L;i++)if(res[i]!=='g'&&left[g[i]]){res[i]='y';left[g[i]]--}
+    return res;
+  }
+  var RANK={x:1,y:2,g:3};
+  function upd(){setStats('낱말 '+Math.min(ri+1,N)+'/'+N+' · 맞힘 '+solved)}
+  function draw(){keepFocus(stage,function(){
+    var hint=rows.length>=3&&rows.length<MAXR&&!(rows.length&&rows[rows.length-1].g===word);
+    var g='';
+    for(var r=0;r<MAXR;r++){
+      for(var c=0;c<L;c++){
+        var ch='',cls='ld-cell',st='';
+        if(r<rows.length){ch=rows[r].g[c];cls+=' '+rows[r].res[c]+(r===fresh?' flip':'');if(r===fresh)st=' style="animation-delay:'+(c*.09)+'s"'}
+        else if(r===rows.length&&c<cur.length){ch=cur[c];cls+=' typed'+(bad?' bad':'')}
+        else if(r===rows.length&&bad)cls+=' bad';
+        g+='<span class="'+cls+'"'+st+'>'+esc(ch)+'</span>';
+      }
+    }
+    var kb=['qwertyuiop','asdfghjkl','zxcvbnm'].map(function(row,ri2){
+      var h=row.split('').map(function(k){return'<button class="ld-key '+(keys[k]||'')+'" data-k="'+k+'" data-key="k'+k+'" aria-label="'+k+(keys[k]==='g'?', 맞은 자리':keys[k]==='y'?', 다른 자리':keys[k]==='x'?', 없는 글자':'')+'">'+k+'</button>'}).join('');
+      if(ri2===2)h='<button class="ld-key wide" data-k="enter" data-key="kenter">확인</button>'+h+'<button class="ld-key wide" data-k="back" data-key="kback" aria-label="한 글자 지우기">⌫</button>';
+      return'<div class="ld-krow">'+h+'</div>';
+    }).join('');
+    stage.innerHTML='<div class="ld"><div class="ld-q"><small>이 뜻의 낱말은?</small><b>'+esc(list[ri].m)+'</b><span class="tag">'+L+'글자</span>'+(hint?'<span class="tag">첫 글자 '+esc(word[0])+'</span>':'')+'</div>'+
+      '<div class="ld-main"><div class="ld-grid" style="--n:'+L+'" role="grid" aria-label="'+(MAXR-rows.length)+'번 더 쓸 수 있어요">'+g+'</div><div class="ld-keys">'+kb+'</div></div></div>';
+  });upd()}
+  function press(k){
+    if(busy)return;bad=false;fresh=-1;
+    if(k==='enter'){submit();return}
+    if(k==='back'){if(cur.length){cur=cur.slice(0,-1);sfx('tap')}}
+    else if(cur.length<L){cur+=k;sfx('tap')}
+    draw();
+  }
+  function submit(){
+    if(cur.length<L){bad=true;sfx('bad');draw();toast(L+'글자를 모두 채워 주세요');return}
+    var res=judge(cur);rows.push({g:cur,res:res});tries++;
+    cur.split('').forEach(function(ch,i){if(!keys[ch]||RANK[res[i]]>RANK[keys[ch]])keys[ch]=res[i]});
+    var won=cur===word;cur='';fresh=rows.length-1;
+    if(won){solved++;busy=true;sfx('ok');say(word);draw();toast(word+' = '+list[ri].m);timers.push(setTimeout(nextWord,1800));return}
+    if(rows.length>=MAXR){busy=true;sfx('lose');say(word);draw();toast('정답은 '+word+' ('+list[ri].m+')');timers.push(setTimeout(nextWord,2400));return}
+    sfx('place');draw();
+  }
+  function nextWord(){
+    busy=false;ri++;
+    if(ri<N){setup();return}
+    finish('ladder',solved===N&&tries<=N*3.6?3:solved>=N-1?2:1,N+'개 중 '+solved+'개를 맞혔어요. 모두 '+tries+'번 써 봤어요.');
+  }
+  setup();
+  stage.onclick=function(e){var b=e.target.closest('[data-k]');if(b)press(b.dataset.k)};
+  keyHandler=function(e){
+    if(/^[a-zA-Z]$/.test(e.key)){press(e.key.toLowerCase());return true}
+    if(e.key==='Backspace'){press('back');return true}
+    if(e.key==='Enter'){press('enter');return true}
+    return false;
+  };
+  if(LOCAL)window.__nmGame={ladder:function(){return{word:word,busy:busy,rows:rows.length}}};
+  cleanup=function(){timers.forEach(clearTimeout)};
+}
+
+/* 12. whack-a-mole: moles pop up holding words; hit only the one that matches the meaning. 60 seconds, 15 to catch */
+function gMole(stage,setStats){
+  var ws=uniqueWords(deck.words),TIME=60,GOAL=15;
+  var holes=[],target=null,correct=0,mistakes=0,started=false,alive=true,start=0,nextSpawn=0,lastTarget=0,tick=0,timers=[];
+  stage.innerHTML='<div class="ml"><div class="bl-q"><small>이 뜻의 낱말을 든 두더지를 잡아요</small><b id="mlQ">?</b></div><div class="ml-wrap" style="max-width:min(820px,calc((100dvh - '+(innerWidth<600?260:350)+'px) * 1.45 + 20px))"><div class="ml-field">'+
+    [0,1,2,3,4,5,6,7,8].map(function(i){return'<button class="ml-hole" data-h="'+i+'" aria-label="'+(i+1)+'번 구멍, 비어 있어요"><span class="ml-mole"><span class="ml-face"></span><b class="ml-sign"></b></span><span class="k" aria-hidden="true">'+(i+1)+'</span></button>'}).join('')+
+    '</div><div class="bl-start"><p>위에 나온 뜻의 낱말을 든 두더지만 잡아요. 60초 동안 '+GOAL+'마리를 잡아 보세요!</p><button class="btn primary" id="mlGo">'+icon('play','fill')+'시작하기<span class="kbd hide-sm">Enter</span></button></div></div></div>';
+  [].forEach.call(stage.querySelectorAll('.ml-hole'),function(el,i){holes.push({el:el,sign:el.querySelector('.ml-sign'),t:null,up:false,until:0,lock:false})});
+  var wrap=stage.querySelector('.ml-wrap');
+  function left(){return Math.max(0,TIME-Math.floor((performance.now()-start)/1000))}
+  function upd(){setStats('잡음 '+correct+'/'+GOAL+' · '+(started?left():TIME)+'초')}
+  function newTarget(){
+    var pool=ws.filter(function(w){return w!==target});target=rnd(pool);lastTarget=0;
+    stage.querySelector('#mlQ').textContent=target.m;
+  }
+  function show(h,t,now){
+    h.t=t;h.sign.textContent=t.w;h.up=true;h.until=now+Math.max(1100,1900-correct*50);
+    h.el.classList.add('up');h.el.setAttribute('aria-label',(holes.indexOf(h)+1)+'번 구멍, '+t.w);
+    fit(h.sign);
+  }
+  function hide(h){h.up=false;h.lock=false;h.el.classList.remove('up','hit','wrong');h.el.setAttribute('aria-label',(holes.indexOf(h)+1)+'번 구멍, 비어 있어요')}
+  function spawn(now){
+    var free=holes.filter(function(h){return!h.up});if(!free.length)return;
+    var h=rnd(free),upNow=holes.filter(function(x){return x.up}).map(function(x){return x.t});
+    /* the right mole shows up often, and always within about two seconds */
+    var t;
+    if(upNow.indexOf(target)<0&&(Math.random()<.45||now-lastTarget>2000)){t=target;lastTarget=now}
+    else{var d=ws.filter(function(w){return w!==target&&upNow.indexOf(w)<0});if(!d.length)return;t=rnd(d)}
+    show(h,t,now);
+  }
+  function step(){
+    var now=performance.now();
+    if(!lastTarget)lastTarget=now;
+    holes.forEach(function(h){if(h.up&&!h.lock&&now>h.until)hide(h)});
+    if(now>=nextSpawn){spawn(now);nextSpawn=now+Math.max(450,850-correct*25)}
+    upd();
+    if(left()<=0)end();
+  }
+  function hit(i){
+    var h=holes[i];if(!started||!alive||!h||!h.up||h.lock)return;
+    h.lock=true;
+    if(h.t===target){
+      correct++;sfx('pop');h.el.classList.add('hit');
+      var g=document.createElement('span');g.className='gain';g.setAttribute('aria-hidden','true');g.textContent=h.t.w+' = '+h.t.m;wrap.appendChild(g);
+      timers.push(setTimeout(function(){g.remove()},900));
+      timers.push(setTimeout(function(){hide(h)},320));
+      if(correct>=GOAL){end();return}
+      newTarget();
+    }else{
+      mistakes++;sfx('bad');h.el.classList.add('wrong');
+      timers.push(setTimeout(function(){hide(h)},420));
+    }
+    upd();
+  }
+  function end(){
+    if(!alive)return;alive=false;clearInterval(tick);
+    var secs=Math.round((performance.now()-start)/1000);
+    finish('mole',correct>=12&&mistakes<=3?3:correct>=7?2:1,(correct>=GOAL?secs+'초 만에 ':'60초 동안 ')+correct+'마리를 잡았어요. 잘못 잡은 두더지는 '+mistakes+'마리예요.');
+  }
+  function begin(){
+    if(started)return;started=true;stage.querySelector('.ml-wrap .bl-start').remove();sfx('start');playMode();
+    newTarget();start=performance.now();nextSpawn=start+300;tick=setInterval(step,100);
+  }
+  upd();
+  stage.querySelector('#mlGo').onclick=begin;stage.querySelector('#mlGo').focus({preventScroll:true});
+  stage.querySelector('.ml-field').onclick=function(e){var b=e.target.closest('[data-h]');if(b)hit(+b.dataset.h)};
+  keyHandler=function(e){
+    if(!started){if(e.key==='Enter'){begin();return true}return false}
+    var d='123456789'.indexOf(e.key);if(d<0)return false;hit(d);return true;
+  };
+  if(LOCAL)window.__nmGame={mole:function(){return{target:target&&target.w,up:holes.map(function(h){return h.up&&!h.lock?h.t.w:null})}}};
+  cleanup=function(){alive=false;clearInterval(tick);timers.forEach(clearTimeout)};
 }
 
 /* teacher editor */
